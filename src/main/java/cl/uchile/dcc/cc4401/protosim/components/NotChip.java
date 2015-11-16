@@ -91,18 +91,17 @@ public class NotChip extends InstanceFactory {
     
     private void setOutputValue(InstanceState state, int portAIndex, int portBIndex, int portOutIndex) {
         Value valueA = state.getPort(portAIndex);
-        Value valueB = state.getPort(portBIndex);
+        //Value valueB = state.getPort(portBIndex);
         
         Value result;
-        if (valueA.isUnknown() || valueB.isUnknown()) {
+        if (valueA.isUnknown()) {
         	result = Value.createKnown(BitWidth.create(Breadboard.PORT_WIDTH), 0);
         } else {
             int voltageA = valueA.toIntValue();
-            int voltageB = valueB.toIntValue();
 
             result = Value.createKnown(
             		BitWidth.create(Breadboard.PORT_WIDTH),
-            		(voltageA != 0 && voltageB != 0) ? Math.min(voltageA, voltageB) : 0);
+            		(voltageA >= 0) ? 0 : -1);
         }
 
         state.setPort(portOutIndex, result, Breadboard.DELAY);
