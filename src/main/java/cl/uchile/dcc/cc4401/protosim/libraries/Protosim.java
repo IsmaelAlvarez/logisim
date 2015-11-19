@@ -9,14 +9,15 @@ import com.cburch.logisim.tools.Tool;
 
 import cl.uchile.dcc.cc4401.protosim.components.AndChip;
 import cl.uchile.dcc.cc4401.protosim.components.Breadboard;
-import cl.uchile.dcc.cc4401.protosim.components.Clock;
+import cl.uchile.dcc.cc4401.protosim.components.ClockChip;
+import cl.uchile.dcc.cc4401.protosim.components.FlipFlopChip;
 import cl.uchile.dcc.cc4401.protosim.components.Led;
 import cl.uchile.dcc.cc4401.protosim.components.NandChip;
 import cl.uchile.dcc.cc4401.protosim.components.NotChip;
 import cl.uchile.dcc.cc4401.protosim.components.OrChip;
 import cl.uchile.dcc.cc4401.protosim.components.Resistor;
 import cl.uchile.dcc.cc4401.protosim.components.Switch;
-
+import cl.uchile.dcc.cc4401.protosim.components.VoltageGenerator;
 
 /*
  * Protosim components library for Logisim
@@ -24,17 +25,22 @@ import cl.uchile.dcc.cc4401.protosim.components.Switch;
  */
 public class Protosim extends Library {
 
-	// Available tools
+    // Available tools
     private static Tool[] TOOLS = {
             new AddTool(Breadboard.FACTORY),
+            new AddTool(VoltageGenerator.FACTORY),
+            
+            new AddTool(Resistor.FACTORY),  
+            new AddTool(Led.FACTORY),
+            new AddTool(Switch.FACTORY),
+
+            new AddTool(ClockChip.FACTORY),
+            new AddTool(FlipFlopChip.FACTORY),
+
             new AddTool(NotChip.FACTORY),
             new AddTool(AndChip.FACTORY),
-            new AddTool(Resistor.FACTORY),
-            //new AddTool(Switch.FACTORY),
-            new AddTool(Led.FACTORY),
-            new AddTool(Clock.FACTORY),
-            new AddTool(NandChip.FACTORY),
             new AddTool(OrChip.FACTORY),
+            new AddTool(NandChip.FACTORY),
     };
 
     public Protosim() {

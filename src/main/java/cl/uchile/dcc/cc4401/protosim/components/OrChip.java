@@ -19,10 +19,24 @@ public class OrChip extends InstanceFactory {
     
     public static InstanceFactory FACTORY = new OrChip();
     
+    private List<Port> ports;
 
     public OrChip() {
-        super("Or");
-        this.setIcon(Icons.getIcon("protosimComponentChipOr.svg"));   
+        super("OR Chip");
+        this.setIcon(Icons.getIcon("protosimComponentChipOr.svg")); 
+        ports = new ArrayList<Port>();
+
+        // Upper ports
+        ports.add(new Port(0, 0, Port.INPUT, Breadboard.PORT_WIDTH));
+        ports.add(new Port(10, 0, Port.INPUT, Breadboard.PORT_WIDTH));
+        ports.add(new Port(20, 0, Port.OUTPUT, Breadboard.PORT_WIDTH));
+
+        // Lower ports
+        ports.add(new Port(0, 30, Port.INPUT, Breadboard.PORT_WIDTH));
+        ports.add(new Port(10, 30, Port.INPUT, Breadboard.PORT_WIDTH));
+        ports.add(new Port(20, 30, Port.OUTPUT, Breadboard.PORT_WIDTH));
+
+        setPorts(ports);
     }
     
     @Override

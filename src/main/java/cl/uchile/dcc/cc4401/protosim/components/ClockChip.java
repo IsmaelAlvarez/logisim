@@ -15,14 +15,29 @@ import com.cburch.logisim.instance.InstanceState;
 import com.cburch.logisim.instance.Port;
 import com.cburch.logisim.util.Icons;
 
-public class Clock extends InstanceFactory {
+public class ClockChip extends InstanceFactory {
     
-    public static InstanceFactory FACTORY = new Clock();
+    public static InstanceFactory FACTORY = new ClockChip();
     
+    private List<Port> ports;
 
-    public Clock() {
-        super("Clock");
-        this.setIcon(Icons.getIcon("protosimComponentClock.svg"));   
+    public ClockChip() {
+        super("Clock Chip");
+        this.setIcon(Icons.getIcon("protosimComponentClock.svg")); 
+        
+        ports = new ArrayList<Port>();
+
+        // Upper ports
+        ports.add(new Port(0, 0, Port.INPUT, Breadboard.PORT_WIDTH));
+        ports.add(new Port(10, 0, Port.INPUT, Breadboard.PORT_WIDTH));
+        ports.add(new Port(20, 0, Port.OUTPUT, Breadboard.PORT_WIDTH));
+
+        // Lower ports
+        ports.add(new Port(0, 30, Port.INPUT, Breadboard.PORT_WIDTH));
+        ports.add(new Port(10, 30, Port.INPUT, Breadboard.PORT_WIDTH));
+        ports.add(new Port(20, 30, Port.OUTPUT, Breadboard.PORT_WIDTH));
+
+        setPorts(ports);
     }
     
     @Override
