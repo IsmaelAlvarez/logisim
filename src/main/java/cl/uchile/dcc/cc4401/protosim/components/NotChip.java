@@ -101,7 +101,7 @@ public class NotChip extends InstanceFactory {
 
             result = Value.createKnown(
             		BitWidth.create(Breadboard.PORT_WIDTH),
-            		(voltageA >= 0) ? 0 : -1);
+            		(voltageA >= 0) ? -1 : 0);
         }
 
         state.setPort(portOutIndex, result, Breadboard.DELAY);
