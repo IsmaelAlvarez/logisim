@@ -7,8 +7,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.cburch.logisim.data.AttributeSet;
+import com.cburch.logisim.data.BitWidth;
 import com.cburch.logisim.data.Bounds;
 import com.cburch.logisim.data.Location;
+import com.cburch.logisim.data.Value;
 import com.cburch.logisim.instance.InstanceFactory;
 import com.cburch.logisim.instance.InstancePainter;
 import com.cburch.logisim.instance.InstanceState;
@@ -75,7 +77,12 @@ public class VoltageGenerator extends InstanceFactory {
 
     @Override
     public void propagate(InstanceState state) {
- 
+    	setOutputValue(state, 0, 1);
+    }
+    
+    private void setOutputValue(InstanceState state, int portAIndex, int portBIndex) {
+        state.setPort(portAIndex, Value.createKnown(BitWidth.create(Breadboard.PORT_WIDTH), 0), Breadboard.DELAY);
+        state.setPort(portBIndex, Value.createKnown(BitWidth.create(Breadboard.PORT_WIDTH),-1), Breadboard.DELAY);
     }
     
 }
