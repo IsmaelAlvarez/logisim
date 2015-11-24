@@ -86,11 +86,12 @@ public class OrChip extends InstanceFactory {
 		Value valueB = state.getPort(portBIndex);
 		
 		Value result;
-		if (valueA.isUnknown() || valueB.isUnknown() || (!valueB.isUnknown() && valueB.toIntValue() < 0)) {
+		if (valueA.isUnknown() || valueB.isUnknown()) {
 			result = Value.createUnknown(BitWidth.create(Breadboard.PORT_WIDTH));
 		}
 		else {
-			result = valueA;
+			int value = valueA.toIntValue() < 0 || valueB.toIntValue() < 0 ? -1 : 0;
+			result = Value.createKnown(BitWidth.create(Breadboard.PORT_WIDTH), value);
 		}
 		
 		state.setPort(portOutIndex, result, Breadboard.DELAY);
