@@ -6,6 +6,8 @@ import java.awt.Graphics;
 import java.util.ArrayList;
 import java.util.List;
 
+import cl.uchile.dcc.cc4401.protosim.libraries.ProtoValue;
+
 import com.cburch.logisim.data.AttributeSet;
 import com.cburch.logisim.data.BitWidth;
 import com.cburch.logisim.data.Bounds;
@@ -99,10 +101,12 @@ public class AndChip extends InstanceFactory {
         } else {
             int voltageA = valueA.toIntValue();
             int voltageB = valueB.toIntValue();
-
-            result = Value.createKnown(
-            		BitWidth.create(Breadboard.PORT_WIDTH),
-            		(voltageA != 0 && voltageB != 0) ? Math.min(voltageA, voltageB) : 0);
+            int voltageR;
+            if (ProtoValue.toBoolean(voltageA) && ProtoValue.toBoolean(voltageB))
+            	voltageR = ProtoValue.TRUE;
+            else
+            	voltageR = ProtoValue.FALSE;
+            result = Value.createKnown(BitWidth.create(Breadboard.PORT_WIDTH), voltageR);
         }
 
         state.setPort(portOutIndex, result, Breadboard.DELAY);

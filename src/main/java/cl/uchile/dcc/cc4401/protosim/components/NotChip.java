@@ -6,6 +6,8 @@ import java.awt.Graphics;
 import java.util.ArrayList;
 import java.util.List;
 
+import cl.uchile.dcc.cc4401.protosim.libraries.ProtoValue;
+
 import com.cburch.logisim.data.AttributeSet;
 import com.cburch.logisim.data.BitWidth;
 import com.cburch.logisim.data.Bounds;
@@ -98,10 +100,12 @@ public class NotChip extends InstanceFactory {
         	result = Value.createKnown(BitWidth.create(Breadboard.PORT_WIDTH), 0);
         } else {
             int voltageA = valueA.toIntValue();
-
-            result = Value.createKnown(
-            		BitWidth.create(Breadboard.PORT_WIDTH),
-            		(voltageA >= 0) ? -1 : 0);
+            int voltageR;
+            if (ProtoValue.toBoolean(voltageA))
+            	voltageR = ProtoValue.FALSE;
+            else
+            	voltageR = ProtoValue.TRUE;
+            result = Value.createKnown(BitWidth.create(Breadboard.PORT_WIDTH), voltageR);
         }
 
         state.setPort(portOutIndex, result, Breadboard.DELAY);

@@ -6,6 +6,8 @@ import java.awt.Graphics;
 import java.util.ArrayList;
 import java.util.List;
 
+import cl.uchile.dcc.cc4401.protosim.libraries.ProtoValue;
+
 import com.cburch.logisim.data.AttributeSet;
 import com.cburch.logisim.data.BitWidth;
 import com.cburch.logisim.data.Bounds;
@@ -81,8 +83,8 @@ public class VoltageGenerator extends InstanceFactory {
     }
     
     private void setOutputValue(InstanceState state, int portAIndex, int portBIndex) {
-        state.setPort(portAIndex, Value.createKnown(BitWidth.create(Breadboard.PORT_WIDTH), 0), Breadboard.DELAY);
-        state.setPort(portBIndex, Value.createKnown(BitWidth.create(Breadboard.PORT_WIDTH),-1), Breadboard.DELAY);
+        state.setPort(portAIndex, Value.createKnown(BitWidth.create(Breadboard.PORT_WIDTH), ProtoValue.FALSE), Breadboard.DELAY);
+        state.setPort(portBIndex, Value.createKnown(BitWidth.create(Breadboard.PORT_WIDTH), ProtoValue.TRUE), Breadboard.DELAY);
     }
     
 }
