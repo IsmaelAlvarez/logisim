@@ -1,7 +1,5 @@
 package cl.uchile.dcc.cc4401.protosim.components;
 
-import static com.cburch.logisim.util.LocaleString.getFromLocale;
-
 import java.awt.Color;
 import java.awt.Graphics;
 import java.util.ArrayList;
