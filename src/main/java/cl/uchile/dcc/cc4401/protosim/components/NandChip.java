@@ -6,6 +6,8 @@ import java.awt.Graphics;
 import java.util.ArrayList;
 import java.util.List;
 
+import cl.uchile.dcc.cc4401.protosim.libraries.ProtoValue;
+
 import com.cburch.logisim.data.AttributeSet;
 import com.cburch.logisim.data.BitWidth;
 import com.cburch.logisim.data.Bounds;
@@ -94,10 +96,10 @@ public class NandChip extends InstanceFactory {
             int voltageB = valueB.toIntValue();
             
             int outputvoltage;
-            if (voltageA < 0 && voltageB < 0)
-            	outputvoltage=0;
+            if (voltageA < ProtoValue.FALSE && voltageB < ProtoValue.FALSE)
+            	outputvoltage=ProtoValue.FALSE;
             else
-            	outputvoltage=-1;
+            	outputvoltage=ProtoValue.TRUE;
             
             result = Value.createKnown(
             		BitWidth.create(Breadboard.PORT_WIDTH),
