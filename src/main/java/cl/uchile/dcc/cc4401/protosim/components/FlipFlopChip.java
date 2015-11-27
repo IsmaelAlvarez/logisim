@@ -7,18 +7,25 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.cburch.logisim.data.AttributeSet;
+import com.cburch.logisim.data.BitWidth;
 import com.cburch.logisim.data.Bounds;
 import com.cburch.logisim.data.Location;
+import com.cburch.logisim.data.Value;
 import com.cburch.logisim.instance.InstanceFactory;
 import com.cburch.logisim.instance.InstancePainter;
 import com.cburch.logisim.instance.InstanceState;
 import com.cburch.logisim.instance.Port;
 
+import cl.uchile.dcc.cc4401.protosim.libraries.ProtoValue;
+
 public class FlipFlopChip extends InstanceFactory {
-	
-	public static InstanceFactory FACTORY = new FlipFlopChip();
+
+    public static InstanceFactory FACTORY = new FlipFlopChip();
 
     private List<Port> ports;
+
+    private Value currentDataValue;
+    private int lastClockValue;
 
     public FlipFlopChip() {
         super("FlipFlopChip");
@@ -37,6 +44,9 @@ public class FlipFlopChip extends InstanceFactory {
         ports.add(new Port(20, 30, Port.OUTPUT, Breadboard.PORT_WIDTH));
 
         setPorts(ports);
+
+        currentDataValue = Value.createKnown(BitWidth.create(Breadboard.PORT_WIDTH), ProtoValue.FALSE);
+        lastClockValue = ProtoValue.FALSE;
     }
 
     @Override
@@ -84,7 +94,25 @@ public class FlipFlopChip extends InstanceFactory {
 
     @Override
     public void propagate(InstanceState state) {
- 
+        setOutputValue(state, 0, 1, 2);
+        setOutputValue(state, 3, 4, 5);
     }
-    
+
+    private void setOutputValue(InstanceState state, int dataPortIndex, int clockPortIndex, int outPortIndex) {
+        Value newDataValue = state.getPort(dataPortIndex);
+        Value currentClockValue = state.getPort(clockPortIndex);
+
+        if ( ! currentClockValue.isUnknown()
+                && lastClockValue == ProtoValue.FALSE
+                && currentClockValue.toIntValue() == ProtoValue.TRUE) {
+            currentDataValue = newDataValue;
+        }
+
+        if (currentDataValue.isUnknown()) {
+            currentDataValue = Value.createKnown(BitWidth.create(Breadboard.PORT_WIDTH), ProtoValue.FALSE);
+        }
+
+        state.setPort(outPortIndex, currentDataValue, Breadboard.DELAY);
+    }
+
 }
