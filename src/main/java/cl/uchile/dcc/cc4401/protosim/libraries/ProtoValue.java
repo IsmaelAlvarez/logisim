@@ -1,9 +1,11 @@
-package cl.uchile.dcc.cc4401.protosim.libraries;
 
+package cl.uchile.dcc.cc4401.protosim.libraries;
 public class ProtoValue {
 
     public static final int FALSE = 0;
     public static final int TRUE = -1;
+    public static String MAX_VOLT_VALUE= "1111 1111 1111 1111 1111 1111 1111 1111";
+    public static String MIN_VOLT_VALUE = "0000 0000 0000 0000 0000 0000 0000 0000";
 
     /**
      * Transforma un entero que representa un voltaje, a nuestro valor representado en booleano.
