@@ -88,8 +88,10 @@ public class ClockChip extends InstanceFactory {
 
 		// Text
 		g.setColor(Color.white);
-		g.setFont(new Font("Courier", Font.BOLD, 9));
-		g.drawString("CLK", x + 2, y + 17);
+		g.setFont(new Font("Courier", Font.BOLD, 8));
+		g.drawString("CLK", x + 3, y + 18);
+		g.drawString("+", x-1, y + 12);
+        g.drawString("-", x + 17, y + 24);
 
 		// Pins
 		g.setColor(Color.gray);
