@@ -244,22 +244,25 @@ public class SelectTool extends Tool {
 		// selection is being modified
 		Collection<Component> in_sel = sel.getComponentsContaining(start, g);
 		if (!in_sel.isEmpty()) {
-			
-			// if the user clicks an already selected breadboard -> deselect breadboard
-			// and select the clicked objects inside
-			boolean breadboardDeleted = false;
-			for (Component comp : in_sel) {//deselect already selected breadboard
-				if (comp.getFactory() instanceof Breadboard) {
+
+			// if the user clicks in more than one component and one of them
+			// is a breadboard -> deselect breadboard and select inside
+			// component
+			boolean breadboardDeselect = false;
+			for (Component comp : in_sel) {// deselect already selected
+											// breadboard
+				if (circuit.getAllContaining(start, g).size() > 1 && comp.getFactory() instanceof Breadboard) {
 					ArrayList<Component> breadboard = new ArrayList<Component>();
 					breadboard.add(comp);
 					Action act = SelectionActions.drop(sel, breadboard);
 					if (act != null) {
 						proj.doAction(act);
 					}
-					breadboardDeleted = true;
+					breadboardDeselect = true;
 				}
 			}
-			if (breadboardDeleted) {//select clicked components if they exist
+			if (breadboardDeselect) {// select clicked component inside the
+										// breadboard if exists
 				for (Component comp : circuit.getAllContaining(start, g)) {
 					if (!(comp.getFactory() instanceof Breadboard)) {
 						sel.add(comp);
@@ -292,14 +295,14 @@ public class SelectTool extends Tool {
 					}
 				}
 			}
-			
-			//first add all clicked components except breadboard
+
+			// first add all clicked components except breadboard
 			for (Component comp : clicked) {
 				if (!in_sel.contains(comp) && !(comp.getFactory() instanceof Breadboard)) {
 					sel.add(comp);
 				}
 			}
-			//only add breadboard if no components were selected before
+			// only add breadboard if no components were selected before
 			if (sel.isEmpty()) {
 				for (Component comp : clicked) {
 					if (!in_sel.contains(comp)) {
