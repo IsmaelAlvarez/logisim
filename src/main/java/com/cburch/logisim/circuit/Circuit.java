@@ -31,6 +31,8 @@ import com.cburch.logisim.std.wiring.Clock;
 import com.cburch.logisim.util.CollectionUtil;
 import com.cburch.logisim.util.EventSourceWeakSupport;
 
+import cl.uchile.dcc.cc4401.protosim.components.ClockChip;
+
 public class Circuit {
     private static final PrintStream DEBUG_STREAM = null;
 
@@ -115,6 +117,7 @@ public class Circuit {
     CircuitWires wires = new CircuitWires();
         // wires is package-protected for CircuitState and Analyze only.
     private ArrayList<Component> clocks = new ArrayList<Component>();
+    private ArrayList<Component> clockchips = new ArrayList<Component>();
     private CircuitLocker locker;
     private WeakHashMap<Component, Circuit> circuitsUsingThis;
 
@@ -141,6 +144,7 @@ public class Circuit {
         comps = new HashSet<Component>();
         wires = new CircuitWires();
         clocks.clear();
+        clockchips.clear();
         for (Component comp : oldComps) {
             if (comp.getFactory() instanceof SubcircuitFactory) {
                 SubcircuitFactory sub = (SubcircuitFactory) comp.getFactory();
@@ -397,6 +401,10 @@ public class Circuit {
     ArrayList<Component> getClocks() {
         return clocks;
     }
+    
+    ArrayList<Component> getClockChips() {
+        return clockchips;
+    }
 
     //
     // action methods
@@ -446,6 +454,8 @@ public class Circuit {
             ComponentFactory factory = c.getFactory();
             if (factory instanceof Clock) {
                 clocks.add(c);
+            } else if (factory instanceof ClockChip) {
+                clockchips.add(c);
             } else if (factory instanceof SubcircuitFactory) {
                 SubcircuitFactory subcirc = (SubcircuitFactory) factory;
                 subcirc.getSubcircuit().circuitsUsingThis.put(c, this);
@@ -467,6 +477,8 @@ public class Circuit {
             ComponentFactory factory = c.getFactory();
             if (factory instanceof Clock) {
                 clocks.remove(c);
+            } else if (factory instanceof ClockChip) {
+            	clockchips.remove(c);
             } else if (factory instanceof SubcircuitFactory) {
                 SubcircuitFactory subcirc = (SubcircuitFactory) factory;
                 subcirc.getSubcircuit().circuitsUsingThis.remove(c);
