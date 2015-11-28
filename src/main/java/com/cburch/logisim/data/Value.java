@@ -619,4 +619,5 @@ public class Value {
             return MULTI_COLOR;
         }
     }
+    
 }

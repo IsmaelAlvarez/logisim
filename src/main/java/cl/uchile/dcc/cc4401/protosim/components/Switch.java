@@ -10,6 +10,7 @@ import java.util.List;
 import com.cburch.logisim.circuit.Wire;
 import com.cburch.logisim.data.Attribute;
 import com.cburch.logisim.data.AttributeSet;
+import com.cburch.logisim.data.BitWidth;
 import com.cburch.logisim.data.Bounds;
 import com.cburch.logisim.data.Direction;
 import com.cburch.logisim.data.Location;
@@ -33,11 +34,8 @@ public class Switch extends InstanceFactory {
     private static final int DEPTH = 3;
     public static final int PORT_WIDTH = 32;
     List<Port> ports;
+    private static boolean pressed;
 
-    /*
-	 * If two or more ports have the same integer value,
-	 * they are connected in the Switch
-	 */
 	private HashMap<Port, Integer> connected;
     public Switch() {
         super("Switch");
@@ -61,16 +59,14 @@ public class Switch extends InstanceFactory {
         createAndConnectPorts();
         setInstancePoker(Poker.class);
         setInstanceLogger(Logger.class);
+        pressed = false;
     }
     
-    /*This method creates the ports and connect an internal wiring between the two pins, when pressed, (still in development, but this is the idea)*/
     private void createAndConnectPorts() {
-		int pinGroup = 1;
-		for (int i = -20; i <= 0; i += 20) {
-			Port port = new Port( i, 0, Port.INOUT, PORT_WIDTH);
-			ports.add(port);
-			connected.put(port, pinGroup);
-		}
+    	ports = new ArrayList<Port>();
+        ports.add(new Port(-20, 0, Port.INPUT, Breadboard.PORT_WIDTH));
+        ports.add(new Port(0, 0, Port.OUTPUT, Breadboard.PORT_WIDTH));
+        setPorts(ports);
 	}
     
     @Override
@@ -139,15 +135,17 @@ public class Switch extends InstanceFactory {
 
     @Override
     public void propagate(InstanceState state) {
-        InstanceDataSingleton data = (InstanceDataSingleton) state.getData();
-        Value val = data == null ? Value.FALSE : (Value) data.getValue();
-      if (val.toString()=="1"){
-        setPorts(ports); 
-        createAndConnectPorts();
-      }else{
-         //DisconnectPorts (still in development, but this is the idea)//
-      }
-    }
+		int portInIndex = 0;
+		int portOutIndex = 1;
+		Value valueA = state.getPort(portInIndex);
+		Value result;
+		if (pressed)
+			result = valueA;
+		else
+			result = Value.createUnknown(BitWidth.create(Breadboard.PORT_WIDTH));
+		
+		state.setPort(portOutIndex, result, Breadboard.DELAY);
+	}
 
     @Override
     public void paintInstance(InstancePainter painter) {
@@ -232,11 +230,13 @@ public class Switch extends InstanceFactory {
     public static class Poker extends InstancePoker {
         @Override
         public void mousePressed(InstanceState state, MouseEvent e) {
+        	pressed = true;
             setValue(state, Value.TRUE);
         }
 
         @Override
         public void mouseReleased(InstanceState state, MouseEvent e) {
+        	pressed = false;
             setValue(state, Value.FALSE);
         }
 

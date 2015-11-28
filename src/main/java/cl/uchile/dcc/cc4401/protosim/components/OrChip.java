@@ -7,8 +7,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.cburch.logisim.data.AttributeSet;
+import com.cburch.logisim.data.BitWidth;
 import com.cburch.logisim.data.Bounds;
 import com.cburch.logisim.data.Location;
+import com.cburch.logisim.data.Value;
 import com.cburch.logisim.instance.InstanceFactory;
 import com.cburch.logisim.instance.InstancePainter;
 import com.cburch.logisim.instance.InstanceState;
@@ -75,7 +77,24 @@ public class OrChip extends InstanceFactory {
     }
     @Override
     public void propagate(InstanceState state) {
-        // TODO Auto-generated method stub  
+    	setOutputValue(state, 0, 1, 2);
+    	setOutputValue(state, 3, 4, 5);
     }
+
+	private void setOutputValue(InstanceState state, int portAIndex, int portBIndex, int portOutIndex) {
+		Value valueA = state.getPort(portAIndex);
+		Value valueB = state.getPort(portBIndex);
+		
+		Value result;
+		if (valueA.isUnknown() || valueB.isUnknown()) {
+			result = Value.createUnknown(BitWidth.create(Breadboard.PORT_WIDTH));
+		}
+		else {
+			int value = valueA.toIntValue() < 0 || valueB.toIntValue() < 0 ? -1 : 0;
+			result = Value.createKnown(BitWidth.create(Breadboard.PORT_WIDTH), value);
+		}
+		
+		state.setPort(portOutIndex, result, Breadboard.DELAY);
+	}
 
 }
