@@ -49,162 +49,162 @@ public class TestFlipFlopChip {
 
         chip.propagate(state);
 
-        assertEquals(ProtoValue.FALSE, state.getPort(2).toIntValue());
-        assertEquals(ProtoValue.FALSE, state.getPort(5).toIntValue());
+        assertEquals(ProtoValue.FALSE, state.getPort(2));
+        assertEquals(ProtoValue.FALSE, state.getPort(5));
 
         // Data port value unknown
         state = new StubInstanceState(new Value[] {
                 Value.UNKNOWN,
-                Value.createKnown(BitWidth.create(Breadboard.PORT_WIDTH), ProtoValue.FALSE),
-                Value.createKnown(BitWidth.create(Breadboard.PORT_WIDTH), ProtoValue.TRUE),
+                ProtoValue.FALSE,
+                ProtoValue.TRUE,
                 Value.UNKNOWN,
-                Value.createKnown(BitWidth.create(Breadboard.PORT_WIDTH), ProtoValue.FALSE),
-                Value.createKnown(BitWidth.create(Breadboard.PORT_WIDTH), ProtoValue.TRUE),
+                ProtoValue.FALSE,
+                ProtoValue.TRUE,
         });
 
         chip.propagate(state);
         
-        assertEquals(ProtoValue.FALSE, state.getPort(2).toIntValue());
-        assertEquals(ProtoValue.FALSE, state.getPort(5).toIntValue());
+        assertEquals(ProtoValue.FALSE, state.getPort(2));
+        assertEquals(ProtoValue.FALSE, state.getPort(5));
         
         state = new StubInstanceState(new Value[] {
                 Value.UNKNOWN,
-                Value.createKnown(BitWidth.create(Breadboard.PORT_WIDTH), ProtoValue.TRUE),
-                Value.createKnown(BitWidth.create(Breadboard.PORT_WIDTH), ProtoValue.TRUE),
+                ProtoValue.TRUE,
+                ProtoValue.TRUE,
                 Value.UNKNOWN,
-                Value.createKnown(BitWidth.create(Breadboard.PORT_WIDTH), ProtoValue.TRUE),
-                Value.createKnown(BitWidth.create(Breadboard.PORT_WIDTH), ProtoValue.TRUE),
+                ProtoValue.TRUE,
+                ProtoValue.TRUE,
         });
 
         chip.propagate(state);
         
-        assertEquals(ProtoValue.FALSE, state.getPort(2).toIntValue());
-        assertEquals(ProtoValue.FALSE, state.getPort(5).toIntValue());
+        assertEquals(ProtoValue.FALSE, state.getPort(2));
+        assertEquals(ProtoValue.FALSE, state.getPort(5));
 
 
         // Clock port value unknown
         state = new StubInstanceState(new Value[] {
-                Value.createKnown(BitWidth.create(Breadboard.PORT_WIDTH), ProtoValue.FALSE),
+                ProtoValue.FALSE,
                 Value.UNKNOWN,
-                Value.createKnown(BitWidth.create(Breadboard.PORT_WIDTH), ProtoValue.TRUE),
-                Value.createKnown(BitWidth.create(Breadboard.PORT_WIDTH), ProtoValue.FALSE),
+                ProtoValue.TRUE,
+                ProtoValue.FALSE,
                 Value.UNKNOWN,
-                Value.createKnown(BitWidth.create(Breadboard.PORT_WIDTH), ProtoValue.TRUE),
+                ProtoValue.TRUE,
         });
 
         chip.propagate(state);
         
-        assertEquals(ProtoValue.FALSE, state.getPort(2).toIntValue());
-        assertEquals(ProtoValue.FALSE, state.getPort(5).toIntValue());
+        assertEquals(ProtoValue.FALSE, state.getPort(2));
+        assertEquals(ProtoValue.FALSE, state.getPort(5));
         
         state = new StubInstanceState(new Value[] {
-                Value.createKnown(BitWidth.create(Breadboard.PORT_WIDTH), ProtoValue.TRUE),
+                ProtoValue.TRUE,
                 Value.UNKNOWN,
-                Value.createKnown(BitWidth.create(Breadboard.PORT_WIDTH), ProtoValue.TRUE),
-                Value.createKnown(BitWidth.create(Breadboard.PORT_WIDTH), ProtoValue.TRUE),
+                ProtoValue.TRUE,
+                ProtoValue.TRUE,
                 Value.UNKNOWN,
-                Value.createKnown(BitWidth.create(Breadboard.PORT_WIDTH), ProtoValue.TRUE),
+                ProtoValue.TRUE,
         });
 
         chip.propagate(state);
         
-        assertEquals(ProtoValue.FALSE, state.getPort(2).toIntValue());
-        assertEquals(ProtoValue.FALSE, state.getPort(5).toIntValue());
+        assertEquals(ProtoValue.FALSE, state.getPort(2));
+        assertEquals(ProtoValue.FALSE, state.getPort(5));
     }
 
     @Test
     public void testPropagateEmptyPortsValues() {
         InstanceState state = new StubInstanceState(new Value[] {
-                Value.createKnown(BitWidth.create(Breadboard.PORT_WIDTH), ProtoValue.FALSE),
-                Value.createKnown(BitWidth.create(Breadboard.PORT_WIDTH), ProtoValue.FALSE),
-                Value.createKnown(BitWidth.create(Breadboard.PORT_WIDTH), ProtoValue.FALSE),
-                Value.createKnown(BitWidth.create(Breadboard.PORT_WIDTH), ProtoValue.FALSE),
-                Value.createKnown(BitWidth.create(Breadboard.PORT_WIDTH), ProtoValue.FALSE),
-                Value.createKnown(BitWidth.create(Breadboard.PORT_WIDTH), ProtoValue.FALSE),
+                ProtoValue.FALSE,
+                ProtoValue.FALSE,
+                ProtoValue.FALSE,
+                ProtoValue.FALSE,
+                ProtoValue.FALSE,
+                ProtoValue.FALSE,
         });
 
         chip.propagate(state);
         
-        assertEquals(ProtoValue.FALSE, state.getPort(2).toIntValue());
-        assertEquals(ProtoValue.FALSE, state.getPort(5).toIntValue());
+        assertEquals(ProtoValue.FALSE, state.getPort(2));
+        assertEquals(ProtoValue.FALSE, state.getPort(5));
     }
 
     @Test
     public void testPropagate() {
-    	// Clock value 0
+        // Clock value 0
         InstanceState state = new StubInstanceState(new Value[] {
-                Value.createKnown(BitWidth.create(Breadboard.PORT_WIDTH), ProtoValue.FALSE),
-                Value.createKnown(BitWidth.create(Breadboard.PORT_WIDTH), ProtoValue.FALSE),
-                Value.createKnown(BitWidth.create(Breadboard.PORT_WIDTH), ProtoValue.FALSE),
-                Value.createKnown(BitWidth.create(Breadboard.PORT_WIDTH), ProtoValue.FALSE),
-                Value.createKnown(BitWidth.create(Breadboard.PORT_WIDTH), ProtoValue.FALSE),
-                Value.createKnown(BitWidth.create(Breadboard.PORT_WIDTH), ProtoValue.FALSE),
+                ProtoValue.FALSE,
+                ProtoValue.FALSE,
+                ProtoValue.FALSE,
+                ProtoValue.FALSE,
+                ProtoValue.FALSE,
+                ProtoValue.FALSE,
         });
         
         chip.propagate(state);
         
-        assertEquals(ProtoValue.FALSE, state.getPort(2).toIntValue());
-        assertEquals(ProtoValue.FALSE, state.getPort(5).toIntValue());
+        assertEquals(ProtoValue.FALSE, state.getPort(2));
+        assertEquals(ProtoValue.FALSE, state.getPort(5));
         
         // Retain data, Clock value 1
         state = new StubInstanceState(new Value[] {
-                Value.createKnown(BitWidth.create(Breadboard.PORT_WIDTH), ProtoValue.FALSE),
-                Value.createKnown(BitWidth.create(Breadboard.PORT_WIDTH), ProtoValue.TRUE),
-                Value.createKnown(BitWidth.create(Breadboard.PORT_WIDTH), ProtoValue.FALSE),
-                Value.createKnown(BitWidth.create(Breadboard.PORT_WIDTH), ProtoValue.FALSE),
-                Value.createKnown(BitWidth.create(Breadboard.PORT_WIDTH), ProtoValue.TRUE),
-                Value.createKnown(BitWidth.create(Breadboard.PORT_WIDTH), ProtoValue.FALSE),
+                ProtoValue.FALSE,
+                ProtoValue.TRUE,
+                ProtoValue.FALSE,
+                ProtoValue.FALSE,
+                ProtoValue.TRUE,
+                ProtoValue.FALSE,
         });
         
         chip.propagate(state);
         
-        assertEquals(ProtoValue.FALSE, state.getPort(2).toIntValue());
-        assertEquals(ProtoValue.FALSE, state.getPort(5).toIntValue());
+        assertEquals(ProtoValue.FALSE, state.getPort(2));
+        assertEquals(ProtoValue.FALSE, state.getPort(5));
 
         // Retain data, Clock value 0
         state = new StubInstanceState(new Value[] {
-                Value.createKnown(BitWidth.create(Breadboard.PORT_WIDTH), ProtoValue.TRUE),
-                Value.createKnown(BitWidth.create(Breadboard.PORT_WIDTH), ProtoValue.FALSE),
-                Value.createKnown(BitWidth.create(Breadboard.PORT_WIDTH), ProtoValue.FALSE),
-                Value.createKnown(BitWidth.create(Breadboard.PORT_WIDTH), ProtoValue.TRUE),
-                Value.createKnown(BitWidth.create(Breadboard.PORT_WIDTH), ProtoValue.FALSE),
-                Value.createKnown(BitWidth.create(Breadboard.PORT_WIDTH), ProtoValue.FALSE),
+                ProtoValue.TRUE,
+                ProtoValue.FALSE,
+                ProtoValue.FALSE,
+                ProtoValue.TRUE,
+                ProtoValue.FALSE,
+                ProtoValue.FALSE,
         });
         
         chip.propagate(state);
         
-        assertEquals(ProtoValue.FALSE, state.getPort(2).toIntValue());
-        assertEquals(ProtoValue.FALSE, state.getPort(5).toIntValue());
+        assertEquals(ProtoValue.FALSE, state.getPort(2));
+        assertEquals(ProtoValue.FALSE, state.getPort(5));
         
         // New data, Clock value 1
         state = new StubInstanceState(new Value[] {
-                Value.createKnown(BitWidth.create(Breadboard.PORT_WIDTH), ProtoValue.TRUE),
-                Value.createKnown(BitWidth.create(Breadboard.PORT_WIDTH), ProtoValue.TRUE),
-                Value.createKnown(BitWidth.create(Breadboard.PORT_WIDTH), ProtoValue.TRUE),
-                Value.createKnown(BitWidth.create(Breadboard.PORT_WIDTH), ProtoValue.TRUE),
-                Value.createKnown(BitWidth.create(Breadboard.PORT_WIDTH), ProtoValue.TRUE),
-                Value.createKnown(BitWidth.create(Breadboard.PORT_WIDTH), ProtoValue.TRUE),
+                ProtoValue.TRUE,
+                ProtoValue.TRUE,
+                ProtoValue.TRUE,
+                ProtoValue.TRUE,
+                ProtoValue.TRUE,
+                ProtoValue.TRUE,
         });
         
         chip.propagate(state);
         
-        assertEquals(ProtoValue.TRUE, state.getPort(2).toIntValue());
-        assertEquals(ProtoValue.TRUE, state.getPort(5).toIntValue());
+        assertEquals(ProtoValue.TRUE, state.getPort(2));
+        assertEquals(ProtoValue.TRUE, state.getPort(5));
 
         // Retain data, Clock value 0
         state = new StubInstanceState(new Value[] {
-                Value.createKnown(BitWidth.create(Breadboard.PORT_WIDTH), ProtoValue.FALSE),
-                Value.createKnown(BitWidth.create(Breadboard.PORT_WIDTH), ProtoValue.FALSE),
-                Value.createKnown(BitWidth.create(Breadboard.PORT_WIDTH), ProtoValue.TRUE),
-                Value.createKnown(BitWidth.create(Breadboard.PORT_WIDTH), ProtoValue.FALSE),
-                Value.createKnown(BitWidth.create(Breadboard.PORT_WIDTH), ProtoValue.FALSE),
-                Value.createKnown(BitWidth.create(Breadboard.PORT_WIDTH), ProtoValue.TRUE),
+                ProtoValue.FALSE,
+                ProtoValue.FALSE,
+                ProtoValue.TRUE,
+                ProtoValue.FALSE,
+                ProtoValue.FALSE,
+                ProtoValue.TRUE,
         });
         
         chip.propagate(state);
         
-        assertEquals(ProtoValue.TRUE, state.getPort(2).toIntValue());
-        assertEquals(ProtoValue.TRUE, state.getPort(5).toIntValue());
+        assertEquals(ProtoValue.TRUE, state.getPort(2));
+        assertEquals(ProtoValue.TRUE, state.getPort(5));
     }
 
 }

@@ -109,17 +109,14 @@ public class NotChip extends InstanceFactory {
           Value valueA = state.getPort(portAIndex);
         
     	 Value result= Value.UNKNOWN;
-        if (valueVCC.isUnknown() == false && valueGround.isUnknown()==false && valueVCC.toIntValue() == ProtoValue.TRUE && valueGround.toIntValue() == ProtoValue.FALSE){
+        if (!valueVCC.isUnknown() && !valueGround.isUnknown() && valueVCC.equals(ProtoValue.TRUE) && valueGround.equals(ProtoValue.FALSE)){
         if (valueA.isUnknown()) {
-        	result = Value.createKnown(BitWidth.create(Breadboard.PORT_WIDTH), 0);
+        	result = ProtoValue.FALSE;
         } else {
-            int voltageA = valueA.toIntValue();
-            int voltageR;
-            if (ProtoValue.toBoolean(voltageA))
-            	voltageR = ProtoValue.FALSE;
+            if (ProtoValue.toBoolean(valueA))
+            	result = ProtoValue.FALSE;
             else
-            	voltageR = ProtoValue.TRUE;
-            result = Value.createKnown(BitWidth.create(Breadboard.PORT_WIDTH), voltageR);
+            	result = ProtoValue.TRUE;
         }}
 
         state.setPort(portOutIndex, result, Breadboard.DELAY);
