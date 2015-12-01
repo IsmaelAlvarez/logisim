@@ -62,8 +62,8 @@ public class VoltageGenerator extends InstanceFactory {
         // Text
         g.setColor(Color.white);
         g.setFont(new Font("Courier", Font.BOLD, 8));
-        g.drawString("-", x + 17, y + 13);
-        g.drawString("+", x + 17, y + 22);
+        g.drawString("+", x + 17, y + 13);
+        g.drawString("-", x + 17, y + 22);
 
         // Pins
         g.setColor(Color.gray);
@@ -83,8 +83,8 @@ public class VoltageGenerator extends InstanceFactory {
     }
     
     private void setOutputValue(InstanceState state, int portAIndex, int portBIndex) {
-        state.setPort(portAIndex, ProtoValue.FALSE, Breadboard.DELAY);
-        state.setPort(portBIndex, ProtoValue.TRUE, Breadboard.DELAY);
+        state.setPort(portAIndex, ProtoValue.TRUE, Breadboard.DELAY);
+        state.setPort(portBIndex, ProtoValue.FALSE, Breadboard.DELAY);
     }
     
 }
