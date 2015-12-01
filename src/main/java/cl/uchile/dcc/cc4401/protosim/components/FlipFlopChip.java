@@ -45,8 +45,8 @@ public class FlipFlopChip extends InstanceFactory {
 
         setPorts(ports);
 
-        currentDataValue = Value.createKnown(BitWidth.create(Breadboard.PORT_WIDTH), ProtoValue.FALSE);
-        lastClockValue = ProtoValue.FALSE;
+        currentDataValue = ProtoValue.FALSE;
+        lastClockValue = ProtoValue.FALSE.toIntValue();
     }
 
     @Override
@@ -103,13 +103,13 @@ public class FlipFlopChip extends InstanceFactory {
         Value currentClockValue = state.getPort(clockPortIndex);
 
         if ( ! currentClockValue.isUnknown()
-                && lastClockValue == ProtoValue.FALSE
-                && currentClockValue.toIntValue() == ProtoValue.TRUE) {
+                && lastClockValue == ProtoValue.FALSE.toIntValue()
+                && currentClockValue.toIntValue() == ProtoValue.TRUE.toIntValue()) {
             currentDataValue = newDataValue;
         }
 
         if (currentDataValue.isUnknown()) {
-            currentDataValue = Value.createKnown(BitWidth.create(Breadboard.PORT_WIDTH), ProtoValue.FALSE);
+            currentDataValue = ProtoValue.FALSE;
         }
 
         state.setPort(outPortIndex, currentDataValue, Breadboard.DELAY);

@@ -83,8 +83,8 @@ public class VoltageGenerator extends InstanceFactory {
     }
     
     private void setOutputValue(InstanceState state, int portAIndex, int portBIndex) {
-        state.setPort(portAIndex, Value.createKnown(BitWidth.create(Breadboard.PORT_WIDTH), ProtoValue.FALSE), Breadboard.DELAY);
-        state.setPort(portBIndex, Value.createKnown(BitWidth.create(Breadboard.PORT_WIDTH), ProtoValue.TRUE), Breadboard.DELAY);
+        state.setPort(portAIndex, ProtoValue.FALSE, Breadboard.DELAY);
+        state.setPort(portBIndex, ProtoValue.TRUE, Breadboard.DELAY);
     }
     
 }

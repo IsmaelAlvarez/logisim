@@ -107,7 +107,7 @@ public class ClockChip extends InstanceFactory {
 	}
 
 	private static class ClockState implements InstanceData, Cloneable {
-		Value sending = Value.createKnown(BitWidth.create(Breadboard.PORT_WIDTH), ProtoValue.FALSE);
+		Value sending = ProtoValue.FALSE;
 		int clicks = 0;
 
 		@Override
@@ -182,8 +182,8 @@ public class ClockChip extends InstanceFactory {
 	private boolean isEnergized(InstanceState state, int vcc, int ground) {
 		Value valueVCC = state.getPort(vcc);
 		Value valueGround = state.getPort(ground);
-		if (valueVCC.isFullyDefined() && valueGround.isFullyDefined() && valueVCC.toIntValue() == ProtoValue.TRUE
-				&& valueGround.toIntValue() == ProtoValue.FALSE) {
+		if (valueVCC.isFullyDefined() && valueGround.isFullyDefined() && valueVCC.toIntValue() == ProtoValue.TRUE.toIntValue()
+				&& valueGround.toIntValue() == ProtoValue.FALSE.toIntValue()) {
 			return true;
 		}
 		return false;
@@ -225,8 +225,8 @@ public class ClockChip extends InstanceFactory {
 			curValue = !curValue;
 		}
 
-		Value desired = (curValue ? Value.createKnown(BitWidth.create(Breadboard.PORT_WIDTH), ProtoValue.FALSE)
-				: Value.createKnown(BitWidth.create(Breadboard.PORT_WIDTH), ProtoValue.TRUE));
+		Value desired = (curValue ? ProtoValue.FALSE
+				: ProtoValue.TRUE);
 		if (!state.sending.equals(desired)) {
 			state.sending = desired;
 			Instance.getInstanceFor(comp).fireInvalidated();

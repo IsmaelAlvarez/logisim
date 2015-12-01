@@ -18,7 +18,7 @@ public class TestVoltageGenerator {
 
     @Before
     public void setUp() {
-    	voltage = new VoltageGenerator();
+        voltage = new VoltageGenerator();
     }
 
     @Test
@@ -45,18 +45,18 @@ public class TestVoltageGenerator {
         });
      
      InstanceState state2 = new StubInstanceState(new Value[] {
-    		 Value.createKnown(BitWidth.create(Breadboard.PORT_WIDTH), ProtoValue.TRUE),
-             Value.createKnown(BitWidth.create(Breadboard.PORT_WIDTH), ProtoValue.TRUE)
+             ProtoValue.TRUE,
+             ProtoValue.TRUE
      });
      
         voltage.propagate(state1);
         
-        assertEquals(ProtoValue.FALSE, state1.getPort(0).toIntValue());
-        assertEquals(ProtoValue.TRUE, state1.getPort(1).toIntValue());
+        assertEquals(ProtoValue.FALSE, state1.getPort(0));
+        assertEquals(ProtoValue.TRUE, state1.getPort(1));
         
         voltage.propagate(state2);
         
-        assertEquals(ProtoValue.FALSE, state2.getPort(0).toIntValue());
-        assertEquals(ProtoValue.TRUE, state2.getPort(1).toIntValue());
+        assertEquals(ProtoValue.FALSE, state2.getPort(0));
+        assertEquals(ProtoValue.TRUE, state2.getPort(1));
     }
 }
