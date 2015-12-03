@@ -39,27 +39,27 @@ public class TestOrChip {
         // All unknown values
         InstanceState state = new StubInstanceState(new Value[] {
                 ProtoValue.TRUE,
-                ProtoValue.UNKNOWN,
-                ProtoValue.UNKNOWN,
-                ProtoValue.UNKNOWN,
-                ProtoValue.UNKNOWN,
-                ProtoValue.UNKNOWN,
-                ProtoValue.UNKNOWN,
+                Value.UNKNOWN,
+                Value.UNKNOWN,
+                Value.UNKNOWN,
+                Value.UNKNOWN,
+                Value.UNKNOWN,
+                Value.UNKNOWN,
                 ProtoValue.FALSE,
         });
 
         chip.propagate(state);
 
-        //assertEquals(ProtoValue.FALSE, state.getPort(3));
-        //assertEquals(ProtoValue.FALSE, state.getPort(6));
+        assertEquals(ProtoValue.FALSE, state.getPort(3));
+        assertEquals(ProtoValue.FALSE, state.getPort(6));
 
         // Port A unknown
         state = new StubInstanceState(new Value[] {
                 ProtoValue.TRUE,
-                ProtoValue.UNKNOWN,
+                Value.UNKNOWN,
                 ProtoValue.TRUE,
                 Value.UNKNOWN,
-                ProtoValue.UNKNOWN,
+                Value.UNKNOWN,
                 ProtoValue.TRUE,
                 Value.UNKNOWN,
                 ProtoValue.FALSE
@@ -75,10 +75,10 @@ public class TestOrChip {
         state = new StubInstanceState(new Value[] {
                 ProtoValue.TRUE,
                 ProtoValue.TRUE,
-                ProtoValue.UNKNOWN,
+                Value.UNKNOWN,
                 Value.UNKNOWN,
                 ProtoValue.TRUE,
-                ProtoValue.UNKNOWN,
+                Value.UNKNOWN,
                 Value.UNKNOWN,
                 ProtoValue.FALSE
         });
