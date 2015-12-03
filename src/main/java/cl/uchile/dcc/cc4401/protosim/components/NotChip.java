@@ -9,7 +9,6 @@ import java.util.List;
 import cl.uchile.dcc.cc4401.protosim.libraries.ProtoValue;
 
 import com.cburch.logisim.data.AttributeSet;
-import com.cburch.logisim.data.BitWidth;
 import com.cburch.logisim.data.Bounds;
 import com.cburch.logisim.data.Location;
 import com.cburch.logisim.data.Value;
@@ -19,8 +18,8 @@ import com.cburch.logisim.instance.InstanceState;
 import com.cburch.logisim.instance.Port;
 
 public class NotChip extends InstanceFactory {
-	
-	public static InstanceFactory FACTORY = new NotChip();
+
+    public static InstanceFactory FACTORY = new NotChip();
 
     private List<Port> ports;
 
@@ -105,29 +104,34 @@ public class NotChip extends InstanceFactory {
 
     @Override
     public void propagate(InstanceState state) {
-    	setOutputValue(state,0, 13, 1, 2);
-    	setOutputValue(state,0, 13, 3, 4);
-    	setOutputValue(state,0, 13, 5, 6);
-    	setOutputValue(state,0, 13, 7, 8);
-    	setOutputValue(state,0, 13, 9, 10);
-    	setOutputValue(state,0, 13, 11, 12);
+        setOutputValue(state,0, 13, 1, 2);
+        setOutputValue(state,0, 13, 3, 4);
+        setOutputValue(state,0, 13, 5, 6);
+        setOutputValue(state,0, 13, 7, 8);
+        setOutputValue(state,0, 13, 9, 10);
+        setOutputValue(state,0, 13, 11, 12);
     }
     
     private void setOutputValue(InstanceState state,int vcc, int ground, int portAIndex, int portOutIndex) {
-    	  Value valueVCC = state.getPort(vcc);
-          Value valueGround = state.getPort(ground);
-          Value valueA = state.getPort(portAIndex);
+        Value valueVCC = state.getPort(vcc);
+        Value valueGround = state.getPort(ground);
+        Value valueA = state.getPort(portAIndex);
         
-    	 Value result= Value.UNKNOWN;
-        if (!valueVCC.isUnknown() && !valueGround.isUnknown() && valueVCC.equals(ProtoValue.TRUE) && valueGround.equals(ProtoValue.FALSE)){
-        if (valueA.isUnknown()) {
-        	result = ProtoValue.FALSE;
-        } else {
-            if (ProtoValue.toBoolean(valueA))
-            	result = ProtoValue.FALSE;
-            else
-            	result = ProtoValue.TRUE;
-        }}
+        Value result= Value.UNKNOWN;
+        if ( ! valueVCC.isUnknown()
+                && ! valueGround.isUnknown()
+                && valueVCC.equals(ProtoValue.TRUE)
+                && valueGround.equals(ProtoValue.FALSE)) {
+
+            if (valueA.isUnknown()) {
+                result = ProtoValue.FALSE;
+            } else {
+                if (ProtoValue.toBoolean(valueA))
+                    result = ProtoValue.FALSE;
+                else
+                    result = ProtoValue.TRUE;
+            }
+        }
 
         state.setPort(portOutIndex, result, Breadboard.DELAY);
     }

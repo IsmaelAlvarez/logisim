@@ -9,7 +9,6 @@ import java.util.List;
 import cl.uchile.dcc.cc4401.protosim.libraries.ProtoValue;
 
 import com.cburch.logisim.data.AttributeSet;
-import com.cburch.logisim.data.BitWidth;
 import com.cburch.logisim.data.Bounds;
 import com.cburch.logisim.data.Location;
 import com.cburch.logisim.data.Value;
@@ -20,9 +19,9 @@ import com.cburch.logisim.instance.Port;
 import com.cburch.logisim.util.Icons;
 
 public class OrChip extends InstanceFactory {
-    
+
     public static InstanceFactory FACTORY = new OrChip();
-    
+
     private List<Port> ports;
 
     public OrChip() {
@@ -30,7 +29,7 @@ public class OrChip extends InstanceFactory {
         this.setIcon(Icons.getIcon("protosimComponentChipOr.svg")); 
         ports = new ArrayList<Port>();
 
-     // Upper ports
+        // Upper ports
         ports.add(new Port(0, 0, Port.INPUT, Breadboard.PORT_WIDTH));
         ports.add(new Port(10, 0, Port.INPUT, Breadboard.PORT_WIDTH));
         ports.add(new Port(20, 0, Port.INPUT, Breadboard.PORT_WIDTH));
@@ -48,53 +47,54 @@ public class OrChip extends InstanceFactory {
     
     @Override
     public Bounds getOffsetBounds(AttributeSet attrs) {
-    	 return Bounds.create(0, 0, 30, 30);
+         return Bounds.create(0, 0, 30, 30);
     }
 
     @Override
     public void paintInstance(InstancePainter painter) {
-    	 Location loc = painter.getLocation();
-         int x = loc.getX();
-         int y = loc.getY();
+        Location loc = painter.getLocation();
+        int x = loc.getX();
+        int y = loc.getY();
 
-         Graphics g = painter.getGraphics();
+        Graphics g = painter.getGraphics();
 
-         // Chip
-         g.setColor(Color.black);
-         g.fillRect(x - 2, y + 5, 34, 20);
+        // Chip
+        g.setColor(Color.black);
+        g.fillRect(x - 2, y + 5, 34, 20);
 
-         // Text
-         g.setColor(Color.white);
-         g.setFont(new Font("Courier", Font.BOLD, 9));
-         g.drawString("OR", x + 9, y + 17);
-         g.drawString("+", x-1, y + 12);
-         g.drawString("-", x + 25, y + 24);
+        // Text
+        g.setColor(Color.white);
+        g.setFont(new Font("Courier", Font.BOLD, 9));
+        g.drawString("OR", x + 9, y + 17);
+        g.drawString("+", x-1, y + 12);
+        g.drawString("-", x + 25, y + 24);
 
-         // Pins
-         g.setColor(Color.gray);
-         g.fillRect(x - 2, y, 4, 5);
-         g.fillRect(x + 8, y, 4, 5);
-         g.fillRect(x + 18, y, 4, 5);
-         g.fillRect(x + 28, y, 4, 5);
+        // Pins
+        g.setColor(Color.gray);
+        g.fillRect(x - 2, y, 4, 5);
+        g.fillRect(x + 8, y, 4, 5);
+        g.fillRect(x + 18, y, 4, 5);
+        g.fillRect(x + 28, y, 4, 5);
 
-         g.fillRect(x - 2, y + 25, 4, 5);
-         g.fillRect(x + 8, y + 25, 4, 5);
-         g.fillRect(x + 18, y + 25, 4, 5);
-         g.fillRect(x + 28, y + 25, 4, 5);
-         
-         painter.drawPorts();
+        g.fillRect(x - 2, y + 25, 4, 5);
+        g.fillRect(x + 8, y + 25, 4, 5);
+        g.fillRect(x + 18, y + 25, 4, 5);
+        g.fillRect(x + 28, y + 25, 4, 5);
+
+        painter.drawPorts();
     }
+
     @Override
     public void propagate(InstanceState state) {
-    	setOutputValue(state, 0, 7, 1, 2, 3);
-    	setOutputValue(state, 0, 7, 4, 5, 6);
+        setOutputValue(state, 0, 7, 1, 2, 3);
+        setOutputValue(state, 0, 7, 4, 5, 6);
     }
 
     private void setOutputValue(InstanceState state,int vcc, int ground, int portAIndex, int portBIndex, int portOutIndex) {
     	Value valueA = state.getPort(portAIndex);
         Value valueB = state.getPort(portBIndex);
         
-        Value result= ProtoValue.UNKNOWN;
+        Value result = ProtoValue.UNKNOWN;
         
         if (isEnergized(state, vcc, ground)) {
 	        if (valueA.isUnknown() || valueB.isUnknown()) {
@@ -109,7 +109,7 @@ public class OrChip extends InstanceFactory {
 
         state.setPort(portOutIndex, result, Breadboard.DELAY);
     }
-    
+
 	private boolean isEnergized(InstanceState state, int vcc, int ground) {
 		Value valueVCC = state.getPort(vcc);
 		Value valueGround = state.getPort(ground);
@@ -119,6 +119,4 @@ public class OrChip extends InstanceFactory {
 		}
 		return false;
 	}
-
-
 }

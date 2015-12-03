@@ -24,7 +24,6 @@ public class NandChip extends InstanceFactory {
     public static InstanceFactory FACTORY = new NandChip();
     
     private List<Port> ports;
-    
 
     public NandChip() {
         super("NAND Chip");
@@ -84,10 +83,11 @@ public class NandChip extends InstanceFactory {
         
         painter.drawPorts();
     }
+
     @Override
     public void propagate(InstanceState state) {
-    	setOutputValue(state, 0, 7, 1, 2, 3);
-    	setOutputValue(state, 0, 7, 4, 5, 6);
+        setOutputValue(state, 0, 7, 1, 2, 3);
+        setOutputValue(state, 0, 7, 4, 5, 6);
     }
     
     private void setOutputValue(InstanceState state,int vcc, int ground, int portAIndex, int portBIndex, int portOutIndex) {
@@ -96,17 +96,21 @@ public class NandChip extends InstanceFactory {
         Value valueVCC = state.getPort(vcc);
         Value valueGround = state.getPort(ground);
         
-        Value result= Value.UNKNOWN;
-        if (valueVCC.isUnknown() == false && valueGround.isUnknown()==false && valueVCC == ProtoValue.TRUE && valueGround == ProtoValue.FALSE){
-        if (valueA.isUnknown() || valueB.isUnknown()) {
-        	result = Value.createKnown(BitWidth.create(Breadboard.PORT_WIDTH), 0);
-        } else {
-            if (ProtoValue.toBoolean(valueA) && ProtoValue.toBoolean(valueB))
-            	result=ProtoValue.FALSE;
-            else
-            	result=ProtoValue.TRUE;
+        Value result = Value.UNKNOWN;
+        if (valueVCC.isUnknown() == false
+                && valueGround.isUnknown() == false
+                && valueVCC == ProtoValue.TRUE
+                && valueGround == ProtoValue.FALSE) {
 
-        }}
+            if (valueA.isUnknown() || valueB.isUnknown()) {
+                result = Value.createKnown(BitWidth.create(Breadboard.PORT_WIDTH), 0);
+            } else {
+                if (ProtoValue.toBoolean(valueA) && ProtoValue.toBoolean(valueB))
+                    result = ProtoValue.FALSE;
+                else
+                    result = ProtoValue.TRUE;
+            }
+        }
 
         state.setPort(portOutIndex, result, Breadboard.DELAY);
     }

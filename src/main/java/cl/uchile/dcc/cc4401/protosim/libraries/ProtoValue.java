@@ -13,9 +13,11 @@ public class ProtoValue {
 	private static final int intFalse = 0;
     public static final Value TRUE = Value.createKnown(BitWidth.create(Breadboard.PORT_WIDTH), intTrue);
     public static final Value FALSE = Value.createKnown(BitWidth.create(Breadboard.PORT_WIDTH), intFalse);
+    public static String MAX_VOLT_VALUE = "1111 1111 1111 1111 1111 1111 1111 1111";
     public static final Value UNKNOWN = Value.createUnknown(BitWidth.create(Breadboard.PORT_WIDTH));
-    public static String MAX_VOLT_VALUE= "1111 1111 1111 1111 1111 1111 1111 1111";
     public static String MIN_VOLT_VALUE = "0000 0000 0000 0000 0000 0000 0000 0000";
+    public static String UNKNOWN_VOLT_VALUE = "xxxx xxxx xxxx xxxx xxxx xxxx xxxx xxxx";
+    public static String ERROR_VOLT_VALUE = "EEEE EEEE EEEE EEEE EEEE EEEE EEEE EEEE";
 
     /**
      * Transforma un entero que representa un voltaje, a nuestro valor representado en booleano.

@@ -5,7 +5,6 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.cburch.logisim.data.BitWidth;
 import com.cburch.logisim.data.Bounds;
 import com.cburch.logisim.data.Value;
 import com.cburch.logisim.instance.InstanceState;
@@ -51,12 +50,12 @@ public class TestVoltageGenerator {
      
         voltage.propagate(state1);
         
-        assertEquals(ProtoValue.FALSE, state1.getPort(0));
-        assertEquals(ProtoValue.TRUE, state1.getPort(1));
+        assertEquals(ProtoValue.TRUE, state1.getPort(0));
+        assertEquals(ProtoValue.FALSE, state1.getPort(1));
         
         voltage.propagate(state2);
         
-        assertEquals(ProtoValue.FALSE, state2.getPort(0));
-        assertEquals(ProtoValue.TRUE, state2.getPort(1));
+        assertEquals(ProtoValue.TRUE, state2.getPort(0));
+        assertEquals(ProtoValue.FALSE, state2.getPort(1));
     }
 }
