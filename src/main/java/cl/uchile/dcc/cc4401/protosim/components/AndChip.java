@@ -117,7 +117,7 @@ public class AndChip extends InstanceFactory {
         Value valueA = state.getPort(portAIndex);
         Value valueB = state.getPort(portBIndex);
         
-        Value result= Value.UNKNOWN;
+        Value result= ProtoValue.UNKNOWN;
         
         if (valueVcc.isUnknown() == false
                 && valueGround.isUnknown() == false
