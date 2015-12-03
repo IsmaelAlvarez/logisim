@@ -17,8 +17,8 @@ import com.cburch.logisim.instance.InstanceState;
 import com.cburch.logisim.instance.Port;
 
 public class VoltageGenerator extends InstanceFactory {
-	
-	public static InstanceFactory FACTORY = new VoltageGenerator();
+
+    public static InstanceFactory FACTORY = new VoltageGenerator();
 
     private List<Port> ports;
 
@@ -32,7 +32,6 @@ public class VoltageGenerator extends InstanceFactory {
         ports.add(new Port(30, 20, Port.OUTPUT, Breadboard.PORT_WIDTH));
         
         setPorts(ports);
-       
     }
 
     @Override
@@ -65,8 +64,9 @@ public class VoltageGenerator extends InstanceFactory {
 
         // Pins
         g.setColor(Color.gray);
-        g.fillRect(x + 23, y+8, 6, 4);
-        g.fillRect(x + 23, y+18, 6, 4);
+        g.fillRect(x + 23, y + 8, 6, 4);
+        g.fillRect(x + 23, y + 18, 6, 4);
+
         painter.drawPorts();
     }
 
@@ -77,7 +77,7 @@ public class VoltageGenerator extends InstanceFactory {
 
     @Override
     public void propagate(InstanceState state) {
-    	setOutputValue(state, 0, 1);
+        setOutputValue(state, 0, 1);
     }
     
     private void setOutputValue(InstanceState state, int portAIndex, int portBIndex) {

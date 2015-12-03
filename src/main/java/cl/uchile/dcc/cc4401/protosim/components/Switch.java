@@ -31,12 +31,13 @@ import com.cburch.logisim.util.Icons;
 public class Switch extends InstanceFactory {
     
     public static InstanceFactory FACTORY = new Switch();
+
     private static final int DEPTH = 3;
-    public static final int PORT_WIDTH = 32;
-    List<Port> ports;
     private static boolean pressed;
 
-	private HashMap<Port, Integer> connected;
+    private List<Port> ports;
+
+    private HashMap<Port, Integer> connected;
     public Switch() {
         super("Switch");
         this.setIcon(Icons.getIcon("protosimComponentSwitch.svg"));
@@ -44,14 +45,22 @@ public class Switch extends InstanceFactory {
         connected = new HashMap<Port, Integer>();
         
         setAttributes(new Attribute[] {
-                StdAttr.FACING, Io.ATTR_COLOR,
-                StdAttr.LABEL, Io.ATTR_LABEL_LOC,
-                StdAttr.LABEL_FONT, Io.ATTR_LABEL_COLOR
-            }, new Object[] {
-                Direction.EAST, Color.WHITE,
-                "", Io.LABEL_CENTER,
-                StdAttr.DEFAULT_LABEL_FONT, Color.BLACK
-            });
+                StdAttr.FACING,
+                Io.ATTR_COLOR,
+                StdAttr.LABEL,
+                Io.ATTR_LABEL_LOC,
+                StdAttr.LABEL_FONT,
+                Io.ATTR_LABEL_COLOR
+            },
+            new Object[] {
+                Direction.EAST,
+                Color.WHITE,
+                "",
+                Io.LABEL_CENTER,
+                StdAttr.DEFAULT_LABEL_FONT,
+                Color.BLACK
+            }
+        );
             
         setFacingAttribute(StdAttr.FACING);
         setIconName("protosimComponentSwitch.svg");
@@ -63,11 +72,11 @@ public class Switch extends InstanceFactory {
     }
     
     private void createAndConnectPorts() {
-    	ports = new ArrayList<Port>();
+        ports = new ArrayList<Port>();
         ports.add(new Port(-20, 0, Port.INPUT, Breadboard.PORT_WIDTH));
         ports.add(new Port(0, 0, Port.OUTPUT, Breadboard.PORT_WIDTH));
         setPorts(ports);
-	}
+    }
     
     @Override
     public Bounds getOffsetBounds(AttributeSet attrs) {
@@ -83,18 +92,15 @@ public class Switch extends InstanceFactory {
 
     @Override
     protected void instanceAttributeChanged(Instance instance, Attribute<?> attr) {
-    	
         if (attr == StdAttr.FACING) {
             instance.recomputeBounds();
             computeTextField(instance);
         } else if (attr == Io.ATTR_LABEL_LOC) {
             computeTextField(instance);
         }
-        
     }
 
     private void computeTextField(Instance instance) {
-    	
         Direction facing = instance.getAttributeValue(StdAttr.FACING);
         Object labelLoc = instance.getAttributeValue(Io.ATTR_LABEL_LOC);
 
@@ -103,6 +109,7 @@ public class Switch extends InstanceFactory {
         int y = bds.getY() + bds.getHeight() / 2;
         int halign = GraphicsUtil.H_CENTER;
         int valign = GraphicsUtil.V_CENTER;
+
         if (labelLoc == Io.LABEL_CENTER) {
             x = bds.getX() + (bds.getWidth() - DEPTH) / 2;
             y = bds.getY() + (bds.getHeight() - DEPTH) / 2;
@@ -119,6 +126,7 @@ public class Switch extends InstanceFactory {
             x = bds.getX() - 2;
             halign = GraphicsUtil.H_RIGHT;
         }
+
         if (labelLoc == facing) {
             if (labelLoc == Direction.NORTH || labelLoc == Direction.SOUTH) {
                 x += 2;
@@ -129,27 +137,25 @@ public class Switch extends InstanceFactory {
             }
         }
 
-        instance.setTextField(StdAttr.LABEL, StdAttr.LABEL_FONT,
-                x, y, halign, valign);
+        instance.setTextField(StdAttr.LABEL, StdAttr.LABEL_FONT, x, y, halign, valign);
     }
 
     @Override
     public void propagate(InstanceState state) {
-		int portInIndex = 0;
-		int portOutIndex = 1;
-		Value valueA = state.getPort(portInIndex);
-		Value result;
-		if (pressed)
-			result = valueA;
-		else
-			result = Value.createUnknown(BitWidth.create(Breadboard.PORT_WIDTH));
-		
-		state.setPort(portOutIndex, result, Breadboard.DELAY);
-	}
+        int portInIndex = 0;
+        int portOutIndex = 1;
+        Value valueA = state.getPort(portInIndex);
+        Value result;
+        if (pressed)
+            result = valueA;
+        else
+            result = Value.createUnknown(BitWidth.create(Breadboard.PORT_WIDTH));
+
+        state.setPort(portOutIndex, result, Breadboard.DELAY);
+    }
 
     @Override
     public void paintInstance(InstancePainter painter) {
-    	
         Bounds bds = painter.getBounds();
         int x = bds.getX();
         int y = bds.getY();
@@ -165,7 +171,7 @@ public class Switch extends InstanceFactory {
         }
 
         Color color = painter.getAttributeValue(Io.ATTR_COLOR);
-        if (!painter.shouldDrawColor()) {
+        if ( ! painter.shouldDrawColor()) {
             int hue = (color.getRed() + color.getGreen() + color.getBlue()) / 3;
             color = new Color(hue, hue, hue);
         }
@@ -176,7 +182,8 @@ public class Switch extends InstanceFactory {
             x += DEPTH;
             y += DEPTH;
             Object labelLoc = painter.getAttributeValue(Io.ATTR_LABEL_LOC);
-            if (labelLoc == Io.LABEL_CENTER || labelLoc == Direction.NORTH
+            if (labelLoc == Io.LABEL_CENTER
+                    || labelLoc == Direction.NORTH
                     || labelLoc == Direction.WEST) {
                 depress = DEPTH;
             } else {
@@ -190,12 +197,12 @@ public class Switch extends InstanceFactory {
                 int py = p.getY();
                 GraphicsUtil.switchToWidth(g, Wire.WIDTH);
                 g.setColor(Value.TRUE_COLOR);
+
                 if (facing == Direction.NORTH) {
                     g.drawLine(px, py, px, py + 10);
                 }
-
                 else {
-                                             g.drawLine(px, py, px + 10, py);
+                    g.drawLine(px, py, px + 10, py);
                 }
 
                 GraphicsUtil.switchToWidth(g, 1);
@@ -223,20 +230,20 @@ public class Switch extends InstanceFactory {
         g.setColor(painter.getAttributeValue(Io.ATTR_LABEL_COLOR));
         painter.drawLabel();
         g.translate(-depress, -depress);
+
         painter.drawPorts();
-        
     }
 
     public static class Poker extends InstancePoker {
         @Override
         public void mousePressed(InstanceState state, MouseEvent e) {
-        	pressed = true;
+            pressed = true;
             setValue(state, Value.TRUE);
         }
 
         @Override
         public void mouseReleased(InstanceState state, MouseEvent e) {
-        	pressed = false;
+            pressed = false;
             setValue(state, Value.FALSE);
         }
 
@@ -265,7 +272,7 @@ public class Switch extends InstanceFactory {
     }
     
     public HashMap<Port, Integer> getConnected() {
-		return connected;
-	}
-    
+        return connected;
+    }
+
 }

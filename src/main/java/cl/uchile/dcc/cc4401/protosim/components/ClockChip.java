@@ -59,10 +59,23 @@ public class ClockChip extends InstanceFactory {
 		setPorts(ports);
 
 		setAttributes(
-				new Attribute[] { StdAttr.FACING, Clock.ATTR_HIGH, Clock.ATTR_LOW, StdAttr.LABEL, Pin.ATTR_LABEL_LOC,
-						StdAttr.LABEL_FONT },
-				new Object[] { Direction.EAST, Integer.valueOf(1), Integer.valueOf(1), "", Direction.WEST,
-						StdAttr.DEFAULT_LABEL_FONT });
+				new Attribute[] {
+						StdAttr.FACING,
+						Clock.ATTR_HIGH,
+						Clock.ATTR_LOW,
+						StdAttr.LABEL,
+						Pin.ATTR_LABEL_LOC,
+						StdAttr.LABEL_FONT
+				},
+				new Object[] {
+						Direction.EAST,
+						Integer.valueOf(1),
+						Integer.valueOf(1),
+						"",
+						Direction.WEST,
+						StdAttr.DEFAULT_LABEL_FONT
+				}
+		);
 
 		setFacingAttribute(StdAttr.FACING);
 		setInstanceLogger(ClockLogger.class);
@@ -91,7 +104,7 @@ public class ClockChip extends InstanceFactory {
 		g.setFont(new Font("Courier", Font.BOLD, 8));
 		g.drawString("CLK", x + 3, y + 18);
 		g.drawString("+", x-1, y + 12);
-        g.drawString("-", x + 17, y + 24);
+		g.drawString("-", x + 17, y + 24);
 
 		// Pins
 		g.setColor(Color.gray);
