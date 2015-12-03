@@ -94,7 +94,7 @@ public class OrChip extends InstanceFactory {
     	Value valueA = state.getPort(portAIndex);
         Value valueB = state.getPort(portBIndex);
         
-        Value result = ProtoValue.UNKNOWN;
+        Value result;
         
         if (isEnergized(state, vcc, ground)) {
 	        if (valueA.isUnknown() || valueB.isUnknown()) {
@@ -105,6 +105,9 @@ public class OrChip extends InstanceFactory {
 	            else
 	            	result = ProtoValue.FALSE;
 	        }
+        }
+        else {
+        	result = ProtoValue.UNKNOWN;
         }
 
         state.setPort(portOutIndex, result, Breadboard.DELAY);
