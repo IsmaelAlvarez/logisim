@@ -38,30 +38,30 @@ public class TestNAndChip {
     public void testPropagateInputPortsWithUnknownValues() {
         // All unknown values
         InstanceState state = new StubInstanceState(new Value[] {
-                ProtoValue.TRUE,
-                ProtoValue.TRUE,
-                ProtoValue.TRUE,
-                Value.UNKNOWN,
-                ProtoValue.TRUE,
-                ProtoValue.TRUE,
-                Value.UNKNOWN,
-                ProtoValue.TRUE,
+                ProtoValue.UNKNOWN,
+                ProtoValue.UNKNOWN,
+                ProtoValue.UNKNOWN,
+                ProtoValue.UNKNOWN,
+                ProtoValue.UNKNOWN,
+                ProtoValue.UNKNOWN,
+                ProtoValue.UNKNOWN,
+                ProtoValue.UNKNOWN,
         });
 
         chip.propagate(state);
 
-        assertEquals(Value.UNKNOWN, state.getPort(3));
-        assertEquals(Value.UNKNOWN, state.getPort(6));
+        assertEquals(ProtoValue.UNKNOWN, state.getPort(3));
+        assertEquals(ProtoValue.UNKNOWN, state.getPort(6));
 
         // Port A unknown
         state = new StubInstanceState(new Value[] {
                 ProtoValue.TRUE,
-                Value.UNKNOWN,
+                ProtoValue.UNKNOWN,
                 ProtoValue.TRUE,
-                Value.UNKNOWN,
-                Value.UNKNOWN,
+                ProtoValue.UNKNOWN,
+                ProtoValue.UNKNOWN,
                 ProtoValue.TRUE,
-                Value.UNKNOWN,
+                ProtoValue.UNKNOWN,
                 ProtoValue.FALSE
         });
 
@@ -75,11 +75,11 @@ public class TestNAndChip {
         state = new StubInstanceState(new Value[] {
                 ProtoValue.TRUE,
                 ProtoValue.TRUE,
-                Value.UNKNOWN,
-                Value.UNKNOWN,
+                ProtoValue.UNKNOWN,
+                ProtoValue.UNKNOWN,
                 ProtoValue.TRUE,
-                Value.UNKNOWN,
-                Value.UNKNOWN,
+                ProtoValue.UNKNOWN,
+                ProtoValue.UNKNOWN,
                 ProtoValue.FALSE,
         });
 
@@ -95,10 +95,10 @@ public class TestNAndChip {
                 ProtoValue.TRUE,
                 ProtoValue.FALSE,
                 ProtoValue.FALSE,
-                Value.UNKNOWN,
+                ProtoValue.UNKNOWN,
                 ProtoValue.FALSE,
                 ProtoValue.FALSE,
-                Value.UNKNOWN,
+                ProtoValue.UNKNOWN,
                 ProtoValue.FALSE,
         });
 
@@ -115,10 +115,10 @@ public class TestNAndChip {
                 ProtoValue.TRUE,
                 ProtoValue.TRUE,
                 ProtoValue.FALSE,
-                Value.UNKNOWN,
+                ProtoValue.UNKNOWN,
                 ProtoValue.TRUE,
                 ProtoValue.FALSE,
-                Value.UNKNOWN,
+                ProtoValue.UNKNOWN,
                 ProtoValue.FALSE,
         });
 
@@ -133,10 +133,10 @@ public class TestNAndChip {
                 ProtoValue.TRUE,
                 ProtoValue.FALSE,
                 ProtoValue.TRUE,
-                Value.UNKNOWN,
+                ProtoValue.UNKNOWN,
                 ProtoValue.FALSE,
                 ProtoValue.TRUE,
-                Value.UNKNOWN,
+                ProtoValue.UNKNOWN,
                 ProtoValue.FALSE,
         });
 
@@ -150,19 +150,19 @@ public class TestNAndChip {
     public void testPropagateBothInputPortsWithValue() {
         InstanceState state = new StubInstanceState(new Value[] {
                 ProtoValue.TRUE,
-                ProtoValue.TRUE,
-                ProtoValue.TRUE,
-                Value.UNKNOWN,
-                ProtoValue.TRUE,
-                ProtoValue.TRUE,
-                Value.UNKNOWN,
+                ProtoValue.FALSE,
+                ProtoValue.FALSE,
+                ProtoValue.UNKNOWN,
+                ProtoValue.FALSE,
+                ProtoValue.FALSE,
+                ProtoValue.UNKNOWN,
                 ProtoValue.FALSE,
         });
 
         chip.propagate(state);
         
-        assertEquals(ProtoValue.FALSE, state.getPort(3));
-        assertEquals(ProtoValue.FALSE, state.getPort(6));
+        assertEquals(ProtoValue.TRUE, state.getPort(3));
+        assertEquals(ProtoValue.TRUE, state.getPort(6));
     }
 
 }

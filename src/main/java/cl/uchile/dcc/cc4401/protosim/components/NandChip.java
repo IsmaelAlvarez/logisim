@@ -9,7 +9,6 @@ import java.util.List;
 import cl.uchile.dcc.cc4401.protosim.libraries.ProtoValue;
 
 import com.cburch.logisim.data.AttributeSet;
-import com.cburch.logisim.data.BitWidth;
 import com.cburch.logisim.data.Bounds;
 import com.cburch.logisim.data.Location;
 import com.cburch.logisim.data.Value;
@@ -95,20 +94,18 @@ public class NandChip extends InstanceFactory {
         Value valueB = state.getPort(portBIndex);
         Value valueVCC = state.getPort(vcc);
         Value valueGround = state.getPort(ground);
-        
-        Value result = Value.UNKNOWN;
-        if (valueVCC.isUnknown() == false
-                && valueGround.isUnknown() == false
-                && valueVCC == ProtoValue.TRUE
-                && valueGround == ProtoValue.FALSE) {
 
-            if (valueA.isUnknown() || valueB.isUnknown()) {
-                result = Value.createKnown(BitWidth.create(Breadboard.PORT_WIDTH), 0);
+        Value result = ProtoValue.UNKNOWN;
+
+        if ( ! valueVCC.isUnknown()
+                && ! valueGround.isUnknown()
+                && valueVCC.equals(ProtoValue.TRUE)
+                && valueGround.equals(ProtoValue.FALSE)) {
+
+            if (ProtoValue.toBoolean(valueA) && ProtoValue.toBoolean(valueB)) {
+                result = ProtoValue.FALSE;
             } else {
-                if (ProtoValue.toBoolean(valueA) && ProtoValue.toBoolean(valueB))
-                    result = ProtoValue.FALSE;
-                else
-                    result = ProtoValue.TRUE;
+                result = ProtoValue.TRUE;
             }
         }
 
