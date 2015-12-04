@@ -12,7 +12,7 @@ import com.cburch.logisim.tools.Tool;
 import static com.cburch.logisim.util.LocaleString.*;
 
 public class Memory extends Library {
-    protected static final int DELAY = 5;
+    public static final int DELAY = 5;
 
     private static FactoryDescription[] DESCRIPTIONS = {
         new FactoryDescription("D Flip-Flop", getFromLocale("dFlipFlopComponent"),
