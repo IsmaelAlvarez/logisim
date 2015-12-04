@@ -9,7 +9,6 @@ import java.util.List;
 import cl.uchile.dcc.cc4401.protosim.libraries.ProtoValue;
 
 import com.cburch.logisim.data.AttributeSet;
-import com.cburch.logisim.data.BitWidth;
 import com.cburch.logisim.data.Bounds;
 import com.cburch.logisim.data.Location;
 import com.cburch.logisim.data.Value;
@@ -110,26 +109,24 @@ public class AndChip extends InstanceFactory {
         setOutputValue(state, 0, 13, 7, 8, 9);
         setOutputValue(state, 0, 13, 10, 11, 12);
     }
-    
-    private void setOutputValue(InstanceState state,int vcc, int ground, int portAIndex, int portBIndex, int portOutIndex) {
+
+    private void setOutputValue(InstanceState state, int vcc, int ground, int portAIndex, int portBIndex, int portOutIndex) {
         Value valueVcc = state.getPort(vcc);
         Value valueGround = state.getPort(ground);
         Value valueA = state.getPort(portAIndex);
         Value valueB = state.getPort(portBIndex);
         
-        Value result= Value.UNKNOWN;
+        Value result = ProtoValue.UNKNOWN;
         
-        if (valueVcc.isUnknown() == false
-                && valueGround.isUnknown() == false
+        if ( ! valueVcc.isUnknown()
+                && ! valueGround.isUnknown()
                 && valueVcc.equals(ProtoValue.TRUE)
                 && valueGround.equals(ProtoValue.FALSE)) {
-            if (valueA.isUnknown() || valueB.isUnknown()) {
-                result = Value.createKnown(BitWidth.create(Breadboard.PORT_WIDTH), 0);
+
+            if (ProtoValue.toBoolean(valueA) && ProtoValue.toBoolean(valueB)) {
+                result = ProtoValue.TRUE;
             } else {
-                if (ProtoValue.toBoolean(valueA) && ProtoValue.toBoolean(valueB))
-                    result = ProtoValue.TRUE;
-                else
-                    result = ProtoValue.FALSE;
+                result = ProtoValue.FALSE;
             }
         }
 

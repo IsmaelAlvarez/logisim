@@ -9,7 +9,6 @@ import java.util.List;
 import cl.uchile.dcc.cc4401.protosim.libraries.ProtoValue;
 
 import com.cburch.logisim.data.AttributeSet;
-import com.cburch.logisim.data.BitWidth;
 import com.cburch.logisim.data.Bounds;
 import com.cburch.logisim.data.Location;
 import com.cburch.logisim.data.Value;
@@ -92,28 +91,35 @@ public class OrChip extends InstanceFactory {
     }
 
     private void setOutputValue(InstanceState state,int vcc, int ground, int portAIndex, int portBIndex, int portOutIndex) {
-        Value valueVCC = state.getPort(vcc);
-        Value valueGround = state.getPort(ground);
-        Value valueA = state.getPort(portAIndex);
+    	Value valueA = state.getPort(portAIndex);
         Value valueB = state.getPort(portBIndex);
         
-        Value result= Value.UNKNOWN;
+        Value result;
         
-        if (valueVCC.isUnknown() == false
-                && valueGround.isUnknown() == false
-                && valueVCC.toIntValue() == ProtoValue.TRUE.toIntValue()
-                && valueGround.toIntValue() == ProtoValue.FALSE.toIntValue()) {
-
-            if (valueA.isUnknown() || valueB.isUnknown()) {
-                result = Value.createKnown(BitWidth.create(Breadboard.PORT_WIDTH), 0);
-            } else {
-                if (ProtoValue.toBoolean(valueA) || ProtoValue.toBoolean(valueB))
-                    result = ProtoValue.TRUE;
-                else
-                    result = ProtoValue.FALSE;
-            }
+        if (isEnergized(state, vcc, ground)) {
+	        if (valueA.isUnknown() || valueB.isUnknown()) {
+	        	result = ProtoValue.FALSE;
+	        } else {
+	            if (ProtoValue.toBoolean(valueA) || ProtoValue.toBoolean(valueB))
+	            	result = ProtoValue.TRUE;
+	            else
+	            	result = ProtoValue.FALSE;
+	        }
+        }
+        else {
+        	result = ProtoValue.UNKNOWN;
         }
 
         state.setPort(portOutIndex, result, Breadboard.DELAY);
     }
+
+	private boolean isEnergized(InstanceState state, int vcc, int ground) {
+		Value valueVCC = state.getPort(vcc);
+		Value valueGround = state.getPort(ground);
+		if (valueVCC.isFullyDefined() && valueGround.isFullyDefined() && valueVCC.toIntValue() == ProtoValue.TRUE.toIntValue()
+				&& valueGround.toIntValue() == ProtoValue.FALSE.toIntValue()) {
+			return true;
+		}
+		return false;
+	}
 }

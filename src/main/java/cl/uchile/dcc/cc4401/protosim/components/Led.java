@@ -111,15 +111,20 @@ public class Led extends InstanceFactory {
 
         // Chip
         g.setColor(Color.black);
-        g.fillRect(x - 5, y + 5, 20, 5);
+        g.fillRect(x - 5, y + 5, 20, 6);
         GraphicsUtil.drawCenteredArc(g, x+5, y+1, 7, 0, 180);
         g.drawLine(x - 2, y + 5, x - 2, y + 1);
         g.drawLine(x + 12, y + 5, x + 12, y + 1);
+        
+        g.setColor(Color.white);
+        g.setFont(new Font("Courier", Font.BOLD, 7));
+        g.drawString("+", x - 3, y + 10);
+        g.drawString("-", x + 8, y + 10);
 
         // Pins
         g.setColor(Color.gray);
-        g.fillRect(x - 2, y + 10, 4, 10);
-        g.fillRect(x + 8, y + 10, 4, 10);
+        g.fillRect(x - 2, y + 11, 4, 9);
+        g.fillRect(x + 8, y + 11, 4, 9);
 
         painter.drawPorts();
     }
