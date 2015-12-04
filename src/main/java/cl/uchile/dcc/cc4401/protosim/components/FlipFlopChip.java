@@ -3,7 +3,6 @@ package cl.uchile.dcc.cc4401.protosim.components;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
-import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,9 +14,7 @@ import com.cburch.logisim.data.Location;
 import com.cburch.logisim.data.Value;
 import com.cburch.logisim.instance.InstanceData;
 import com.cburch.logisim.instance.InstanceFactory;
-import com.cburch.logisim.instance.InstanceLogger;
 import com.cburch.logisim.instance.InstancePainter;
-import com.cburch.logisim.instance.InstancePoker;
 import com.cburch.logisim.instance.InstanceState;
 import com.cburch.logisim.instance.Port;
 import com.cburch.logisim.instance.StdAttr;
@@ -41,8 +38,6 @@ public class FlipFlopChip extends InstanceFactory {
 		triggerAttribute = StdAttr.TRIGGER;
 		setAttributes(new Attribute[] { triggerAttribute, StdAttr.LABEL, StdAttr.LABEL_FONT },
 				new Object[] { StdAttr.TRIG_RISING, "", StdAttr.DEFAULT_LABEL_FONT });
-		setInstancePoker(Poker.class);
-		setInstanceLogger(Logger.class);
 
 		ports = new ArrayList<Port>();
 
@@ -139,12 +134,12 @@ public class FlipFlopChip extends InstanceFactory {
 		}
 		Object triggerType = state.getAttributeValue(triggerAttribute);
 
-		boolean triggered1 = data.updateClock(state.getPort(3), triggerType);
-		// boolean triggered2 = data.updateClock(state.getPort(9), triggerType);
+		boolean triggered1 = data.updateClock(1, state.getPort(3), triggerType);
+		boolean triggered2 = data.updateClock(2, state.getPort(9), triggerType);
 
 		if (isEnergized(state, 0, 13)) {
-			setOutputValue(state, data, triggered1, 1, 2, 4, 5, 6);
-			// setOutputValue(state, data, triggered2, 7, 8, 10, 11, 12);
+			setOutputValue(state, data, 1, triggered1, 1, 2, 4, 5, 6);
+			setOutputValue(state, data, 2, triggered2, 7, 8, 10, 11, 12);
 		} else {
 			state.setPort(5, ProtoValue.UNKNOWN, Breadboard.DELAY);
 			state.setPort(6, ProtoValue.UNKNOWN, Breadboard.DELAY);
@@ -153,71 +148,41 @@ public class FlipFlopChip extends InstanceFactory {
 		}
 	}
 
-	private void setOutputValue(InstanceState state, StateData data, boolean triggered, int clr, int d, int pr, int q,
-			int not_q) {
-		 // clear requested
-        if (state.getPort(clr) == ProtoValue.TRUE) {
-            data.curValue = ProtoValue.FALSE;
-        // preset requested
-        } else if (state.getPort(pr) == ProtoValue.TRUE) {
-            data.curValue = ProtoValue.TRUE;
-        } else if (triggered) {
+	private void setOutputValue(InstanceState state, StateData data, int gate, boolean triggered, int clr, int d,
+			int pr, int q, int not_q) {
+		// clear requested
+		if (state.getPort(clr) == ProtoValue.TRUE) {
+			data.setValue(gate, ProtoValue.FALSE);
+			// preset requested
+		} else if (state.getPort(pr) == ProtoValue.TRUE) {
+			data.setValue(gate, ProtoValue.TRUE);
+		} else if (triggered) {
 			// Clock has triggered and flip-flop is enabled: Update the state
 			Value newVal = state.getPort(d);
 			if (newVal.equals(ProtoValue.TRUE) || newVal.equals(ProtoValue.FALSE)) {
-				data.curValue = newVal;
+				data.setValue(gate, newVal);
 			}
 		}
-		state.setPort(q, data.curValue, Memory.DELAY);
-		state.setPort(not_q, data.curValue.not(), Memory.DELAY);
+		state.setPort(q, data.getValue(gate), Memory.DELAY);
+		state.setPort(not_q, data.getValue(gate).not(), Memory.DELAY);
 	}
 
 	private static class StateData extends ProtosimClockState implements InstanceData {
-		Value curValue = ProtoValue.FALSE;
-	}
-
-	public static class Logger extends InstanceLogger {
-		@Override
-		public String getLogName(InstanceState state, Object option) {
-			String ret = state.getAttributeValue(StdAttr.LABEL);
-			return ret != null && !ret.equals("") ? ret : null;
-		}
-
-		@Override
-		public Value getLogValue(InstanceState state, Object option) {
-			StateData s = (StateData) state.getData();
-			return s == null ? ProtoValue.FALSE : s.curValue;
-		}
-	}
-
-	public static class Poker extends InstancePoker {
-		boolean isPressed = true;
-
-		@Override
-		public void mousePressed(InstanceState state, MouseEvent e) {
-			isPressed = isInside(state, e);
-		}
-
-		@Override
-		public void mouseReleased(InstanceState state, MouseEvent e) {
-			if (isPressed && isInside(state, e)) {
-				StateData myState = (StateData) state.getData();
-				if (myState == null) {
-					return;
-				}
-
-				myState.curValue = myState.curValue.not();
-				state.fireInvalidated();
+		Value curValue1 = ProtoValue.FALSE;
+		Value curValue2 = ProtoValue.FALSE;
+		Value getValue(int gate) {
+			if (gate == 1) {
+				return curValue1;
+			} else {
+				return curValue2;
 			}
-			isPressed = false;
 		}
-
-		private boolean isInside(InstanceState state, MouseEvent e) {
-			Location loc = state.getInstance().getLocation();
-			int dx = e.getX() - (loc.getX() - 20);
-			int dy = e.getY() - (loc.getY() + 10);
-			int d2 = dx * dx + dy * dy;
-			return d2 < 8 * 8;
+		void setValue(int gate, Value newValue) {
+			if (gate == 1) {
+				curValue1 = newValue;
+			} else {
+				curValue2 = newValue;
+			}
 		}
 	}
 }
