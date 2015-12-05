@@ -11,18 +11,18 @@ import com.cburch.logisim.instance.InstanceState;
 
 import cl.uchile.dcc.cc4401.protosim.libraries.ProtoValue;
 
-public class TestAndChip {
+public class TestNotChip {
 
-    private AndChip chip;
+    private NotChip chip;
 
     @Before
     public void setUp() {
-        chip = new AndChip();
+        chip = new NotChip();
     }
 
     @Test
     public void testGetDisplayName() {
-        assertEquals("AND Chip", chip.getDisplayName());
+        assertEquals("NOT Chip", chip.getDisplayName());
     }
 
     @Test
@@ -59,23 +59,25 @@ public class TestAndChip {
         assertEquals(ProtoValue.UNKNOWN, state.getPort(3));
         assertEquals(ProtoValue.UNKNOWN, state.getPort(9));
 
-        // Port A unknown
+        // unknown input
         state = new StubInstanceState(new Value[] {
                 ProtoValue.TRUE, //connected
 
-                ProtoValue.TRUE,
                 ProtoValue.UNKNOWN,
                 ProtoValue.TRUE,
-
-                ProtoValue.TRUE,
+                
                 ProtoValue.UNKNOWN,
                 ProtoValue.TRUE,
-
-                ProtoValue.TRUE,
+                
                 ProtoValue.UNKNOWN,
                 ProtoValue.TRUE,
-
+                
+                ProtoValue.UNKNOWN,
                 ProtoValue.TRUE,
+                
+                ProtoValue.UNKNOWN,
+                ProtoValue.TRUE,
+            
                 ProtoValue.UNKNOWN,
                 ProtoValue.TRUE,
 
@@ -84,41 +86,13 @@ public class TestAndChip {
 
         chip.propagate(state);
 
-        assertEquals(ProtoValue.FALSE, state.getPort(3));
+        assertEquals(ProtoValue.FALSE, state.getPort(2));
+        assertEquals(ProtoValue.FALSE, state.getPort(4));
         assertEquals(ProtoValue.FALSE, state.getPort(6));
-        assertEquals(ProtoValue.FALSE, state.getPort(9));
+        assertEquals(ProtoValue.FALSE, state.getPort(8));
+        assertEquals(ProtoValue.FALSE, state.getPort(10));
         assertEquals(ProtoValue.FALSE, state.getPort(12));
 
-
-        // Port B unknown
-        state = new StubInstanceState(new Value[] {
-                ProtoValue.TRUE, //connected
-
-                ProtoValue.UNKNOWN,
-                ProtoValue.TRUE,
-                ProtoValue.TRUE,
-
-                ProtoValue.UNKNOWN,
-                ProtoValue.TRUE,
-                ProtoValue.TRUE,
-
-                ProtoValue.UNKNOWN,
-                ProtoValue.TRUE,
-                ProtoValue.TRUE,
-
-                ProtoValue.UNKNOWN,
-                ProtoValue.TRUE,
-                ProtoValue.TRUE,
-
-                ProtoValue.FALSE //connected
-        });
-
-        chip.propagate(state);
-
-        assertEquals(ProtoValue.FALSE, state.getPort(3));
-        assertEquals(ProtoValue.FALSE, state.getPort(6));
-        assertEquals(ProtoValue.FALSE, state.getPort(9));
-        assertEquals(ProtoValue.FALSE, state.getPort(12));
     }
 
     @Test
@@ -128,156 +102,110 @@ public class TestAndChip {
 
                 ProtoValue.FALSE,
                 ProtoValue.FALSE,
-                ProtoValue.FALSE,
                 
-                ProtoValue.FALSE,
-                ProtoValue.FALSE,
-                ProtoValue.FALSE,
-                
-                ProtoValue.FALSE,
                 ProtoValue.FALSE,
                 ProtoValue.FALSE,
                 
                 ProtoValue.FALSE,
                 ProtoValue.FALSE,
+                
                 ProtoValue.FALSE,
+                ProtoValue.FALSE,
+                
+                ProtoValue.FALSE,
+                ProtoValue.FALSE,
+                
+                ProtoValue.FALSE,
+                ProtoValue.FALSE,
+              
                 
                 ProtoValue.FALSE //connected
         });
 
         chip.propagate(state);
 
-        assertEquals(ProtoValue.FALSE, state.getPort(3));
-        assertEquals(ProtoValue.FALSE, state.getPort(6));
-        assertEquals(ProtoValue.FALSE, state.getPort(9));
-        assertEquals(ProtoValue.FALSE, state.getPort(12));
-    }
-
-    @Test
-    public void testPropagateOneInputPortWithValue() {
-        // Port A
-        InstanceState state = new StubInstanceState(new Value[] {
-                ProtoValue.TRUE, //connected
-
-                ProtoValue.TRUE,
-                ProtoValue.FALSE,
-                ProtoValue.TRUE,
-
-                ProtoValue.TRUE,
-                ProtoValue.FALSE,
-                ProtoValue.TRUE,
-
-                ProtoValue.TRUE,
-                ProtoValue.FALSE,
-                ProtoValue.FALSE,
-
-                ProtoValue.TRUE,
-                ProtoValue.FALSE,
-                ProtoValue.FALSE,
-
-                ProtoValue.FALSE //connected
-        });
-
-        chip.propagate(state);
-
-        assertEquals(ProtoValue.FALSE, state.getPort(3));
-        assertEquals(ProtoValue.FALSE, state.getPort(6));
-        assertEquals(ProtoValue.FALSE, state.getPort(9));
-        assertEquals(ProtoValue.FALSE, state.getPort(12));
-
-
-        // Port B
-        state = new StubInstanceState(new Value[] {
-                ProtoValue.TRUE, //connected
-
-                ProtoValue.FALSE,
-                ProtoValue.TRUE,
-                ProtoValue.FALSE,
-                
-                ProtoValue.FALSE,
-                ProtoValue.TRUE,
-                ProtoValue.FALSE,
-                
-                ProtoValue.FALSE,
-                ProtoValue.TRUE,
-                ProtoValue.FALSE,
-
-                ProtoValue.FALSE,
-                ProtoValue.TRUE,
-                ProtoValue.FALSE,
-
-                ProtoValue.FALSE //connected
-        });
-
-        chip.propagate(state);
-
-        assertEquals(ProtoValue.FALSE, state.getPort(3));
-        assertEquals(ProtoValue.FALSE, state.getPort(6));
-        assertEquals(ProtoValue.FALSE, state.getPort(9));
-        assertEquals(ProtoValue.FALSE, state.getPort(12));
-    }
-
-    @Test
-    public void testPropagateBothInputPortsWithValue() {
-        InstanceState state = new StubInstanceState(new Value[] {
-                ProtoValue.TRUE, //connected
-
-                ProtoValue.TRUE,
-                ProtoValue.TRUE,
-                ProtoValue.FALSE,
-
-                ProtoValue.TRUE,
-                ProtoValue.TRUE,
-                ProtoValue.FALSE,
-
-                ProtoValue.TRUE,
-                ProtoValue.TRUE,
-                ProtoValue.FALSE,
-
-                ProtoValue.TRUE,
-                ProtoValue.TRUE,
-                ProtoValue.FALSE,
-
-                ProtoValue.FALSE //connected
-        });
-
-        chip.propagate(state);
-
-        assertEquals(ProtoValue.TRUE, state.getPort(3));
+        assertEquals(ProtoValue.TRUE, state.getPort(2));
+        assertEquals(ProtoValue.TRUE, state.getPort(4));
         assertEquals(ProtoValue.TRUE, state.getPort(6));
-        assertEquals(ProtoValue.TRUE, state.getPort(9));
+        assertEquals(ProtoValue.TRUE, state.getPort(8));
+        assertEquals(ProtoValue.TRUE, state.getPort(10));
         assertEquals(ProtoValue.TRUE, state.getPort(12));
     }
 
+    @Test
+    public void testPropagateNotEmptyPortsValues() {
+      
+        InstanceState state = new StubInstanceState(new Value[] {
+                ProtoValue.TRUE, //connected
+
+                ProtoValue.TRUE,
+                ProtoValue.TRUE,
+                
+                ProtoValue.TRUE,
+                ProtoValue.TRUE,
+                
+                ProtoValue.TRUE,
+                ProtoValue.TRUE,
+                
+                ProtoValue.TRUE,
+                ProtoValue.TRUE,
+                
+                ProtoValue.TRUE,
+                ProtoValue.TRUE,
+                
+                ProtoValue.TRUE,
+                ProtoValue.TRUE,    
+
+                ProtoValue.FALSE //connected
+        });
+
+        chip.propagate(state);
+
+        assertEquals(ProtoValue.FALSE, state.getPort(2));
+        assertEquals(ProtoValue.FALSE, state.getPort(4));
+        assertEquals(ProtoValue.FALSE, state.getPort(6));
+        assertEquals(ProtoValue.FALSE, state.getPort(8));
+        assertEquals(ProtoValue.FALSE, state.getPort(10));
+        assertEquals(ProtoValue.FALSE, state.getPort(12));
+
+    }
+
+   
     @Test
     public void testNotConnected() {
         InstanceState state = new StubInstanceState(new Value[] {
                 ProtoValue.UNKNOWN, //not connected
 
                 ProtoValue.TRUE,
-                ProtoValue.TRUE,
                 ProtoValue.FALSE,
+                
+                ProtoValue.FALSE,
+                ProtoValue.FALSE,
+                
+                ProtoValue.UNKNOWN,
+                ProtoValue.FALSE,        
 
                 ProtoValue.TRUE,
                 ProtoValue.FALSE,
+                
+                ProtoValue.FALSE,
+                ProtoValue.FALSE,
+                
+                ProtoValue.UNKNOWN,
                 ProtoValue.FALSE,
 
-                ProtoValue.FALSE,
-                ProtoValue.TRUE,
-                ProtoValue.FALSE,
-
-                ProtoValue.FALSE,
-                ProtoValue.FALSE,
-                ProtoValue.FALSE,
+               
 
                 ProtoValue.UNKNOWN //not connected
         });
 
         chip.propagate(state);
 
-        assertEquals(ProtoValue.UNKNOWN, state.getPort(3));
+        assertEquals(ProtoValue.UNKNOWN, state.getPort(2));
+        assertEquals(ProtoValue.UNKNOWN, state.getPort(4));
         assertEquals(ProtoValue.UNKNOWN, state.getPort(6));
-        assertEquals(ProtoValue.UNKNOWN, state.getPort(9));
+        assertEquals(ProtoValue.UNKNOWN, state.getPort(8));
+        assertEquals(ProtoValue.UNKNOWN, state.getPort(10));
         assertEquals(ProtoValue.UNKNOWN, state.getPort(12));
     }
 
