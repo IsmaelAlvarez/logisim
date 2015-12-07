@@ -1,7 +1,5 @@
 package cl.uchile.dcc.cc4401.protosim.components;
 
-import static com.cburch.logisim.util.LocaleString.getFromLocale;
-
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
@@ -13,7 +11,6 @@ import com.cburch.logisim.circuit.CircuitState;
 import com.cburch.logisim.comp.Component;
 import com.cburch.logisim.data.Attribute;
 import com.cburch.logisim.data.AttributeSet;
-import com.cburch.logisim.data.BitWidth;
 import com.cburch.logisim.data.Bounds;
 import com.cburch.logisim.data.Direction;
 import com.cburch.logisim.data.Location;
@@ -41,7 +38,7 @@ public class ClockChip extends InstanceFactory {
 	private List<Port> ports;
 
 	public ClockChip() {
-		super("Clock Chip", getFromLocale("clockComponent"));
+		super("Clock Chip");
 		this.setIcon(Icons.getIcon("protosimComponentClock.svg"));
 
 		ports = new ArrayList<Port>();
@@ -177,8 +174,6 @@ public class ClockChip extends InstanceFactory {
 	@Override
 	protected void configureNewInstance(Instance instance) {
 		instance.addAttributeListener();
-		// instance.setPorts(new Port[] { new Port(20, 0, Port.OUTPUT,
-		// Breadboard.PORT_WIDTH)});
 		configureLabel(instance);
 	}
 
@@ -214,10 +209,10 @@ public class ClockChip extends InstanceFactory {
 			state.setPort(4, q.sending, 1);
 		}
 		if (!isEnergized(state, 0, 5)) {
-			state.setPort(1, Value.createUnknown(BitWidth.create(Breadboard.PORT_WIDTH)), 1);
-			state.setPort(2, Value.createUnknown(BitWidth.create(Breadboard.PORT_WIDTH)), 1);
-			state.setPort(3, Value.createUnknown(BitWidth.create(Breadboard.PORT_WIDTH)), 1);
-			state.setPort(4, Value.createUnknown(BitWidth.create(Breadboard.PORT_WIDTH)), 1);
+			state.setPort(1, ProtoValue.UNKNOWN, 1);
+			state.setPort(2, ProtoValue.UNKNOWN, 1);
+			state.setPort(3, ProtoValue.UNKNOWN, 1);
+			state.setPort(4, ProtoValue.UNKNOWN, 1);
 		}
 	}
 

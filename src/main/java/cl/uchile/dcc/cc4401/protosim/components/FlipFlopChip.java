@@ -157,7 +157,7 @@ public class FlipFlopChip extends InstanceFactory {
 		} else if (state.getPort(pr) == ProtoValue.TRUE) {
 			data.setValue(gate, ProtoValue.TRUE);
 		} else if (triggered) {
-			// Clock has triggered and flip-flop is enabled: Update the state
+			// Clock has triggered and
 			Value newVal = state.getPort(d);
 			if (newVal.equals(ProtoValue.TRUE) || newVal.equals(ProtoValue.FALSE)) {
 				data.setValue(gate, newVal);

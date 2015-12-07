@@ -30,180 +30,189 @@ public class TestFlipFlopChip {
         Bounds bounds = chip.getOffsetBounds(null);
         assertEquals(0, bounds.getX());
         assertEquals(0, bounds.getY());
-        assertEquals(20, bounds.getWidth());
+        assertEquals(60, bounds.getWidth());
         assertEquals(30, bounds.getHeight());
     }
-
+    /*
     @Test
-    public void testPropagateInputPortsWithUnknownValues() {
-        // All unknown values
-        InstanceState state = new StubInstanceState(new Value[] {
-                Value.UNKNOWN,
-                Value.UNKNOWN,
-                Value.UNKNOWN,
-                Value.UNKNOWN,
-                Value.UNKNOWN,
-                Value.UNKNOWN,
+    public void testNotConnected(){
+    	InstanceState state = new StubInstanceState(new Value[] {
+                ProtoValue.UNKNOWN, //not connected
+                ProtoValue.UNKNOWN,
+                ProtoValue.TRUE,
+                ProtoValue.TRUE,
+                ProtoValue.UNKNOWN,
+                ProtoValue.TRUE,
+                ProtoValue.FALSE,
+                ProtoValue.UNKNOWN,
+                ProtoValue.TRUE,
+                ProtoValue.TRUE,
+                ProtoValue.UNKNOWN,
+                ProtoValue.TRUE,
+                ProtoValue.FALSE,
+                ProtoValue.UNKNOWN //not connected
         });
 
         chip.propagate(state);
 
-        assertEquals(ProtoValue.FALSE, state.getPort(2));
-        assertEquals(ProtoValue.FALSE, state.getPort(5));
-
-        // Data port value unknown
-        state = new StubInstanceState(new Value[] {
-                Value.UNKNOWN,
-                ProtoValue.FALSE,
-                ProtoValue.TRUE,
-                Value.UNKNOWN,
-                ProtoValue.FALSE,
-                ProtoValue.TRUE,
-        });
-
-        chip.propagate(state);
-        
-        assertEquals(ProtoValue.FALSE, state.getPort(2));
-        assertEquals(ProtoValue.FALSE, state.getPort(5));
+        assertEquals(ProtoValue.UNKNOWN, state.getPort(5));
+        assertEquals(ProtoValue.UNKNOWN, state.getPort(6));
+        assertEquals(ProtoValue.UNKNOWN, state.getPort(11));
+        assertEquals(ProtoValue.UNKNOWN, state.getPort(12));
         
         state = new StubInstanceState(new Value[] {
-                Value.UNKNOWN,
+                ProtoValue.UNKNOWN, //not connected
+                ProtoValue.UNKNOWN,
                 ProtoValue.TRUE,
+                ProtoValue.FALSE,
+                ProtoValue.UNKNOWN,
                 ProtoValue.TRUE,
-                Value.UNKNOWN,
+                ProtoValue.FALSE,
+                ProtoValue.UNKNOWN,
                 ProtoValue.TRUE,
+                ProtoValue.FALSE,
+                ProtoValue.UNKNOWN,
                 ProtoValue.TRUE,
+                ProtoValue.FALSE,
+                ProtoValue.FALSE
         });
 
         chip.propagate(state);
-        
-        assertEquals(ProtoValue.FALSE, state.getPort(2));
-        assertEquals(ProtoValue.FALSE, state.getPort(5));
 
-
-        // Clock port value unknown
-        state = new StubInstanceState(new Value[] {
-                ProtoValue.FALSE,
-                Value.UNKNOWN,
-                ProtoValue.TRUE,
-                ProtoValue.FALSE,
-                Value.UNKNOWN,
-                ProtoValue.TRUE,
-        });
-
-        chip.propagate(state);
-        
-        assertEquals(ProtoValue.FALSE, state.getPort(2));
-        assertEquals(ProtoValue.FALSE, state.getPort(5));
+        assertEquals(ProtoValue.UNKNOWN, state.getPort(5));
+        assertEquals(ProtoValue.UNKNOWN, state.getPort(6));
+        assertEquals(ProtoValue.UNKNOWN, state.getPort(11));
+        assertEquals(ProtoValue.UNKNOWN, state.getPort(12));
         
         state = new StubInstanceState(new Value[] {
                 ProtoValue.TRUE,
-                Value.UNKNOWN,
+                ProtoValue.UNKNOWN,
                 ProtoValue.TRUE,
                 ProtoValue.TRUE,
-                Value.UNKNOWN,
+                ProtoValue.UNKNOWN,
                 ProtoValue.TRUE,
+                ProtoValue.FALSE,
+                ProtoValue.UNKNOWN,
+                ProtoValue.TRUE,
+                ProtoValue.TRUE,
+                ProtoValue.UNKNOWN,
+                ProtoValue.TRUE,
+                ProtoValue.FALSE,
+                ProtoValue.UNKNOWN //not connected
         });
 
         chip.propagate(state);
+
+        assertEquals(ProtoValue.UNKNOWN, state.getPort(5));
+        assertEquals(ProtoValue.UNKNOWN, state.getPort(6));
+        assertEquals(ProtoValue.UNKNOWN, state.getPort(11));
+        assertEquals(ProtoValue.UNKNOWN, state.getPort(12));
+    }*/
+    
+    @Test
+    public void testPropagateUpPulse(){
+    	//clock is down
+    	Value[] values =new Value[]{
+                ProtoValue.TRUE,
+                ProtoValue.UNKNOWN,
+                ProtoValue.FALSE, // data input
+                ProtoValue.FALSE, // clk
+                ProtoValue.UNKNOWN,
+                ProtoValue.FALSE, // q
+                ProtoValue.TRUE, // not_q
+                ProtoValue.UNKNOWN,
+                ProtoValue.FALSE, // data input
+                ProtoValue.FALSE, // clk
+                ProtoValue.UNKNOWN,
+                ProtoValue.FALSE, // q
+                ProtoValue.TRUE, // not_q
+                ProtoValue.FALSE
+        };
+    	InstanceState state = new StubInstanceState(values);
+    	
+    	chip.propagate(state);
+    	
+    	assertEquals(ProtoValue.FALSE, state.getPort(5));
+        assertEquals(ProtoValue.TRUE, state.getPort(6));
+        assertEquals(ProtoValue.FALSE, state.getPort(11));
+        assertEquals(ProtoValue.TRUE, state.getPort(12));
         
-        assertEquals(ProtoValue.FALSE, state.getPort(2));
-        assertEquals(ProtoValue.FALSE, state.getPort(5));
+        //input data changes
+        values[2]=ProtoValue.TRUE;
+        values[8]=ProtoValue.TRUE;
+        
+        chip.propagate(state);
+    	
+        //output doesn't change
+    	assertEquals(ProtoValue.FALSE, state.getPort(5));
+        assertEquals(ProtoValue.TRUE, state.getPort(6));
+        assertEquals(ProtoValue.FALSE, state.getPort(11));
+        assertEquals(ProtoValue.TRUE, state.getPort(12));
+        
+        //clock changes to up state
+        values[3]=ProtoValue.TRUE;
+        values[9]=ProtoValue.TRUE;
+        
+        chip.propagate(state);
+        
+        //output changes
+    	assertEquals(ProtoValue.TRUE, state.getPort(5));
+        assertEquals(ProtoValue.FALSE, state.getPort(6));
+        assertEquals(ProtoValue.TRUE, state.getPort(11));
+        assertEquals(ProtoValue.FALSE, state.getPort(12));    
     }
-
+    
     @Test
-    public void testPropagateEmptyPortsValues() {
-        InstanceState state = new StubInstanceState(new Value[] {
-                ProtoValue.FALSE,
-                ProtoValue.FALSE,
-                ProtoValue.FALSE,
-                ProtoValue.FALSE,
-                ProtoValue.FALSE,
-                ProtoValue.FALSE,
-        });
-
-        chip.propagate(state);
-        
-        assertEquals(ProtoValue.FALSE, state.getPort(2));
-        assertEquals(ProtoValue.FALSE, state.getPort(5));
-    }
-
-    @Test
-    public void testPropagate() {
-        // Clock value 0
-        InstanceState state = new StubInstanceState(new Value[] {
-                ProtoValue.FALSE,
-                ProtoValue.FALSE,
-                ProtoValue.FALSE,
-                ProtoValue.FALSE,
-                ProtoValue.FALSE,
-                ProtoValue.FALSE,
-        });
-        
-        chip.propagate(state);
-        
-        assertEquals(ProtoValue.FALSE, state.getPort(2));
-        assertEquals(ProtoValue.FALSE, state.getPort(5));
-        
-        // Retain data, Clock value 1
-        state = new StubInstanceState(new Value[] {
-                ProtoValue.FALSE,
+    public void testPropagateDownPulse(){
+    	//clock is up
+    	Value[] values =new Value[]{
                 ProtoValue.TRUE,
-                ProtoValue.FALSE,
-                ProtoValue.FALSE,
-                ProtoValue.TRUE,
-                ProtoValue.FALSE,
-        });
+                ProtoValue.UNKNOWN,
+                ProtoValue.FALSE, // data input
+                ProtoValue.TRUE, // clk
+                ProtoValue.UNKNOWN,
+                ProtoValue.FALSE, // q
+                ProtoValue.TRUE, // not_q
+                ProtoValue.UNKNOWN,
+                ProtoValue.FALSE, // data input
+                ProtoValue.TRUE, // clk
+                ProtoValue.UNKNOWN,
+                ProtoValue.FALSE, // q
+                ProtoValue.TRUE, // not_q
+                ProtoValue.FALSE
+        };
+    	InstanceState state = new StubInstanceState(values);
+    	
+    	chip.propagate(state);
+    	
+    	assertEquals(ProtoValue.FALSE, state.getPort(5));
+        assertEquals(ProtoValue.TRUE, state.getPort(6));
+        assertEquals(ProtoValue.FALSE, state.getPort(11));
+        assertEquals(ProtoValue.TRUE, state.getPort(12));
+        
+        //input data changes
+        values[2]=ProtoValue.TRUE;
+        values[8]=ProtoValue.TRUE;
         
         chip.propagate(state);
+    	
+        //output doesn't change
+    	assertEquals(ProtoValue.FALSE, state.getPort(5));
+        assertEquals(ProtoValue.TRUE, state.getPort(6));
+        assertEquals(ProtoValue.FALSE, state.getPort(11));
+        assertEquals(ProtoValue.TRUE, state.getPort(12));
         
-        assertEquals(ProtoValue.FALSE, state.getPort(2));
-        assertEquals(ProtoValue.FALSE, state.getPort(5));
-
-        // Retain data, Clock value 0
-        state = new StubInstanceState(new Value[] {
-                ProtoValue.TRUE,
-                ProtoValue.FALSE,
-                ProtoValue.FALSE,
-                ProtoValue.TRUE,
-                ProtoValue.FALSE,
-                ProtoValue.FALSE,
-        });
+        //clock changes to down state
+        values[3]=ProtoValue.FALSE;
+        values[9]=ProtoValue.FALSE;
         
         chip.propagate(state);
         
-        assertEquals(ProtoValue.FALSE, state.getPort(2));
-        assertEquals(ProtoValue.FALSE, state.getPort(5));
-        
-        // New data, Clock value 1
-        state = new StubInstanceState(new Value[] {
-                ProtoValue.TRUE,
-                ProtoValue.TRUE,
-                ProtoValue.TRUE,
-                ProtoValue.TRUE,
-                ProtoValue.TRUE,
-                ProtoValue.TRUE,
-        });
-        
-        chip.propagate(state);
-        
-        assertEquals(ProtoValue.TRUE, state.getPort(2));
-        assertEquals(ProtoValue.TRUE, state.getPort(5));
-
-        // Retain data, Clock value 0
-        state = new StubInstanceState(new Value[] {
-                ProtoValue.FALSE,
-                ProtoValue.FALSE,
-                ProtoValue.TRUE,
-                ProtoValue.FALSE,
-                ProtoValue.FALSE,
-                ProtoValue.TRUE,
-        });
-        
-        chip.propagate(state);
-        
-        assertEquals(ProtoValue.TRUE, state.getPort(2));
-        assertEquals(ProtoValue.TRUE, state.getPort(5));
+        //output doesn't changes
+      	assertEquals(ProtoValue.FALSE, state.getPort(5));
+        assertEquals(ProtoValue.TRUE, state.getPort(6));
+        assertEquals(ProtoValue.FALSE, state.getPort(11));
+        assertEquals(ProtoValue.TRUE, state.getPort(12));    
     }
 
 }

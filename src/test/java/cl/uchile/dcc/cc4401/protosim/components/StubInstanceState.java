@@ -10,7 +10,7 @@ import com.cburch.logisim.instance.InstanceState;
 import com.cburch.logisim.proj.Project;
 
 public class StubInstanceState implements InstanceState {
-	
+	private InstanceData instanceData;
 	private Value[] values;
 
 	public StubInstanceState(Value[] values) {
@@ -65,14 +65,12 @@ public class StubInstanceState implements InstanceState {
 
 	@Override
 	public InstanceData getData() {
-		// TODO Auto-generated method stub
-		return null;
+		return instanceData;
 	}
 
 	@Override
 	public void setData(InstanceData value) {
-		// TODO Auto-generated method stub
-		
+		instanceData=value;
 	}
 
 	@Override
