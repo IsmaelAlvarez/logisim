@@ -250,22 +250,5 @@ public class TestOrChip {
         assertEquals(ProtoValue.UNKNOWN, state.getPort(6));
         assertEquals(ProtoValue.UNKNOWN, state.getPort(9));
         assertEquals(ProtoValue.UNKNOWN, state.getPort(12));
-        
-       /* state = new StubInstanceState(new Value[] {
-                ProtoValue.FALSE,
-                ProtoValue.TRUE,
-                ProtoValue.FALSE,
-                Value.UNKNOWN,
-                ProtoValue.FALSE,
-                ProtoValue.TRUE,
-                Value.UNKNOWN,
-                ProtoValue.FALSE,
-        });
-
-        chip.propagate(state);
-        
-        assertEquals(ProtoValue.UNKNOWN, state.getPort(3));
-        assertEquals(ProtoValue.UNKNOWN, state.getPort(6));
-        */
     }
 }
