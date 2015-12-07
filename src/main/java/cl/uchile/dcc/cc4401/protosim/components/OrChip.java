@@ -105,6 +105,7 @@ public class OrChip extends InstanceFactory {
     }
 
     private void setOutputValue(InstanceState state,int vcc, int ground, int portAIndex, int portBIndex, int portOutIndex) {
+    	
     	Value valueA = state.getPort(portAIndex);
         Value valueB = state.getPort(portBIndex);
         
