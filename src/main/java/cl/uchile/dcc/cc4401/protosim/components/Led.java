@@ -86,23 +86,23 @@ public class Led extends InstanceFactory {
         
         if (painter.getShowState()) { 
 
-            if (val.toString().equals(ProtoValue.MAX_VOLT_VALUE)){
+            if (val.equals(ProtoValue.TRUE)) {
                 g.setColor(Color.green);
             }
             
-            else if ((val.toString().equals(ProtoValue.MIN_VOLT_VALUE) || 
-                    (val.toString().equals(ProtoValue.UNKNOWN_VOLT_VALUE)) ||
-                    (val.toString().equals("0")))){
+            else if (val.equals(ProtoValue.FALSE)
+                    || val.equals(ProtoValue.NOT_CONNECTED)
+                    || val.toString().equals("0")) {
                 g.setColor(Color.gray);
             }
             
-            else if (val.toString().equals(ProtoValue.ERROR_VOLT_VALUE)){
+            else if (val.equals(ProtoValue.UNKNOWN)) {
                 g.setColor(Color.red);
             }
             
             g.fillOval(x - 2, y - 6, 14, 16);
             
-          if (val.toString().equals(ProtoValue.ERROR_VOLT_VALUE)){
+          if (val.equals(ProtoValue.UNKNOWN)) {
                 g.setColor(Color.white);
                 g.setFont(new Font("Courier", Font.BOLD, 9));
                 g.drawString("E", x + 3, y + 4);
@@ -137,7 +137,7 @@ public class Led extends InstanceFactory {
         
         // 0 is ground , if this value is x (not connected) or 1 (deadshort)
         // the ground is incorrectly connected.
-        if (valGround.toString().equals(ProtoValue.MIN_VOLT_VALUE)) {
+        if (valGround.equals(ProtoValue.FALSE)) {
             if (data == null) {
                 state.setData(new InstanceDataSingleton(val));
             } else {
@@ -145,8 +145,7 @@ public class Led extends InstanceFactory {
             }
         }
 
-        else if ((valGround.toString().equals(ProtoValue.MAX_VOLT_VALUE))
-                && (val.toString().equals(ProtoValue.MAX_VOLT_VALUE))) {
+        else if (valGround.equals(ProtoValue.TRUE) && val.equals(ProtoValue.TRUE)) {
 
             val = Value.createError(BitWidth.create(Breadboard.PORT_WIDTH));
 
@@ -156,9 +155,8 @@ public class Led extends InstanceFactory {
                 data.setValue(val);
             }
         }
-
-        else if ((valGround.toString().equals(ProtoValue.UNKNOWN_VOLT_VALUE))
-                || (valGround.toString().equals("0"))) {
+        else if (valGround.equals(ProtoValue.NOT_CONNECTED)
+                || valGround.toString().equals("0")) {
 
             val = Value.createKnown(BitWidth.create(Breadboard.PORT_WIDTH), 0);
             if (data == null) {

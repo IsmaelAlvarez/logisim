@@ -7,17 +7,13 @@ import com.cburch.logisim.data.Value;
 
 public class ProtoValue {
 
-    // Private porque solo esta clase debería trabajar con estos valores. El público general trabajará con TRUE y FALSE, que son Value.
     private static final int intTrue = -1;
     private static final int intFalse = 0;
+
     public static final Value TRUE = Value.createKnown(BitWidth.create(Breadboard.PORT_WIDTH), intTrue);
     public static final Value FALSE = Value.createKnown(BitWidth.create(Breadboard.PORT_WIDTH), intFalse);
     public static final Value UNKNOWN = Value.createError(BitWidth.create(Breadboard.PORT_WIDTH));
-
-    public static String MIN_VOLT_VALUE = "0000 0000 0000 0000 0000 0000 0000 0000";
-    public static String MAX_VOLT_VALUE = "1111 1111 1111 1111 1111 1111 1111 1111";
-    public static String ERROR_VOLT_VALUE = "EEEE EEEE EEEE EEEE EEEE EEEE EEEE EEEE";
-    public static String UNKNOWN_VOLT_VALUE = "xxxx xxxx xxxx xxxx xxxx xxxx xxxx xxxx";
+    public static final Value NOT_CONNECTED = Value.createUnknown(BitWidth.create(Breadboard.PORT_WIDTH));
 
     /**
      * Transforma un entero que representa un voltaje, a nuestro valor representado en booleano.
