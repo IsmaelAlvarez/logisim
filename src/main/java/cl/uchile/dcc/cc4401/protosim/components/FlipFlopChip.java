@@ -81,7 +81,7 @@ public class FlipFlopChip extends InstanceFactory {
 		// Text
 		g.setColor(Color.white);
 		g.setFont(new Font("Courier", Font.BOLD, 8));
-		g.drawString("FLIP FLOP", x + 9, y + 13);
+		g.drawString("FLIP FLOP", x + 8, y + 13);
 		g.drawString("7474", x + 18, y + 22);
 
 		g.drawString("+", x - 1, y + 12);
