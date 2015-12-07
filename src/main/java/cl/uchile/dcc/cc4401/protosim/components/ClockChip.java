@@ -174,29 +174,24 @@ public class ClockChip extends InstanceFactory {
 		}
 	}
 
-	private boolean isEnergized(InstanceState state, int vcc, int ground) {
-		Value valueVCC = state.getPort(vcc);
-		Value valueGround = state.getPort(ground);
-		if (valueVCC.isFullyDefined() && valueGround.isFullyDefined()
-				&& valueVCC.toIntValue() == ProtoValue.TRUE.toIntValue()
-				&& valueGround.toIntValue() == ProtoValue.FALSE.toIntValue()) {
-			return true;
-		}
-		return false;
-	}
-
 	@Override
 	public void propagate(InstanceState state) {
 		Value val = state.getPort(2);
 		ClockState q = getState(state);
+
+		Value valueVcc = state.getPort(0);
+		Value valueGround = state.getPort(5);
+
+		boolean isEnergized = ProtoValue.isEnergized(valueVcc, valueGround);
+
 		// ignore if no change
-		if (!val.equals(q.sending) && isEnergized(state, 0, 5)) {
+		if ( ! val.equals(q.sending) && isEnergized) {
 			state.setPort(1, q.sending, 1);
 			state.setPort(2, q.sending, 1);
 			state.setPort(3, q.sending, 1);
 			state.setPort(4, q.sending, 1);
 		}
-		if (!isEnergized(state, 0, 5)) {
+		if ( ! isEnergized) {
 			state.setPort(1, ProtoValue.UNKNOWN, 1);
 			state.setPort(2, ProtoValue.UNKNOWN, 1);
 			state.setPort(3, ProtoValue.UNKNOWN, 1);

@@ -118,11 +118,7 @@ public class AndChip extends InstanceFactory {
         
         Value result = ProtoValue.UNKNOWN;
         
-        if ( ! valueVcc.isUnknown()
-                && ! valueGround.isUnknown()
-                && valueVcc.equals(ProtoValue.TRUE)
-                && valueGround.equals(ProtoValue.FALSE)) {
-
+        if (ProtoValue.isEnergized(valueVcc, valueGround)) {
             if (ProtoValue.toBoolean(valueA) && ProtoValue.toBoolean(valueB)) {
                 result = ProtoValue.TRUE;
             } else {

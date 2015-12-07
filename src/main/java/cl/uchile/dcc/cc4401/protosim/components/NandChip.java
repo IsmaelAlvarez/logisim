@@ -106,16 +106,12 @@ public class NandChip extends InstanceFactory {
     private void setOutputValue(InstanceState state,int vcc, int ground, int portAIndex, int portBIndex, int portOutIndex) {
         Value valueA = state.getPort(portAIndex);
         Value valueB = state.getPort(portBIndex);
-        Value valueVCC = state.getPort(vcc);
+        Value valueVcc = state.getPort(vcc);
         Value valueGround = state.getPort(ground);
 
         Value result = ProtoValue.UNKNOWN;
 
-        if ( ! valueVCC.isUnknown()
-                && ! valueGround.isUnknown()
-                && valueVCC.equals(ProtoValue.TRUE)
-                && valueGround.equals(ProtoValue.FALSE)) {
-
+        if (ProtoValue.isEnergized(valueVcc, valueGround)) {
             if (ProtoValue.toBoolean(valueA) && ProtoValue.toBoolean(valueB)) {
                 result = ProtoValue.FALSE;
             } else {

@@ -113,16 +113,12 @@ public class NotChip extends InstanceFactory {
     }
     
     private void setOutputValue(InstanceState state,int vcc, int ground, int portAIndex, int portOutIndex) {
-        Value valueVCC = state.getPort(vcc);
+        Value valueVcc = state.getPort(vcc);
         Value valueGround = state.getPort(ground);
         Value valueA = state.getPort(portAIndex);        
-        Value result= ProtoValue.UNKNOWN;
+        Value result = ProtoValue.UNKNOWN;
         
-        if ( ! valueVCC.isErrorValue()
-                && ! valueGround.isErrorValue()
-                && valueVCC.equals(ProtoValue.TRUE)
-                && valueGround.equals(ProtoValue.FALSE)) {
-
+        if (ProtoValue.isEnergized(valueVcc, valueGround)) {
             if (valueA.isErrorValue()) {
                 result = ProtoValue.FALSE;
             } else {

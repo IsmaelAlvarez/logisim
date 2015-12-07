@@ -98,42 +98,36 @@ public class OrChip extends InstanceFactory {
 
     @Override
     public void propagate(InstanceState state) {
-    	 setOutputValue(state, 0, 13, 1, 2, 3);
+         setOutputValue(state, 0, 13, 1, 2, 3);
          setOutputValue(state, 0, 13, 4, 5, 6);
          setOutputValue(state, 0, 13, 7, 8, 9);
          setOutputValue(state, 0, 13, 10, 11, 12);
     }
 
-    private void setOutputValue(InstanceState state,int vcc, int ground, int portAIndex, int portBIndex, int portOutIndex) {
-    	Value valueA = state.getPort(portAIndex);
+    private void setOutputValue(InstanceState state, int vcc, int ground, int portAIndex, int portBIndex, int portOutIndex) {
+        Value valueA = state.getPort(portAIndex);
         Value valueB = state.getPort(portBIndex);
-        
+
+        Value valueVcc = state.getPort(vcc);
+        Value valueGround = state.getPort(ground);
+
         Value result;
-        
-        if (isEnergized(state, vcc, ground)) {
-	        if (valueA.isUnknown() || valueB.isUnknown()) {
-	        	result = ProtoValue.FALSE;
-	        } else {
-	            if (ProtoValue.toBoolean(valueA) || ProtoValue.toBoolean(valueB))
-	            	result = ProtoValue.TRUE;
-	            else
-	            	result = ProtoValue.FALSE;
-	        }
+
+        if (ProtoValue.isEnergized(valueVcc, valueGround)) {
+            if (valueA.isUnknown() || valueB.isUnknown()) {
+                result = ProtoValue.FALSE;
+            } else {
+                if (ProtoValue.toBoolean(valueA) || ProtoValue.toBoolean(valueB))
+                    result = ProtoValue.TRUE;
+                else
+                    result = ProtoValue.FALSE;
+            }
         }
         else {
-        	result = ProtoValue.UNKNOWN;
+            result = ProtoValue.UNKNOWN;
         }
 
         state.setPort(portOutIndex, result, Breadboard.DELAY);
     }
 
-	private boolean isEnergized(InstanceState state, int vcc, int ground) {
-		Value valueVCC = state.getPort(vcc);
-		Value valueGround = state.getPort(ground);
-		if (valueVCC.isFullyDefined() && valueGround.isFullyDefined() && valueVCC.toIntValue() == ProtoValue.TRUE.toIntValue()
-				&& valueGround.toIntValue() == ProtoValue.FALSE.toIntValue()) {
-			return true;
-		}
-		return false;
-	}
 }

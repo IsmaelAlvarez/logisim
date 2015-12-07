@@ -113,17 +113,6 @@ public class FlipFlopChip extends InstanceFactory {
 		return Bounds.create(0, 0, 60, 30);
 	}
 
-	private boolean isEnergized(InstanceState state, int vcc, int ground) {
-		Value valueVCC = state.getPort(vcc);
-		Value valueGround = state.getPort(ground);
-		if (valueVCC.isFullyDefined() && valueGround.isFullyDefined()
-				&& valueVCC.toIntValue() == ProtoValue.TRUE.toIntValue()
-				&& valueGround.toIntValue() == ProtoValue.FALSE.toIntValue()) {
-			return true;
-		}
-		return false;
-	}
-
 	@Override
 	public void propagate(InstanceState state) {
 		StateData data = (StateData) state.getData();
@@ -136,7 +125,10 @@ public class FlipFlopChip extends InstanceFactory {
 		boolean triggered1 = data.updateClock(1, state.getPort(3), triggerType);
 		boolean triggered2 = data.updateClock(2, state.getPort(9), triggerType);
 
-		if (isEnergized(state, 0, 13)) {
+		Value valueVcc = state.getPort(0);
+		Value valueGround = state.getPort(13);
+
+		if (ProtoValue.isEnergized(valueVcc, valueGround)) {
 			setOutputValue(state, data, 1, triggered1, 1, 2, 4, 5, 6);
 			setOutputValue(state, data, 2, triggered2, 7, 8, 10, 11, 12);
 		} else {

@@ -44,4 +44,11 @@ public class ProtoValue {
             return true;
         }
     }
+
+    public static boolean isEnergized(Value valueVcc, Value valueGround) {
+        return ! valueVcc.isUnknown()
+                && ! valueGround.isUnknown()
+                && valueVcc.equals(ProtoValue.TRUE)
+                && valueGround.equals(ProtoValue.FALSE);
+    }
 }
