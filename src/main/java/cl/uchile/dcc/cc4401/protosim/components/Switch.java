@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import com.cburch.logisim.circuit.Wire;
@@ -37,12 +36,9 @@ public class Switch extends InstanceFactory {
 
     private List<Port> ports;
 
-    private HashMap<Port, Integer> connected;
     public Switch() {
         super("Switch");
         this.setIcon(Icons.getIcon("protosimComponentSwitch.svg"));
-        ports = new ArrayList<Port>();
-        connected = new HashMap<Port, Integer>();
         
         setAttributes(new Attribute[] {
                 StdAttr.FACING,
@@ -64,20 +60,18 @@ public class Switch extends InstanceFactory {
             
         setFacingAttribute(StdAttr.FACING);
         setIconName("protosimComponentSwitch.svg");
-        setPorts(ports); 
-        createAndConnectPorts();
-        setInstancePoker(Poker.class);
-        setInstanceLogger(Logger.class);
-        pressed = false;
-    }
-    
-    private void createAndConnectPorts() {
+        
         ports = new ArrayList<Port>();
         ports.add(new Port(-20, 0, Port.INPUT, Breadboard.PORT_WIDTH));
         ports.add(new Port(0, 0, Port.OUTPUT, Breadboard.PORT_WIDTH));
-        setPorts(ports);
+        setPorts(ports); 
+        
+        setInstancePoker(Poker.class);
+        setInstanceLogger(Logger.class);
+        
+        pressed = false;
     }
-    
+      
     @Override
     public Bounds getOffsetBounds(AttributeSet attrs) {
         Direction facing = attrs.getValue(StdAttr.FACING);
@@ -270,9 +264,4 @@ public class Switch extends InstanceFactory {
             return data == null ? Value.FALSE : (Value) data.getValue();
         }
     }
-    
-    public HashMap<Port, Integer> getConnected() {
-        return connected;
-    }
-
 }

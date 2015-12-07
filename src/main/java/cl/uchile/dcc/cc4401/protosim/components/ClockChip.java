@@ -56,23 +56,10 @@ public class ClockChip extends InstanceFactory {
 		setPorts(ports);
 
 		setAttributes(
-				new Attribute[] {
-						StdAttr.FACING,
-						Clock.ATTR_HIGH,
-						Clock.ATTR_LOW,
-						StdAttr.LABEL,
-						Pin.ATTR_LABEL_LOC,
-						StdAttr.LABEL_FONT
-				},
-				new Object[] {
-						Direction.EAST,
-						Integer.valueOf(1),
-						Integer.valueOf(1),
-						"",
-						Direction.WEST,
-						StdAttr.DEFAULT_LABEL_FONT
-				}
-		);
+				new Attribute[] { StdAttr.FACING, Clock.ATTR_HIGH, Clock.ATTR_LOW, StdAttr.LABEL, Pin.ATTR_LABEL_LOC,
+						StdAttr.LABEL_FONT },
+				new Object[] { Direction.EAST, Integer.valueOf(1), Integer.valueOf(1), "", Direction.WEST,
+						StdAttr.DEFAULT_LABEL_FONT });
 
 		setFacingAttribute(StdAttr.FACING);
 		setInstanceLogger(ClockLogger.class);
@@ -100,7 +87,7 @@ public class ClockChip extends InstanceFactory {
 		g.setColor(Color.white);
 		g.setFont(new Font("Courier", Font.BOLD, 8));
 		g.drawString("CLK", x + 3, y + 18);
-		g.drawString("+", x-1, y + 12);
+		g.drawString("+", x - 1, y + 12);
 		g.drawString("-", x + 17, y + 24);
 
 		// Pins
@@ -190,7 +177,8 @@ public class ClockChip extends InstanceFactory {
 	private boolean isEnergized(InstanceState state, int vcc, int ground) {
 		Value valueVCC = state.getPort(vcc);
 		Value valueGround = state.getPort(ground);
-		if (valueVCC.isFullyDefined() && valueGround.isFullyDefined() && valueVCC.toIntValue() == ProtoValue.TRUE.toIntValue()
+		if (valueVCC.isFullyDefined() && valueGround.isFullyDefined()
+				&& valueVCC.toIntValue() == ProtoValue.TRUE.toIntValue()
 				&& valueGround.toIntValue() == ProtoValue.FALSE.toIntValue()) {
 			return true;
 		}
@@ -233,8 +221,7 @@ public class ClockChip extends InstanceFactory {
 			curValue = !curValue;
 		}
 
-		Value desired = (curValue ? ProtoValue.FALSE
-				: ProtoValue.TRUE);
+		Value desired = (curValue ? ProtoValue.FALSE : ProtoValue.TRUE);
 		if (!state.sending.equals(desired)) {
 			state.sending = desired;
 			Instance.getInstanceFor(comp).fireInvalidated();

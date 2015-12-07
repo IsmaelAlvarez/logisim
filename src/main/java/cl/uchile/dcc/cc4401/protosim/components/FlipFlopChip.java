@@ -42,14 +42,13 @@ public class FlipFlopChip extends InstanceFactory {
 		ports = new ArrayList<Port>();
 
 		// Upper ports
-		ports.add(new Port(0, 0, Port.INPUT, Breadboard.PORT_WIDTH)); // 0 vcc
-		ports.add(new Port(10, 0, Port.INPUT, Breadboard.PORT_WIDTH)); // 1 clr
-		ports.add(new Port(20, 0, Port.INPUT, Breadboard.PORT_WIDTH)); // 2 d
-		ports.add(new Port(30, 0, Port.INPUT, Breadboard.PORT_WIDTH)); // 3 clk
-		ports.add(new Port(40, 0, Port.INPUT, Breadboard.PORT_WIDTH)); // 4 pr
-		ports.add(new Port(50, 0, Port.OUTPUT, Breadboard.PORT_WIDTH)); // 5 q
-		ports.add(new Port(60, 0, Port.OUTPUT, Breadboard.PORT_WIDTH)); // 6
-																		// not_q
+		ports.add(new Port(0, 0, Port.INPUT, Breadboard.PORT_WIDTH)); // vcc
+		ports.add(new Port(10, 0, Port.INPUT, Breadboard.PORT_WIDTH)); // clr
+		ports.add(new Port(20, 0, Port.INPUT, Breadboard.PORT_WIDTH)); // d
+		ports.add(new Port(30, 0, Port.INPUT, Breadboard.PORT_WIDTH)); // clk
+		ports.add(new Port(40, 0, Port.INPUT, Breadboard.PORT_WIDTH)); // pr
+		ports.add(new Port(50, 0, Port.OUTPUT, Breadboard.PORT_WIDTH)); // q
+		ports.add(new Port(60, 0, Port.OUTPUT, Breadboard.PORT_WIDTH)); // not_q
 
 		// Lower ports
 		ports.add(new Port(0, 30, Port.INOUT, Breadboard.PORT_WIDTH)); // clr
@@ -157,7 +156,7 @@ public class FlipFlopChip extends InstanceFactory {
 		} else if (state.getPort(pr) == ProtoValue.TRUE) {
 			data.setValue(gate, ProtoValue.TRUE);
 		} else if (triggered) {
-			// Clock has triggered and
+			// Clock has triggered
 			Value newVal = state.getPort(d);
 			if (newVal.equals(ProtoValue.TRUE) || newVal.equals(ProtoValue.FALSE)) {
 				data.setValue(gate, newVal);
@@ -170,6 +169,7 @@ public class FlipFlopChip extends InstanceFactory {
 	private static class StateData extends ProtosimClockState implements InstanceData {
 		Value curValue1 = ProtoValue.FALSE;
 		Value curValue2 = ProtoValue.FALSE;
+
 		Value getValue(int gate) {
 			if (gate == 1) {
 				return curValue1;
@@ -177,6 +177,7 @@ public class FlipFlopChip extends InstanceFactory {
 				return curValue2;
 			}
 		}
+
 		void setValue(int gate, Value newValue) {
 			if (gate == 1) {
 				curValue1 = newValue;
