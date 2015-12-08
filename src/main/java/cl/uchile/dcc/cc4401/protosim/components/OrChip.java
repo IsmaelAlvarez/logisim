@@ -111,20 +111,14 @@ public class OrChip extends InstanceFactory {
         Value valueVcc = state.getPort(vcc);
         Value valueGround = state.getPort(ground);
 
-        Value result;
+        Value result = ProtoValue.UNKNOWN;;
 
         if (ProtoValue.isEnergized(valueVcc, valueGround)) {
-            if (valueA.isUnknown() || valueB.isUnknown()) {
-                result = ProtoValue.FALSE;
+            if (ProtoValue.toBoolean(valueA) || ProtoValue.toBoolean(valueB)) {
+                result = ProtoValue.TRUE;
             } else {
-                if (ProtoValue.toBoolean(valueA) || ProtoValue.toBoolean(valueB))
-                    result = ProtoValue.TRUE;
-                else
-                    result = ProtoValue.FALSE;
+                result = ProtoValue.FALSE;
             }
-        }
-        else {
-            result = ProtoValue.UNKNOWN;
         }
 
         state.setPort(portOutIndex, result, Breadboard.DELAY);

@@ -5,14 +5,10 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
-
-import cl.uchile.dcc.cc4401.protosim.libraries.ProtoValue;
-
 import com.cburch.logisim.data.Bounds;
 import com.cburch.logisim.data.Value;
 import com.cburch.logisim.instance.InstanceDataSingleton;
 import com.cburch.logisim.instance.InstanceState;
-
 
 public class TestLED {
 

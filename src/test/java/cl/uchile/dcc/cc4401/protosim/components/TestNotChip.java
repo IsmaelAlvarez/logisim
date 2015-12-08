@@ -86,12 +86,12 @@ public class TestNotChip {
 
         chip.propagate(state);
 
-        assertEquals(ProtoValue.FALSE, state.getPort(2));
-        assertEquals(ProtoValue.FALSE, state.getPort(4));
-        assertEquals(ProtoValue.FALSE, state.getPort(6));
-        assertEquals(ProtoValue.FALSE, state.getPort(8));
-        assertEquals(ProtoValue.FALSE, state.getPort(10));
-        assertEquals(ProtoValue.FALSE, state.getPort(12));
+        assertEquals(ProtoValue.UNKNOWN, state.getPort(2));
+        assertEquals(ProtoValue.UNKNOWN, state.getPort(4));
+        assertEquals(ProtoValue.UNKNOWN, state.getPort(6));
+        assertEquals(ProtoValue.UNKNOWN, state.getPort(8));
+        assertEquals(ProtoValue.UNKNOWN, state.getPort(10));
+        assertEquals(ProtoValue.UNKNOWN, state.getPort(12));
 
     }
 
