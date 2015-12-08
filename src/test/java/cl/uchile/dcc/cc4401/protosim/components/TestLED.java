@@ -10,6 +10,7 @@ import cl.uchile.dcc.cc4401.protosim.libraries.ProtoValue;
 
 import com.cburch.logisim.data.Bounds;
 import com.cburch.logisim.data.Value;
+import com.cburch.logisim.instance.InstanceDataSingleton;
 import com.cburch.logisim.instance.InstanceState;
 
 
@@ -40,45 +41,93 @@ public class TestLED {
     public void testPropagateInputPortsWithUnknownValues() {
         // All unknown values
         InstanceState state = new StubInstanceState(new Value[] {
-                Value.UNKNOWN,
-                Value.UNKNOWN,
+                ProtoValue.UNKNOWN,
+                ProtoValue.UNKNOWN,
         });
-
+        
+        assertEquals(ProtoValue.UNKNOWN, state.getPort(0));
+        assertEquals(ProtoValue.UNKNOWN, state.getPort(1));
+        
         led.propagate(state);
+        
+        InstanceDataSingleton data = (InstanceDataSingleton) state.getData();
+        Value val = data == null ? Value.FALSE : (Value) data.getValue();
+        assertEquals(Value.FALSE, val);
 
-        assertEquals(Value.UNKNOWN, state.getPort(0));
-        assertEquals(Value.UNKNOWN, state.getPort(1));
 
     }
     
     @Test
-    public void testPropagateInputPortsWithknownValues() {
-        // All known values
+    public void testPropagateInputPortsWithTrueValues() {
+        // All TRUE values
         InstanceState state = new StubInstanceState(new Value[] {
-                Value.TRUE,
-                Value.TRUE,
+                ProtoValue.TRUE,
+                ProtoValue.TRUE,
         });
-
+        
+        assertEquals(ProtoValue.TRUE, state.getPort(0));
+        assertEquals(ProtoValue.TRUE, state.getPort(1));
+        
         led.propagate(state);
-
-        assertEquals(Value.TRUE, state.getPort(0));
-        assertEquals(Value.TRUE, state.getPort(1));
+        
+        InstanceDataSingleton data = (InstanceDataSingleton) state.getData();
+        Value val = data == null ? Value.FALSE : (Value) data.getValue();
+        assertEquals(ProtoValue.UNKNOWN, val);
 
     }
     
     @Test
     public void testPropagateInputPortsWithfalseValues() {
-        // All false values
+        // All FALSE values
         InstanceState state = new StubInstanceState(new Value[] {
-                Value.FALSE,
-                Value.FALSE,
+                ProtoValue.FALSE,
+                ProtoValue.FALSE,
         });
 
+        assertEquals(ProtoValue.FALSE, state.getPort(0));
+        assertEquals(ProtoValue.FALSE, state.getPort(1));
+        
         led.propagate(state);
+        
+        InstanceDataSingleton data = (InstanceDataSingleton) state.getData();
+        Value val = data == null ? Value.FALSE : (Value) data.getValue();
+        assertEquals(ProtoValue.FALSE, val);
 
-        assertEquals(Value.FALSE, state.getPort(0));
-        assertEquals(Value.FALSE, state.getPort(1));
 
+    }
+    
+    @Test
+    public void testLedOn(){
+    	 InstanceState state = new StubInstanceState(new Value[] {
+                 ProtoValue.TRUE,
+                 ProtoValue.FALSE,
+         });
+
+         assertEquals(ProtoValue.TRUE, state.getPort(0));
+         assertEquals(ProtoValue.FALSE, state.getPort(1));
+         
+         led.propagate(state);
+         
+         InstanceDataSingleton data = (InstanceDataSingleton) state.getData();
+         Value val = data == null ? Value.FALSE : (Value) data.getValue();
+         assertEquals(ProtoValue.TRUE, val);	
+    }
+    
+    @Test
+    public void testLedOff(){
+    	 InstanceState state = new StubInstanceState(new Value[] {
+                 ProtoValue.FALSE,
+                 ProtoValue.TRUE,
+         });
+
+         assertEquals(ProtoValue.FALSE, state.getPort(0));
+         assertEquals(ProtoValue.TRUE, state.getPort(1));
+         
+         led.propagate(state);
+         
+         InstanceDataSingleton data = (InstanceDataSingleton) state.getData();
+         Value val = data == null ? Value.FALSE : (Value) data.getValue();
+         assertEquals(Value.FALSE, val);	
     }
 
 }
