@@ -141,7 +141,7 @@ public class Switch extends InstanceFactory {
         InstanceDataSingleton data = (InstanceDataSingleton) state.getData();
         Value isPressed = data == null ? ProtoValue.FALSE : (Value) data.getValue();
         
-        if (ProtoValue.toBoolean(isPressed))
+        if (ProtoValue.toBoolean(isPressed) && valueA.isFullyDefined())
             result = valueA;
         else
             result = ProtoValue.UNKNOWN;
