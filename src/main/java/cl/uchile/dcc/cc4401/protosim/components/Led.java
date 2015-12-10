@@ -138,6 +138,7 @@ public class Led extends InstanceFactory {
         // 0 is ground , if this value is x (not connected) or 1 (deadshort)
         // the ground is incorrectly connected.
         if (valGround.equals(ProtoValue.FALSE)) {
+        	
             if (data == null) {
                 state.setData(new InstanceDataSingleton(val));
             } else {

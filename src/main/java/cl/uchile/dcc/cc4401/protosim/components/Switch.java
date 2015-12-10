@@ -6,10 +6,11 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 
+import cl.uchile.dcc.cc4401.protosim.libraries.ProtoValue;
+
 import com.cburch.logisim.circuit.Wire;
 import com.cburch.logisim.data.Attribute;
 import com.cburch.logisim.data.AttributeSet;
-import com.cburch.logisim.data.BitWidth;
 import com.cburch.logisim.data.Bounds;
 import com.cburch.logisim.data.Direction;
 import com.cburch.logisim.data.Location;
@@ -32,8 +33,6 @@ public class Switch extends InstanceFactory {
     public static InstanceFactory FACTORY = new Switch();
 
     private static final int DEPTH = 3;
-    private static boolean pressed;
-
     private List<Port> ports;
 
     public Switch() {
@@ -68,8 +67,6 @@ public class Switch extends InstanceFactory {
         
         setInstancePoker(Poker.class);
         setInstanceLogger(Logger.class);
-        
-        pressed = false;
     }
       
     @Override
@@ -140,10 +137,14 @@ public class Switch extends InstanceFactory {
         int portOutIndex = 1;
         Value valueA = state.getPort(portInIndex);
         Value result;
-        if (pressed)
+        
+        InstanceDataSingleton data = (InstanceDataSingleton) state.getData();
+        Value isPressed = data == null ? ProtoValue.FALSE : (Value) data.getValue();
+        
+        if (ProtoValue.toBoolean(isPressed) && valueA.isFullyDefined())
             result = valueA;
         else
-            result = Value.createUnknown(BitWidth.create(Breadboard.PORT_WIDTH));
+            result = ProtoValue.UNKNOWN;
 
         state.setPort(portOutIndex, result, Breadboard.DELAY);
     }
@@ -159,9 +160,9 @@ public class Switch extends InstanceFactory {
         Value val;
         if (painter.getShowState()) {
             InstanceDataSingleton data = (InstanceDataSingleton) painter.getData();
-            val = data == null ? Value.FALSE : (Value) data.getValue();
+            val = data == null ? ProtoValue.FALSE : (Value) data.getValue();
         } else {
-            val = Value.FALSE;
+            val = ProtoValue.FALSE;
         }
 
         Color color = painter.getAttributeValue(Io.ATTR_COLOR);
@@ -172,7 +173,7 @@ public class Switch extends InstanceFactory {
 
         Graphics g = painter.getGraphics();
         int depress;
-        if (val == Value.TRUE) {
+        if (val == ProtoValue.TRUE) {
             x += DEPTH;
             y += DEPTH;
             Object labelLoc = painter.getAttributeValue(Io.ATTR_LABEL_LOC);
@@ -231,14 +232,12 @@ public class Switch extends InstanceFactory {
     public static class Poker extends InstancePoker {
         @Override
         public void mousePressed(InstanceState state, MouseEvent e) {
-            pressed = true;
-            setValue(state, Value.TRUE);
+            setValue(state, ProtoValue.TRUE);
         }
 
         @Override
         public void mouseReleased(InstanceState state, MouseEvent e) {
-            pressed = false;
-            setValue(state, Value.FALSE);
+            setValue(state, ProtoValue.FALSE);
         }
 
         private void setValue(InstanceState state, Value val) {
