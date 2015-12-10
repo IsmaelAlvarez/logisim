@@ -20,9 +20,9 @@ public class Io extends Library {
 
     public static final Attribute<Color> ATTR_COLOR = Attributes.forColor("color",
             getFromLocale("ioColorAttr"));
-    static final Attribute<Color> ATTR_ON_COLOR
+    public static final Attribute<Color> ATTR_ON_COLOR
         = Attributes.forColor("color", getFromLocale("ioOnColor"));
-    static final Attribute<Color> ATTR_OFF_COLOR
+    public static final Attribute<Color> ATTR_OFF_COLOR
         = Attributes.forColor("offcolor", getFromLocale("ioOffColor"));
     static final Attribute<Color> ATTR_BACKGROUND
         = Attributes.forColor("bg", getFromLocale("ioBackgroundColor"));
@@ -32,7 +32,7 @@ public class Io extends Library {
                 Direction.EAST, Direction.WEST });
     public static final Attribute<Color> ATTR_LABEL_COLOR = Attributes.forColor("labelcolor",
             getFromLocale("ioLabelColorAttr"));
-    static final Attribute<Boolean> ATTR_ACTIVE = Attributes.forBoolean("active",
+    public static final Attribute<Boolean> ATTR_ACTIVE = Attributes.forBoolean("active",
             getFromLocale("ioActiveAttr"));
 
     static final Color DEFAULT_BACKGROUND = new Color(255, 255, 255, 0);

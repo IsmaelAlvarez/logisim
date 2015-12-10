@@ -320,7 +320,7 @@ public class Probe extends InstanceFactory {
         return ret;
     }
 
-    static void configureLabel(Instance instance, Direction labelLoc,
+    public static void configureLabel(Instance instance, Direction labelLoc,
             Direction facing) {
         Bounds bds = instance.getBounds();
         int x;

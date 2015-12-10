@@ -4,8 +4,9 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
+
+import cl.uchile.dcc.cc4401.protosim.libraries.ProtoValue;
 
 import com.cburch.logisim.circuit.Wire;
 import com.cburch.logisim.data.Attribute;
@@ -30,49 +31,44 @@ import com.cburch.logisim.util.Icons;
 public class Switch extends InstanceFactory {
     
     public static InstanceFactory FACTORY = new Switch();
-    private static final int DEPTH = 3;
-    public static final int PORT_WIDTH = 32;
-    List<Port> ports;
 
-    /*
-	 * If two or more ports have the same integer value,
-	 * they are connected in the Switch
-	 */
-	private HashMap<Port, Integer> connected;
+    private static final int DEPTH = 3;
+    private List<Port> ports;
+
     public Switch() {
         super("Switch");
         this.setIcon(Icons.getIcon("protosimComponentSwitch.svg"));
-        ports = new ArrayList<Port>();
-        connected = new HashMap<Port, Integer>();
         
         setAttributes(new Attribute[] {
-                StdAttr.FACING, Io.ATTR_COLOR,
-                StdAttr.LABEL, Io.ATTR_LABEL_LOC,
-                StdAttr.LABEL_FONT, Io.ATTR_LABEL_COLOR
-            }, new Object[] {
-                Direction.EAST, Color.WHITE,
-                "", Io.LABEL_CENTER,
-                StdAttr.DEFAULT_LABEL_FONT, Color.BLACK
-            });
+                StdAttr.FACING,
+                Io.ATTR_COLOR,
+                StdAttr.LABEL,
+                Io.ATTR_LABEL_LOC,
+                StdAttr.LABEL_FONT,
+                Io.ATTR_LABEL_COLOR
+            },
+            new Object[] {
+                Direction.EAST,
+                Color.WHITE,
+                "",
+                Io.LABEL_CENTER,
+                StdAttr.DEFAULT_LABEL_FONT,
+                Color.BLACK
+            }
+        );
             
         setFacingAttribute(StdAttr.FACING);
         setIconName("protosimComponentSwitch.svg");
+        
+        ports = new ArrayList<Port>();
+        ports.add(new Port(-20, 0, Port.INPUT, Breadboard.PORT_WIDTH));
+        ports.add(new Port(0, 0, Port.OUTPUT, Breadboard.PORT_WIDTH));
         setPorts(ports); 
-        createAndConnectPorts();
+        
         setInstancePoker(Poker.class);
         setInstanceLogger(Logger.class);
     }
-    
-    /*This method creates the ports and connect an internal wiring between the two pins, when pressed, (still in development, but this is the idea)*/
-    private void createAndConnectPorts() {
-		int pinGroup = 1;
-		for (int i = -20; i <= 0; i += 20) {
-			Port port = new Port( i, 0, Port.INOUT, PORT_WIDTH);
-			ports.add(port);
-			connected.put(port, pinGroup);
-		}
-	}
-    
+      
     @Override
     public Bounds getOffsetBounds(AttributeSet attrs) {
         Direction facing = attrs.getValue(StdAttr.FACING);
@@ -87,18 +83,15 @@ public class Switch extends InstanceFactory {
 
     @Override
     protected void instanceAttributeChanged(Instance instance, Attribute<?> attr) {
-    	
         if (attr == StdAttr.FACING) {
             instance.recomputeBounds();
             computeTextField(instance);
         } else if (attr == Io.ATTR_LABEL_LOC) {
             computeTextField(instance);
         }
-        
     }
 
     private void computeTextField(Instance instance) {
-    	
         Direction facing = instance.getAttributeValue(StdAttr.FACING);
         Object labelLoc = instance.getAttributeValue(Io.ATTR_LABEL_LOC);
 
@@ -107,6 +100,7 @@ public class Switch extends InstanceFactory {
         int y = bds.getY() + bds.getHeight() / 2;
         int halign = GraphicsUtil.H_CENTER;
         int valign = GraphicsUtil.V_CENTER;
+
         if (labelLoc == Io.LABEL_CENTER) {
             x = bds.getX() + (bds.getWidth() - DEPTH) / 2;
             y = bds.getY() + (bds.getHeight() - DEPTH) / 2;
@@ -123,6 +117,7 @@ public class Switch extends InstanceFactory {
             x = bds.getX() - 2;
             halign = GraphicsUtil.H_RIGHT;
         }
+
         if (labelLoc == facing) {
             if (labelLoc == Direction.NORTH || labelLoc == Direction.SOUTH) {
                 x += 2;
@@ -133,25 +128,29 @@ public class Switch extends InstanceFactory {
             }
         }
 
-        instance.setTextField(StdAttr.LABEL, StdAttr.LABEL_FONT,
-                x, y, halign, valign);
+        instance.setTextField(StdAttr.LABEL, StdAttr.LABEL_FONT, x, y, halign, valign);
     }
 
     @Override
     public void propagate(InstanceState state) {
+        int portInIndex = 0;
+        int portOutIndex = 1;
+        Value valueA = state.getPort(portInIndex);
+        Value result;
+        
         InstanceDataSingleton data = (InstanceDataSingleton) state.getData();
-        Value val = data == null ? Value.FALSE : (Value) data.getValue();
-      if (val.toString()=="1"){
-        setPorts(ports); 
-        createAndConnectPorts();
-      }else{
-         //DisconnectPorts (still in development, but this is the idea)//
-      }
+        Value isPressed = data == null ? ProtoValue.FALSE : (Value) data.getValue();
+        
+        if (ProtoValue.toBoolean(isPressed) && valueA.isFullyDefined())
+            result = valueA;
+        else
+            result = ProtoValue.UNKNOWN;
+
+        state.setPort(portOutIndex, result, Breadboard.DELAY);
     }
 
     @Override
     public void paintInstance(InstancePainter painter) {
-    	
         Bounds bds = painter.getBounds();
         int x = bds.getX();
         int y = bds.getY();
@@ -161,24 +160,25 @@ public class Switch extends InstanceFactory {
         Value val;
         if (painter.getShowState()) {
             InstanceDataSingleton data = (InstanceDataSingleton) painter.getData();
-            val = data == null ? Value.FALSE : (Value) data.getValue();
+            val = data == null ? ProtoValue.FALSE : (Value) data.getValue();
         } else {
-            val = Value.FALSE;
+            val = ProtoValue.FALSE;
         }
 
         Color color = painter.getAttributeValue(Io.ATTR_COLOR);
-        if (!painter.shouldDrawColor()) {
+        if ( ! painter.shouldDrawColor()) {
             int hue = (color.getRed() + color.getGreen() + color.getBlue()) / 3;
             color = new Color(hue, hue, hue);
         }
 
         Graphics g = painter.getGraphics();
         int depress;
-        if (val == Value.TRUE) {
+        if (val == ProtoValue.TRUE) {
             x += DEPTH;
             y += DEPTH;
             Object labelLoc = painter.getAttributeValue(Io.ATTR_LABEL_LOC);
-            if (labelLoc == Io.LABEL_CENTER || labelLoc == Direction.NORTH
+            if (labelLoc == Io.LABEL_CENTER
+                    || labelLoc == Direction.NORTH
                     || labelLoc == Direction.WEST) {
                 depress = DEPTH;
             } else {
@@ -192,12 +192,12 @@ public class Switch extends InstanceFactory {
                 int py = p.getY();
                 GraphicsUtil.switchToWidth(g, Wire.WIDTH);
                 g.setColor(Value.TRUE_COLOR);
+
                 if (facing == Direction.NORTH) {
                     g.drawLine(px, py, px, py + 10);
                 }
-
                 else {
-                                             g.drawLine(px, py, px + 10, py);
+                    g.drawLine(px, py, px + 10, py);
                 }
 
                 GraphicsUtil.switchToWidth(g, 1);
@@ -225,19 +225,19 @@ public class Switch extends InstanceFactory {
         g.setColor(painter.getAttributeValue(Io.ATTR_LABEL_COLOR));
         painter.drawLabel();
         g.translate(-depress, -depress);
+
         painter.drawPorts();
-        
     }
 
     public static class Poker extends InstancePoker {
         @Override
         public void mousePressed(InstanceState state, MouseEvent e) {
-            setValue(state, Value.TRUE);
+            setValue(state, ProtoValue.TRUE);
         }
 
         @Override
         public void mouseReleased(InstanceState state, MouseEvent e) {
-            setValue(state, Value.FALSE);
+            setValue(state, ProtoValue.FALSE);
         }
 
         private void setValue(InstanceState state, Value val) {
@@ -263,9 +263,4 @@ public class Switch extends InstanceFactory {
             return data == null ? Value.FALSE : (Value) data.getValue();
         }
     }
-    
-    public HashMap<Port, Integer> getConnected() {
-		return connected;
-	}
-    
 }

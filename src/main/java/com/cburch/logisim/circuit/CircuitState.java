@@ -27,6 +27,8 @@ import com.cburch.logisim.proj.Project;
 import com.cburch.logisim.std.wiring.Clock;
 import com.cburch.logisim.std.wiring.Pin;
 
+import cl.uchile.dcc.cc4401.protosim.components.ClockChip;
+
 public class CircuitState implements InstanceData {
     private class MyCircuitListener implements CircuitListener {
         @Override
@@ -442,6 +444,10 @@ public class CircuitState implements InstanceData {
         boolean ret = false;
         for (Component clock : circuit.getClocks()) {
             ret |= Clock.tick(this, ticks, clock);
+        }
+        
+        for (Component clock : circuit.getClockChips()) {
+            ret |= ClockChip.tick(this, ticks, clock);
         }
 
         CircuitState[] subs = new CircuitState[substates.size()];
