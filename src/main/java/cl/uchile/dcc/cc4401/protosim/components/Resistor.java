@@ -8,6 +8,7 @@ import java.util.List;
 import com.cburch.logisim.data.AttributeSet;
 import com.cburch.logisim.data.Bounds;
 import com.cburch.logisim.data.Location;
+import com.cburch.logisim.data.Value;
 import com.cburch.logisim.instance.InstanceFactory;
 import com.cburch.logisim.instance.InstancePainter;
 import com.cburch.logisim.instance.InstanceState;
@@ -65,8 +66,18 @@ public class Resistor extends InstanceFactory {
         return Bounds.create(0, -5, 40, 10);
     }
 
+    private Value getInputVoltage(InstanceState state) {
+    	return state.getPort(0);
+    }
+    
+    private Value getOutputVoltage(InstanceState state) {
+    	Value in = getInputVoltage(state);
+    	return in;
+    }
+    
     @Override
     public void propagate(InstanceState state) {
-        // TODO Auto-generated method stub
+    	Value out = getOutputVoltage(state);
+    	state.setPort(1, out, Breadboard.DELAY);
     }
 }
