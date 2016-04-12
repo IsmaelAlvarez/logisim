@@ -12,6 +12,7 @@ import com.cburch.logisim.proj.Project;
 public class StubInstanceState implements InstanceState {
 	private InstanceData instanceData;
 	private Value[] values;
+	private int voltage;
 
 	public StubInstanceState(Value[] values) {
 		this.values = values;
@@ -89,6 +90,16 @@ public class StubInstanceState implements InstanceState {
 	public long getTickCount() {
 		// TODO Auto-generated method stub
 		return 0;
+	}
+
+	@Override
+	public void setVoltage(int vol) {
+		voltage = vol;
+	}
+
+	@Override
+	public int getVoltage() {
+		return voltage;
 	}
 
 }

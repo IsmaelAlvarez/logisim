@@ -3,25 +3,21 @@
 
 package com.cburch.logisim.instance;
 
-import java.awt.Graphics;
-
 import com.cburch.logisim.circuit.Circuit;
 import com.cburch.logisim.circuit.CircuitState;
 import com.cburch.logisim.circuit.WireSet;
 import com.cburch.logisim.comp.ComponentDrawContext;
-import com.cburch.logisim.data.Attribute;
-import com.cburch.logisim.data.AttributeSet;
-import com.cburch.logisim.data.Bounds;
-import com.cburch.logisim.data.Direction;
-import com.cburch.logisim.data.Location;
-import com.cburch.logisim.data.Value;
+import com.cburch.logisim.data.*;
 import com.cburch.logisim.proj.Project;
+
+import java.awt.*;
 
 public class InstancePainter implements InstanceState {
     private ComponentDrawContext context;
     private InstanceComponent comp;
     private InstanceFactory factory;
     private AttributeSet attrs;
+    private int voltage = 0;
 
     public InstancePainter(ComponentDrawContext context,
             InstanceComponent instance) {
@@ -87,6 +83,16 @@ public class InstancePainter implements InstanceState {
     @Override
     public long getTickCount() {
         return context.getCircuitState().getPropagator().getTickCount();
+    }
+
+    @Override
+    public void setVoltage(int vol) {
+        voltage = vol;
+    }
+
+    @Override
+    public int getVoltage() {
+        return voltage;
     }
 
     //

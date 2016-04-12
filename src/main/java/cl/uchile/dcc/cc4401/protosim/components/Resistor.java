@@ -1,10 +1,5 @@
 package cl.uchile.dcc.cc4401.protosim.components;
 
-import java.awt.Color;
-import java.awt.Graphics;
-import java.util.ArrayList;
-import java.util.List;
-
 import com.cburch.logisim.data.AttributeSet;
 import com.cburch.logisim.data.Bounds;
 import com.cburch.logisim.data.Location;
@@ -12,6 +7,10 @@ import com.cburch.logisim.instance.InstanceFactory;
 import com.cburch.logisim.instance.InstancePainter;
 import com.cburch.logisim.instance.InstanceState;
 import com.cburch.logisim.instance.Port;
+
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Resistor extends InstanceFactory {
 
@@ -34,8 +33,6 @@ public class Resistor extends InstanceFactory {
 
     @Override
     public String getDisplayName() {
-        // TODO: l10n this
-        // return getFromLocale("Resistance");
         return "Resistor";
     }
 

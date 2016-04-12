@@ -3,17 +3,15 @@
 
 package com.cburch.logisim.std.io;
 
-import java.awt.Color;
-import java.util.List;
-
-import com.cburch.logisim.data.Attribute;
-import com.cburch.logisim.data.AttributeOption;
-import com.cburch.logisim.data.Attributes;
-import com.cburch.logisim.data.Direction;
+import com.cburch.logisim.data.*;
 import com.cburch.logisim.tools.FactoryDescription;
 import com.cburch.logisim.tools.Library;
 import com.cburch.logisim.tools.Tool;
-import static com.cburch.logisim.util.LocaleString.*;
+
+import java.awt.*;
+import java.util.List;
+
+import static com.cburch.logisim.util.LocaleString.getFromLocale;
 
 public class Io extends Library {
     public static final AttributeOption LABEL_CENTER = new AttributeOption("center", "center", getFromLocale("ioLabelCenter"));
@@ -26,10 +24,16 @@ public class Io extends Library {
         = Attributes.forColor("offcolor", getFromLocale("ioOffColor"));
     static final Attribute<Color> ATTR_BACKGROUND
         = Attributes.forColor("bg", getFromLocale("ioBackgroundColor"));
+
     public static final Attribute<Object> ATTR_LABEL_LOC = Attributes.forOption("labelloc",
             getFromLocale("ioLabelLocAttr"),
             new Object[] { LABEL_CENTER, Direction.NORTH, Direction.SOUTH,
                 Direction.EAST, Direction.WEST });
+
+    public static final Attribute<Object> ATTR_VOLTAGE = Attributes.forOption("voltage",
+            "Voltage",
+            new Object[] {Voltage.V5, Voltage.V6, Voltage.V7, Voltage.V8, Voltage.V9});
+
     public static final Attribute<Color> ATTR_LABEL_COLOR = Attributes.forColor("labelcolor",
             getFromLocale("ioLabelColorAttr"));
     public static final Attribute<Boolean> ATTR_ACTIVE = Attributes.forBoolean("active",

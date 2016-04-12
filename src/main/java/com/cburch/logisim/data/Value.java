@@ -3,11 +3,12 @@
 
 package com.cburch.logisim.data;
 
-import java.awt.Color;
+import com.cburch.logisim.util.Cache;
+
+import java.awt.*;
 import java.util.Arrays;
 
-import com.cburch.logisim.util.Cache;
-import static com.cburch.logisim.util.LocaleString.*;
+import static com.cburch.logisim.util.LocaleString.getFromLocale;
 
 public class Value {
     public static final Value FALSE   = new Value(1, 0, 0, 0);
