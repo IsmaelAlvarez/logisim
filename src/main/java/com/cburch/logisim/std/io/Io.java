@@ -32,7 +32,9 @@ public class Io extends Library {
 
     public static final Attribute<Object> ATTR_VOLTAGE = Attributes.forOption("voltage",
             "Voltage",
-            new Object[] {Voltage.V5, Voltage.V6, Voltage.V7, Voltage.V8, Voltage.V9});
+            new Object[] {Voltage.V4, Voltage.V5, Voltage.V6, Voltage.V7, Voltage.V8, Voltage.V9,
+                    Voltage.V10, Voltage.V11, Voltage.V12, Voltage.V13, Voltage.V14, Voltage.V15,
+                    Voltage.V16, Voltage.V17, Voltage.V18, Voltage.V19, Voltage.V20});
 
     public static final Attribute<Color> ATTR_LABEL_COLOR = Attributes.forColor("labelcolor",
             getFromLocale("ioLabelColorAttr"));
