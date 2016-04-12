@@ -22,6 +22,4 @@ public interface InstanceState {
     public void fireInvalidated();
     public boolean isCircuitRoot();
     public long getTickCount();
-    public void setVoltage(int vol);
-    public int getVoltage();
 }

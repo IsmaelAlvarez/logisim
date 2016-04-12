@@ -29,6 +29,8 @@ public class Value {
 
     private static final Cache cache = new Cache();
 
+    private int voltage = 0;
+
     public static Value create(Value[] values) {
         if (values.length == 0) {
             return NIL;
@@ -620,5 +622,16 @@ public class Value {
             return MULTI_COLOR;
         }
     }
-    
+
+    /** Metodos para controlar el voltage
+     */
+    public void setVoltage(int vol){
+        this.voltage = vol;
+    }
+
+    public int getVoltage(){
+        return voltage;
+    }
+
+
 }
