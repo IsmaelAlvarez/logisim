@@ -36,6 +36,19 @@ public class Io extends Library {
                     Voltage.V10, Voltage.V11, Voltage.V12, Voltage.V13, Voltage.V14, Voltage.V15,
                     Voltage.V16, Voltage.V17, Voltage.V18, Voltage.V19, Voltage.V20});
 
+    public static final Attribute<Object> ATTR_RESISTANCE = Attributes.forOption("resistance",
+            "Resistance",
+            new Object[] {Resistance.R10,Resistance.R11,Resistance.R12,Resistance.R13,Resistance.R15,Resistance.R16,
+                    Resistance.R18,Resistance.R20,Resistance.R22,Resistance.R24,Resistance.R27,Resistance.R30,Resistance.R33,
+                    Resistance.R36,Resistance.R39,Resistance.R43,Resistance.R47,Resistance.R51,Resistance.R56,Resistance.R62,
+                    Resistance.R68,Resistance.R75,Resistance.R82,Resistance.R91});
+
+    public static final Attribute<Object> ATTR_RESISTANCE_MULTIPLIER = Attributes.forOption("resistance_mult",
+            "Resistance Multiplier",
+            new Object[] {ResistanceMultiplier.RM1, ResistanceMultiplier.RM10, ResistanceMultiplier.RM100,
+                    ResistanceMultiplier.RM1K, ResistanceMultiplier.RM10K, ResistanceMultiplier.RM100K,
+                    ResistanceMultiplier.RM1M, ResistanceMultiplier.RM10M, ResistanceMultiplier.RM100M});
+
     public static final Attribute<Color> ATTR_LABEL_COLOR = Attributes.forColor("labelcolor",
             getFromLocale("ioLabelColorAttr"));
     public static final Attribute<Boolean> ATTR_ACTIVE = Attributes.forBoolean("active",
