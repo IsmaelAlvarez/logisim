@@ -81,7 +81,7 @@ public class Value {
     public static Value createError(BitWidth bits) {
         return Value.create(bits.getWidth(), -1, 0, 0);
     }
-
+    
     private static Value create(int width, int error, int unknown, int value) {
         if (width == 0) {
             return Value.NIL;

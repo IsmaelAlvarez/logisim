@@ -14,10 +14,15 @@ import com.cburch.logisim.instance.InstancePainter;
 import com.cburch.logisim.instance.InstanceState;
 import com.cburch.logisim.instance.Port;
 
+import cl.uchile.dcc.cc4401.protosim.libraries.ProtoValue;
+
 public class Resistor extends InstanceFactory {
 
     public static InstanceFactory FACTORY = new Resistor();
 
+    private int max_voltage = 5;
+    private boolean health_state = true;
+    
     private List<Port> ports;
 
     public Resistor() {
@@ -67,17 +72,24 @@ public class Resistor extends InstanceFactory {
     }
 
     private Value getInputVoltage(InstanceState state) {
+    	/*if (state.getVoltage() > max_voltage) {
+    		health_state = false;
+    		System.out.println(this.toString() + " quemado");
+    	}*/
     	return state.getPort(0);
     }
     
     private Value getOutputVoltage(InstanceState state) {
     	Value in = getInputVoltage(state);
-    	return in;
+    	Value out = ProtoValue.TRUE;
+    	/*out.setVoltage(in.getVoltage() * 1);	// calcular voltaje salida
+    	return out;*/
+    	return out;
     }
     
     @Override
     public void propagate(InstanceState state) {
-    	Value out = getOutputVoltage(state);
-    	state.setPort(1, out, Breadboard.DELAY);
+    	if (state.getPort(0).equals(ProtoValue.TRUE))
+    		state.setPort(1, getOutputVoltage(state);, Breadboard.DELAY);
     }
 }
