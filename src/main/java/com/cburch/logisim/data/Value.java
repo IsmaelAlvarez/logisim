@@ -3,11 +3,12 @@
 
 package com.cburch.logisim.data;
 
-import java.awt.Color;
+import com.cburch.logisim.util.Cache;
+
+import java.awt.*;
 import java.util.Arrays;
 
-import com.cburch.logisim.util.Cache;
-import static com.cburch.logisim.util.LocaleString.*;
+import static com.cburch.logisim.util.LocaleString.getFromLocale;
 
 public class Value {
     public static final Value FALSE   = new Value(1, 0, 0, 0);
@@ -27,6 +28,8 @@ public class Value {
     public static final Color MULTI_COLOR = Color.BLACK;
 
     private static final Cache cache = new Cache();
+
+    private int voltage = 0;
 
     public static Value create(Value[] values) {
         if (values.length == 0) {
@@ -619,5 +622,16 @@ public class Value {
             return MULTI_COLOR;
         }
     }
-    
+
+    /** Metodos para controlar el voltage
+     */
+    public void setVoltage(int vol){
+        this.voltage = vol;
+    }
+
+    public int getVoltage(){
+        return voltage;
+    }
+
+
 }

@@ -1,10 +1,14 @@
 package cl.uchile.dcc.cc4401.protosim.components;
 
-import java.awt.Color;
-import java.awt.Graphics;
+import com.cburch.logisim.data.*;
+import com.cburch.logisim.instance.*;
+import com.cburch.logisim.std.io.Io;
+
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
+<<<<<<< HEAD
 import com.cburch.logisim.data.AttributeSet;
 import com.cburch.logisim.data.Bounds;
 import com.cburch.logisim.data.Location;
@@ -16,6 +20,8 @@ import com.cburch.logisim.instance.Port;
 
 import cl.uchile.dcc.cc4401.protosim.libraries.ProtoValue;
 
+=======
+>>>>>>> b2f1eb92a3372dea48c6720ff9464e5b41ab76d3
 public class Resistor extends InstanceFactory {
 
     public static InstanceFactory FACTORY = new Resistor();
@@ -25,9 +31,24 @@ public class Resistor extends InstanceFactory {
     
     private List<Port> ports;
 
+    private int resistance = 10;
+    private int resistance_mult = 1;
+
     public Resistor() {
         super("Resistor");
         setIconName("protosimComponentResistor.svg");
+
+        setAttributes(new Attribute[] {
+                        StdAttr.LABEL,
+                        Io.ATTR_RESISTANCE,
+                        Io.ATTR_RESISTANCE_MULTIPLIER
+                },
+                new Object[] {
+                        "",
+                        Resistance.R10,
+                        ResistanceMultiplier.RM1
+                }
+        );
 
         ports = new ArrayList<Port>();
 
@@ -40,10 +61,27 @@ public class Resistor extends InstanceFactory {
 
     @Override
     public String getDisplayName() {
-        // TODO: l10n this
-        // return getFromLocale("Resistance");
         return "Resistor";
     }
+
+    @Override
+    protected void configureNewInstance(Instance instance) {
+        instance.addAttributeListener();
+    }
+
+    @Override
+    protected void instanceAttributeChanged(Instance instance, Attribute<?> attr) {
+        if (attr == Io.ATTR_RESISTANCE) {
+            Resistance res = ((Resistance) instance.getAttributeSet().getValue(attr));
+            resistance = res.getResistance();
+            instance.recomputeBounds();
+        } else if (attr == Io.ATTR_RESISTANCE_MULTIPLIER){
+            ResistanceMultiplier rm = ((ResistanceMultiplier) instance.getAttributeSet().getValue(attr));
+            resistance_mult = rm.getMultiplier();
+            instance.recomputeBounds();
+        }
+    }
+
 
     @Override
     public void paintInstance(InstancePainter painter) {
