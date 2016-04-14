@@ -1,4 +1,6 @@
 .DS_Store
+.idea/*
+Logisim.iml
 
 target
 reports
