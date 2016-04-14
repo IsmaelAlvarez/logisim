@@ -113,12 +113,12 @@ class InstanceStateImpl implements InstanceState {
         return circuitState.getPropagator().getTickCount();
     }
 
-    @Override
+    
     public void setVoltage(int vol) {
         voltage = vol;
     }
 
-    @Override
+    
     public int getVoltage() {
         return voltage;
     }

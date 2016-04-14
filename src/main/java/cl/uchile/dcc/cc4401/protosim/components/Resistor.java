@@ -8,7 +8,6 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
-<<<<<<< HEAD
 import com.cburch.logisim.data.AttributeSet;
 import com.cburch.logisim.data.Bounds;
 import com.cburch.logisim.data.Location;
@@ -20,8 +19,6 @@ import com.cburch.logisim.instance.Port;
 
 import cl.uchile.dcc.cc4401.protosim.libraries.ProtoValue;
 
-=======
->>>>>>> b2f1eb92a3372dea48c6720ff9464e5b41ab76d3
 public class Resistor extends InstanceFactory {
 
     public static InstanceFactory FACTORY = new Resistor();
@@ -33,6 +30,8 @@ public class Resistor extends InstanceFactory {
 
     private int resistance = 10;
     private int resistance_mult = 1;
+    
+    private int current = 10;	// eliminar al sacar la resistencia
 
     public Resistor() {
         super("Resistor");
@@ -110,24 +109,29 @@ public class Resistor extends InstanceFactory {
     }
 
     private Value getInputVoltage(InstanceState state) {
-    	/*if (state.getVoltage() > max_voltage) {
+    	int volt = state.getPort(0).getVoltage();
+    	if (volt > max_voltage) {
     		health_state = false;
     		System.out.println(this.toString() + " quemado");
-    	}*/
+    	} else {
+    		health_state = true;
+    	}
     	return state.getPort(0);
     }
     
     private Value getOutputVoltage(InstanceState state) {
     	Value in = getInputVoltage(state);
     	Value out = ProtoValue.TRUE;
-    	/*out.setVoltage(in.getVoltage() * 1);	// calcular voltaje salida
-    	return out;*/
+    	if (!health_state)
+    		return ProtoValue.NOT_CONNECTED;
+    	int new_volt = current * resistance * resistance_mult;
+    	out.setVoltage(new_volt);
     	return out;
     }
     
     @Override
     public void propagate(InstanceState state) {
     	if (state.getPort(0).equals(ProtoValue.TRUE))
-    		state.setPort(1, getOutputVoltage(state);, Breadboard.DELAY);
+    		state.setPort(1, getOutputVoltage(state), Breadboard.DELAY);
     }
 }

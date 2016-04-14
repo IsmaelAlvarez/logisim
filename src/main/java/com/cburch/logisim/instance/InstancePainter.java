@@ -85,12 +85,12 @@ public class InstancePainter implements InstanceState {
         return context.getCircuitState().getPropagator().getTickCount();
     }
 
-    @Override
+    
     public void setVoltage(int vol) {
         voltage = vol;
     }
 
-    @Override
+    
     public int getVoltage() {
         return voltage;
     }
