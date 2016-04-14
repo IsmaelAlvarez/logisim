@@ -23,7 +23,7 @@ public class Resistor extends InstanceFactory {
 
     public static InstanceFactory FACTORY = new Resistor();
 
-    private int max_voltage = 5;
+    private double max_voltage = 5;
     private boolean health_state = true;
     
     private List<Port> ports;
@@ -31,7 +31,7 @@ public class Resistor extends InstanceFactory {
     private int resistance = 10;
     private int resistance_mult = 1;
     
-    private int current = 10;	// eliminar al sacar la resistencia
+    private double current = 0.001;	// eliminar al sacar la resistencia
 
     public Resistor() {
         super("Resistor");
@@ -109,7 +109,8 @@ public class Resistor extends InstanceFactory {
     }
 
     private Value getInputVoltage(InstanceState state) {
-    	int volt = state.getPort(0).getVoltage();
+    	double volt = state.getPort(0).getVoltage();
+    	System.out.println("In:" + volt);
     	if (volt > max_voltage) {
     		health_state = false;
     		System.out.println(this.toString() + " quemado");
@@ -124,8 +125,9 @@ public class Resistor extends InstanceFactory {
     	Value out = ProtoValue.TRUE;
     	if (!health_state)
     		return ProtoValue.NOT_CONNECTED;
-    	int new_volt = current * resistance * resistance_mult;
+    	double new_volt = current * resistance * resistance_mult;
     	out.setVoltage(new_volt);
+    	System.out.println("Out: " + out);
     	return out;
     }
     
