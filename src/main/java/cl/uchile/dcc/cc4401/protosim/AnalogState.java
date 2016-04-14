@@ -1,4 +1,4 @@
-package cl.uchile.dcc.cc4401.protosim.libraries;
+package cl.uchile.dcc.cc4401.protosim;
 
 
 public class AnalogState {

@@ -1,30 +1,16 @@
 package cl.uchile.dcc.cc4401.protosim.components;
 
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Graphics;
-import java.util.ArrayList;
-import java.util.List;
-
 import cl.uchile.dcc.cc4401.protosim.libraries.ProtoValue;
-
-import com.cburch.logisim.data.Attribute;
-import com.cburch.logisim.data.AttributeSet;
-import com.cburch.logisim.data.BitWidth;
-import com.cburch.logisim.data.Bounds;
-import com.cburch.logisim.data.Direction;
-import com.cburch.logisim.data.Location;
-import com.cburch.logisim.data.Value;
-import com.cburch.logisim.instance.InstanceDataSingleton;
-import com.cburch.logisim.instance.InstanceFactory;
-import com.cburch.logisim.instance.InstancePainter;
-import com.cburch.logisim.instance.InstanceState;
-import com.cburch.logisim.instance.Port;
-import com.cburch.logisim.instance.StdAttr;
+import com.cburch.logisim.data.*;
+import com.cburch.logisim.instance.*;
 import com.cburch.logisim.std.io.Io;
 import com.cburch.logisim.std.io.Led.Logger;
 import com.cburch.logisim.util.GraphicsUtil;
 import com.cburch.logisim.util.Icons;
+
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Led extends InstanceFactory {
     
@@ -64,7 +50,7 @@ public class Led extends InstanceFactory {
         //for the moment, i put the port width in 1 bit Breadboard.PORT_WIDTH
         //the pin 0 is where our received the voltage, and the pin 1 is ground (ground is 0 always) or our for the moment show a exception
         ports.add(new Port(0, 20, Port.INPUT, Breadboard.PORT_WIDTH));
-        ports.add(new Port(10, 20, Port.INPUT, Breadboard.PORT_WIDTH));
+        ports.add(new Port(10, 20, Port.OUTPUT, Breadboard.PORT_WIDTH));
         setPorts(ports);
         setInstanceLogger(Logger.class);
     }

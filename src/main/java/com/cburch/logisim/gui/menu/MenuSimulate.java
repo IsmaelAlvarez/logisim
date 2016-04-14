@@ -3,7 +3,7 @@
 
 package com.cburch.logisim.gui.menu;
 
-import cl.uchile.dcc.cc4401.protosim.libraries.AnalogState;
+import cl.uchile.dcc.cc4401.protosim.AnalogState;
 import com.cburch.logisim.circuit.*;
 import com.cburch.logisim.gui.log.LogFrame;
 import com.cburch.logisim.proj.Project;
@@ -251,6 +251,7 @@ public class MenuSimulate extends Menu {
         add(tickFreq);
         addSeparator();
         add(log);
+        addSeparator();
         add(analogEdit);
         add(analogSimulate);
         add(analogExec);
