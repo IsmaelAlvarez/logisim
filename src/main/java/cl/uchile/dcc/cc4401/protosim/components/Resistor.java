@@ -15,7 +15,6 @@ public class Resistor extends InstanceFactory {
     public static InstanceFactory FACTORY = new Resistor();
 
     private double max_voltage = 50;
-
     private AllComponents allComponents = AllComponents.getMyInstance();
     
     private List<Port> ports;
@@ -107,6 +106,7 @@ public class Resistor extends InstanceFactory {
 
     private Value getInputVoltage(InstanceState state) {
     	double volt = state.getPort(0).getVoltage();
+
     	if (volt > max_voltage) {
     		state.getInstance().killComponent();
     		System.out.println(this.toString() + " quemado");
@@ -124,7 +124,9 @@ public class Resistor extends InstanceFactory {
         ResistanceMultiplier rm = ((ResistanceMultiplier) state.getInstance().getAttributeSet().getValue(Io.ATTR_RESISTANCE_MULTIPLIER));
 
     	double new_volt = current * rm.getMultiplier() * state.getInstance().getResistance();
+
     	out.setVoltage(new_volt);
+    	System.out.println("Out: " + out);
     	return out;
     }
     
