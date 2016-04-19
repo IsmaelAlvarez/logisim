@@ -29,7 +29,7 @@ public class Value {
 
     private static final Cache cache = new Cache();
 
-    private int voltage = 0;
+    private double voltage = 0;
 
     public static Value create(Value[] values) {
         if (values.length == 0) {
@@ -625,11 +625,11 @@ public class Value {
 
     /** Metodos para controlar el voltage
      */
-    public void setVoltage(int vol){
+    public void setVoltage(double vol){
         this.voltage = vol;
     }
 
-    public int getVoltage(){
+    public double getVoltage(){
         return voltage;
     }
 

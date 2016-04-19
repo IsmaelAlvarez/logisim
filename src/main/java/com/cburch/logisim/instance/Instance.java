@@ -3,15 +3,15 @@
 
 package com.cburch.logisim.instance;
 
-import java.awt.Font;
-import java.util.List;
-
 import com.cburch.logisim.circuit.CircuitState;
 import com.cburch.logisim.comp.Component;
 import com.cburch.logisim.data.Attribute;
 import com.cburch.logisim.data.AttributeSet;
 import com.cburch.logisim.data.Bounds;
 import com.cburch.logisim.data.Location;
+
+import java.awt.*;
+import java.util.List;
 
 public class Instance {
     public static Instance getInstanceFor(Component comp) {
@@ -21,6 +21,35 @@ public class Instance {
             return null;
         }
     }
+
+    private int componentId;
+    private int resistance = 0;
+    private boolean health_state = true;
+
+    public int getComponentId() {
+        return componentId;
+    }
+
+    public void setComponentId(int cmpId){
+        componentId = cmpId;
+    }
+
+    public void setResistance(int res){
+        resistance = res;
+    }
+
+    public int getResistance(){
+        return resistance;
+    }
+
+    public void killComponent(){
+        health_state = false;
+    }
+
+    public boolean getHealthState(){
+        return  health_state;
+    }
+
 
     public static Component getComponentFor(Instance instance) {
         return instance.comp;
