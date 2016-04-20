@@ -103,6 +103,7 @@ public class VoltageGenerator extends InstanceFactory {
         ProtoValue.TRUE.setVoltage(voltage);
         state.setPort(portAIndex, ProtoValue.TRUE, Breadboard.DELAY);
         state.setPort(portBIndex, ProtoValue.FALSE, Breadboard.DELAY);
+        System.out.println("Salida " + getVoltage());
     }
 
     public int getVoltage(){

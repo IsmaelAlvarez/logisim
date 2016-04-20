@@ -8,15 +8,6 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.cburch.logisim.data.AttributeSet;
-import com.cburch.logisim.data.Bounds;
-import com.cburch.logisim.data.Location;
-import com.cburch.logisim.data.Value;
-import com.cburch.logisim.instance.InstanceFactory;
-import com.cburch.logisim.instance.InstancePainter;
-import com.cburch.logisim.instance.InstanceState;
-import com.cburch.logisim.instance.Port;
-
 import cl.uchile.dcc.cc4401.protosim.libraries.ProtoValue;
 
 public class Resistor extends InstanceFactory {
@@ -40,7 +31,7 @@ public class Resistor extends InstanceFactory {
         setAttributes(new Attribute[] {
                         StdAttr.LABEL,
                         Io.ATTR_RESISTANCE,
-                        Io.ATTR_RESISTANCE_MULTIPLIER
+                        Io.ATTR_RESISTANCE_MULTIPLIER,
                 },
                 new Object[] {
                         "",
@@ -112,10 +103,10 @@ public class Resistor extends InstanceFactory {
     	double volt = state.getPort(0).getVoltage();
     	System.out.println("In:" + volt);
     	if (volt > max_voltage) {
-    		health_state = false;
+    		state.getInstance().health_state = false;
     		System.out.println(this.toString() + " quemado");
     	} else {
-    		health_state = true;
+    		state.getInstance().health_state = true;
     	}
     	return state.getPort(0);
     }
@@ -133,7 +124,15 @@ public class Resistor extends InstanceFactory {
     
     @Override
     public void propagate(InstanceState state) {
-    	if (state.getPort(0).equals(ProtoValue.TRUE))
-    		state.setPort(1, getOutputVoltage(state), Breadboard.DELAY);
+    	Value in = state.getPort(0); 
+    	if (in.equals(ProtoValue.TRUE)) {
+    		state.setPort(1, getOutputVoltage(state), Breadboard.DELAY);   
+    	} else if (in.equals(ProtoValue.NOT_CONNECTED)) {
+    		state.setPort(1, ProtoValue.NOT_CONNECTED, Breadboard.DELAY);
+    	} else if (in.equals(ProtoValue.UNKNOWN)) {
+    		state.setPort(1, ProtoValue.UNKNOWN, Breadboard.DELAY);
+    	} else {
+    		state.setPort(1, ProtoValue.FALSE, Breadboard.DELAY);
+    	}
     }
 }
