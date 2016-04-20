@@ -49,6 +49,10 @@ public class Io extends Library {
                     ResistanceMultiplier.RM1K, ResistanceMultiplier.RM10K, ResistanceMultiplier.RM100K,
                     ResistanceMultiplier.RM1M, ResistanceMultiplier.RM10M, ResistanceMultiplier.RM100M});
 
+    public static final Attribute<Object> ATTR_DIRECTION_LEFT_RIGHT = Attributes.forOption("orientation",
+    		"Orientation",
+    		new Object[] {Direction.EAST, Direction.WEST});
+    
     public static final Attribute<Color> ATTR_LABEL_COLOR = Attributes.forColor("labelcolor",
             getFromLocale("ioLabelColorAttr"));
     public static final Attribute<Boolean> ATTR_ACTIVE = Attributes.forBoolean("active",

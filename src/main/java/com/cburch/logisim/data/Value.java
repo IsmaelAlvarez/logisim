@@ -625,8 +625,8 @@ public class Value {
 
     /** Metodos para controlar el voltage
      */
-    public void setVoltage(double new_volt){
-        this.voltage = new_volt;
+    public void setVoltage(double vol){
+        this.voltage = vol;
     }
 
     public double getVoltage(){

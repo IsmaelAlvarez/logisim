@@ -1,5 +1,6 @@
 package cl.uchile.dcc.cc4401.protosim.components;
 
+import cl.uchile.dcc.cc4401.protosim.AllComponents;
 import cl.uchile.dcc.cc4401.protosim.libraries.ProtoValue;
 import com.cburch.logisim.data.*;
 import com.cburch.logisim.instance.*;
@@ -12,8 +13,6 @@ import java.util.List;
 public class VoltageGenerator extends InstanceFactory {
 
     public static InstanceFactory FACTORY = new VoltageGenerator();
-
-    private int voltage = 5;
 
     private List<Port> ports;
 
@@ -46,15 +45,19 @@ public class VoltageGenerator extends InstanceFactory {
 
     @Override
     protected void configureNewInstance(Instance instance) {
+        AllComponents.getMyInstance().addComponent(instance, 0);
         instance.addAttributeListener();
-        //computeTextField(instance);
     }
 
     @Override
     protected void instanceAttributeChanged(Instance instance, Attribute<?> attr) {
         if (attr == Io.ATTR_VOLTAGE ) {
             Voltage vol = ((Voltage) instance.getAttributeSet().getValue(attr));
-            voltage = vol.getVoltage();
+
+            if(vol.getVoltage() == 20){
+                System.out.println("Resistencia total: " + AllComponents.getMyInstance().getTotalResistance());
+            }
+
             instance.recomputeBounds();
             //computeTextField(instance);
         }
@@ -100,14 +103,11 @@ public class VoltageGenerator extends InstanceFactory {
     }
     
     private void setOutputValue(InstanceState state, int portAIndex, int portBIndex) {
-        ProtoValue.TRUE.setVoltage(voltage);
+        Voltage vol = ((Voltage) state.getInstance().getAttributeSet().getValue(Io.ATTR_VOLTAGE));
+
+        ProtoValue.TRUE.setVoltage(vol.getVoltage());
         state.setPort(portAIndex, ProtoValue.TRUE, Breadboard.DELAY);
         state.setPort(portBIndex, ProtoValue.FALSE, Breadboard.DELAY);
-        System.out.println("Salida " + getVoltage());
-    }
-
-    public int getVoltage(){
-        return voltage;
     }
     
 }

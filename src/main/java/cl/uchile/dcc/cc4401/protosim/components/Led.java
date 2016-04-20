@@ -1,30 +1,17 @@
 package cl.uchile.dcc.cc4401.protosim.components;
 
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Graphics;
-import java.util.ArrayList;
-import java.util.List;
-
+import cl.uchile.dcc.cc4401.protosim.AllComponents;
 import cl.uchile.dcc.cc4401.protosim.libraries.ProtoValue;
-
-import com.cburch.logisim.data.Attribute;
-import com.cburch.logisim.data.AttributeSet;
-import com.cburch.logisim.data.BitWidth;
-import com.cburch.logisim.data.Bounds;
-import com.cburch.logisim.data.Direction;
-import com.cburch.logisim.data.Location;
-import com.cburch.logisim.data.Value;
-import com.cburch.logisim.instance.InstanceDataSingleton;
-import com.cburch.logisim.instance.InstanceFactory;
-import com.cburch.logisim.instance.InstancePainter;
-import com.cburch.logisim.instance.InstanceState;
-import com.cburch.logisim.instance.Port;
-import com.cburch.logisim.instance.StdAttr;
+import com.cburch.logisim.data.*;
+import com.cburch.logisim.instance.*;
 import com.cburch.logisim.std.io.Io;
 import com.cburch.logisim.std.io.Led.Logger;
 import com.cburch.logisim.util.GraphicsUtil;
 import com.cburch.logisim.util.Icons;
+
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Led extends InstanceFactory {
     
@@ -68,7 +55,14 @@ public class Led extends InstanceFactory {
         setPorts(ports);
         setInstanceLogger(Logger.class);
     }
-    
+
+    @Override
+    protected void configureNewInstance(Instance instance) {
+        AllComponents.getMyInstance().addComponent(instance,0);
+        instance.addAttributeListener();
+    }
+
+
     @Override
     public Bounds getOffsetBounds(AttributeSet attrs) {
         return Bounds.create(-6, -6, 20, 25);
