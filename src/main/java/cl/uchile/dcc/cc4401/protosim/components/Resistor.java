@@ -79,7 +79,7 @@ public class Resistor extends InstanceFactory {
             //Change Resistance in AllComponents
             allComponents.changeResistance(instance.getComponentId(),instance.getResistance()*rm.getMultiplier());
         } else if (attr == Io.ATTR_DIRECTION_LEFT_RIGHT) {
-        	// Intercambia la posicion de ambos puertos en la lista
+        	// Intercambia la posicion de ambos puertos en la lista.
         	Direction direction = ((Direction) instance.getAttributeSet().getValue(Io.ATTR_DIRECTION_LEFT_RIGHT));
         	if (direction.equals(Direction.EAST)) {
         		instance.setPorts(new Port[]{ports.get(0), ports.get(1)});

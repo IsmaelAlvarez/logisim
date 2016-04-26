@@ -29,7 +29,8 @@ public class Led extends InstanceFactory {
                 StdAttr.LABEL,
                 Io.ATTR_LABEL_LOC,
                 StdAttr.LABEL_FONT,
-                Io.ATTR_LABEL_COLOR
+                Io.ATTR_LABEL_COLOR,
+                Io.ATTR_DIRECTION_LEFT_RIGHT
             },
             new Object[] {
                 Direction.WEST,
@@ -39,7 +40,8 @@ public class Led extends InstanceFactory {
                 "",
                 Io.LABEL_CENTER,
                 StdAttr.DEFAULT_LABEL_FONT,
-                Color.BLACK
+                Color.BLACK,
+                Direction.EAST
             }
         );
 
