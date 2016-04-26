@@ -16,6 +16,7 @@ import com.cburch.logisim.proj.Project;
 class InstanceStateImpl implements InstanceState {
     private CircuitState circuitState;
     private Component component;
+    private int voltage = 0;
 
     public InstanceStateImpl(CircuitState circuitState, Component component) {
         this.circuitState = circuitState;
@@ -110,5 +111,15 @@ class InstanceStateImpl implements InstanceState {
     @Override
     public long getTickCount() {
         return circuitState.getPropagator().getTickCount();
+    }
+
+    
+    public void setVoltage(int vol) {
+        voltage = vol;
+    }
+
+    
+    public int getVoltage() {
+        return voltage;
     }
 }

@@ -6,6 +6,7 @@ public class AnalogState {
     public enum AnalogMode {EDIT_MODE, SIMULATION_MODE, EXECUTION_MODE};
 
     private AnalogMode mode;
+    private float time = 0;
     private static AnalogState state = new AnalogState();
 
     private AnalogState(){
@@ -22,6 +23,19 @@ public class AnalogState {
 
     public void setMode(AnalogMode am){
         mode = am;
+    }
+
+    public float getElapsedTime(){
+        return time;
+    }
+
+    public void resetTime(){
+        time = 0;
+    }
+
+    public void tickOnce() {
+        time += 1;
+        System.out.println("Current time: "+time);
     }
 
 }

@@ -135,6 +135,12 @@ public class MenuSimulate extends Menu {
             else if(src == analogExec){
                 AnalogState.getInstance().setMode(AnalogState.AnalogMode.SIMULATION_MODE);
             }
+            else if(src == analogResetTime){
+                AnalogState.getInstance().resetTime();
+            }
+            else if(src == analogTickTime){
+                AnalogState.getInstance().tickOnce();
+            }
         }
 
         @Override
@@ -203,6 +209,8 @@ public class MenuSimulate extends Menu {
     private JMenuItem analogEdit = new JMenuItem();
     private JMenuItem analogSimulate = new JMenuItem();
     private JMenuItem analogExec = new JMenuItem();
+    private JMenuItem analogTickTime = new JMenuItem();
+    private JMenuItem analogResetTime = new JMenuItem();
 
     public MenuSimulate(LogisimMenuBar menubar) {
         this.menubar = menubar;
@@ -228,6 +236,7 @@ public class MenuSimulate extends Menu {
                 KeyEvent.VK_T, menuMask));
         ticksEnabled.setAccelerator(KeyStroke.getKeyStroke(
                 KeyEvent.VK_K, menuMask));
+        analogTickTime.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_W,menuMask));
         InputMap im = this.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
         ActionMap am = this.getActionMap();
         im.put(KeyStroke.getKeyStroke(KeyEvent.VK_SPACE, 0), "Space");
@@ -255,6 +264,9 @@ public class MenuSimulate extends Menu {
         add(analogEdit);
         add(analogSimulate);
         add(analogExec);
+        addSeparator();
+        add(analogResetTime);
+        add(analogTickTime);
 
         setEnabled(false);
         run.setEnabled(false);
@@ -281,6 +293,8 @@ public class MenuSimulate extends Menu {
         analogEdit.addActionListener(myListener);
         analogSimulate.addActionListener(myListener);
         analogExec.addActionListener(myListener);
+        analogTickTime.addActionListener(myListener);
+        analogResetTime.addActionListener(myListener);
 
         computeEnabled();
     }
@@ -309,6 +323,8 @@ public class MenuSimulate extends Menu {
         analogEdit.setText(getFromLocale("simulateAnalogEdit"));
         analogSimulate.setText(getFromLocale("simulateAnalogSimulate"));
         analogExec.setText(getFromLocale("simulateAnalogExec"));
+        analogTickTime.setText(getFromLocale("simulateAnalogTickTime"));
+        analogResetTime.setText(getFromLocale("simulateAnalogResetTime"));
     }
 
     public void setCurrentState(Simulator sim, CircuitState value) {

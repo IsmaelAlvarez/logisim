@@ -17,6 +17,7 @@ bin/
 /nbproject/private/
 .externalToolBuilders
 *.orig
+.idea/*
 
 # Temp files
 *~

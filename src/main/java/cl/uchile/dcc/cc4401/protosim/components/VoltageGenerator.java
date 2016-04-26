@@ -1,13 +1,10 @@
 package cl.uchile.dcc.cc4401.protosim.components;
 
+import cl.uchile.dcc.cc4401.protosim.AllComponents;
 import cl.uchile.dcc.cc4401.protosim.libraries.ProtoValue;
-import com.cburch.logisim.data.AttributeSet;
-import com.cburch.logisim.data.Bounds;
-import com.cburch.logisim.data.Location;
-import com.cburch.logisim.instance.InstanceFactory;
-import com.cburch.logisim.instance.InstancePainter;
-import com.cburch.logisim.instance.InstanceState;
-import com.cburch.logisim.instance.Port;
+import com.cburch.logisim.data.*;
+import com.cburch.logisim.instance.*;
+import com.cburch.logisim.std.io.Io;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -23,6 +20,16 @@ public class VoltageGenerator extends InstanceFactory {
         super("VoltageGenerator");
         setIconName("protosimComponentBattery.svg");
 
+        setAttributes(new Attribute[] {
+                        StdAttr.LABEL,
+                        Io.ATTR_VOLTAGE
+                },
+                new Object[] {
+                        "",
+                        Voltage.V5
+                }
+        );
+
         ports = new ArrayList<Port>();
         
         ports.add(new Port(30, 10, Port.OUTPUT, Breadboard.PORT_WIDTH));
@@ -33,9 +40,27 @@ public class VoltageGenerator extends InstanceFactory {
 
     @Override
     public String getDisplayName() {
-        // TODO: l10n this
-        // return getFromLocale("andChip");
         return "Voltage Generator";
+    }
+
+    @Override
+    protected void configureNewInstance(Instance instance) {
+        AllComponents.getMyInstance().addComponent(instance, 0);
+        instance.addAttributeListener();
+    }
+
+    @Override
+    protected void instanceAttributeChanged(Instance instance, Attribute<?> attr) {
+        if (attr == Io.ATTR_VOLTAGE ) {
+            Voltage vol = ((Voltage) instance.getAttributeSet().getValue(attr));
+
+            if(vol.getVoltage() == 20){
+                System.out.println("Resistencia total: " + AllComponents.getMyInstance().getTotalResistance());
+            }
+
+            instance.recomputeBounds();
+            //computeTextField(instance);
+        }
     }
 
     @Override
@@ -78,6 +103,9 @@ public class VoltageGenerator extends InstanceFactory {
     }
     
     private void setOutputValue(InstanceState state, int portAIndex, int portBIndex) {
+        Voltage vol = ((Voltage) state.getInstance().getAttributeSet().getValue(Io.ATTR_VOLTAGE));
+
+        ProtoValue.TRUE.setVoltage(vol.getVoltage());
         state.setPort(portAIndex, ProtoValue.TRUE, Breadboard.DELAY);
         state.setPort(portBIndex, ProtoValue.FALSE, Breadboard.DELAY);
     }

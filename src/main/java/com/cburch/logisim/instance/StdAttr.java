@@ -3,14 +3,11 @@
 
 package com.cburch.logisim.instance;
 
-import java.awt.Font;
+import com.cburch.logisim.data.*;
 
-import com.cburch.logisim.data.Attribute;
-import com.cburch.logisim.data.AttributeOption;
-import com.cburch.logisim.data.Attributes;
-import com.cburch.logisim.data.BitWidth;
-import com.cburch.logisim.data.Direction;
-import static com.cburch.logisim.util.LocaleString.*;
+import java.awt.*;
+
+import static com.cburch.logisim.util.LocaleString.getFromLocale;
 
 public interface StdAttr {
     public static final Attribute<Direction> FACING

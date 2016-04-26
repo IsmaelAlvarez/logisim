@@ -21,31 +21,21 @@ public class Capacitor extends InstanceFactory {
     List<Port> ports;
 
     public Capacitor() {
-        super("CAPACITOR");
+        super("Capacitor");
         setAttributes(new Attribute[] {
-                        StdAttr.FACING,
-                        Io.ATTR_ON_COLOR,
-                        Io.ATTR_OFF_COLOR,
-                        Io.ATTR_ACTIVE,
                         StdAttr.LABEL,
-                        Io.ATTR_LABEL_LOC,
-                        StdAttr.LABEL_FONT,
-                        Io.ATTR_LABEL_COLOR
+                        Io.ATTR_CAPACITANCE,
+                        Io.ATTR_CAPACITANCE_MULTIPLIER
                 },
                 new Object[] {
-                        Direction.WEST,
-                        new Color(240, 0, 0),
-                        Color.DARK_GRAY,
-                        Boolean.TRUE,
                         "",
-                        Io.LABEL_CENTER,
-                        StdAttr.DEFAULT_LABEL_FONT,
-                        Color.BLACK
+                        Capacitance.C10,
+                        CapacitanceMultiplier.CM1u
                 }
         );
 
         setFacingAttribute(StdAttr.FACING);
-        this.setIcon(Icons.getIcon("protosimComponentLed.svg"));
+        this.setIcon(Icons.getIcon("protosimComponentCapacitor.svg"));
         ports = new ArrayList<Port>();
 
         // Lower ports
@@ -59,7 +49,7 @@ public class Capacitor extends InstanceFactory {
 
     @Override
     public Bounds getOffsetBounds(AttributeSet attrs) {
-        return Bounds.create(-6, -6, 20, 25);
+        return Bounds.create(-6, -20, 20, 40);
     }
 
     @Override
@@ -72,37 +62,15 @@ public class Capacitor extends InstanceFactory {
 
         Graphics g = painter.getGraphics();
 
-        if (painter.getShowState()) {
-
-            if (val.equals(ProtoValue.TRUE)) {
-                g.setColor(Color.green);
-            }
-
-            else if (val.equals(ProtoValue.FALSE)
-                    || val.equals(ProtoValue.NOT_CONNECTED)
-                    || val.toString().equals("0")) {
-                g.setColor(Color.gray);
-            }
-
-            else if (val.equals(ProtoValue.UNKNOWN)) {
-                g.setColor(Color.red);
-            }
-
-            g.fillOval(x - 2, y - 6, 14, 16);
-
-            if (val.equals(ProtoValue.UNKNOWN)) {
-                g.setColor(Color.white);
-                g.setFont(new Font("Courier", Font.BOLD, 9));
-                g.drawString("E", x + 3, y + 4);
-            }
-        }
-
         // Chip
         g.setColor(Color.black);
-        g.fillRect(x - 5, y + 5, 20, 6);
+        g.fillRect(x - 5, y - 20, 20, 32);
         GraphicsUtil.drawCenteredArc(g, x+5, y+1, 7, 0, 180);
         g.drawLine(x - 2, y + 5, x - 2, y + 1);
         g.drawLine(x + 12, y + 5, x + 12, y + 1);
+
+        g.setColor(Color.gray);
+        g.fillRect(x + 10,y-20,4,32);
 
         g.setColor(Color.white);
         g.setFont(new Font("Courier", Font.BOLD, 7));

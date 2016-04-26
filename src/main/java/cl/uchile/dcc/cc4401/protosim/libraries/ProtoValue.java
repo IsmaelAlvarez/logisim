@@ -26,13 +26,6 @@ public class ProtoValue {
 	 * @param voltage
 	 * @return true ó false
 	 */
-	public static boolean toBoolean(int voltage) {
-		if (voltage >= 0) {
-			return false;
-		} else {
-			return true;
-		}
-	}
 
 	public static boolean toBoolean(Value voltage) {
 		if (voltage.equals(UNKNOWN) || voltage.equals(NOT_CONNECTED)) {
