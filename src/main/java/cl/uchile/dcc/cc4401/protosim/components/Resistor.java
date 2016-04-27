@@ -46,7 +46,6 @@ public class Resistor extends InstanceFactory {
         ports.add(new Port(0, 0, Port.INPUT, Breadboard.PORT_WIDTH));
         ports.add(new Port(40, 0, Port.OUTPUT, Breadboard.PORT_WIDTH));
 
-
         setPorts(ports);
     }
 
@@ -58,6 +57,9 @@ public class Resistor extends InstanceFactory {
     @Override
     protected void configureNewInstance(Instance instance) {
         instance.addAttributeListener();
+        if (instance.getAttributeSet().getValue(Io.ATTR_DIRECTION_LEFT_RIGHT).equals(Direction.WEST)) {
+        	instance.setPorts(new Port[]{ports.get(1), ports.get(0)});
+        }
         instance.setComponentId(allComponents.addComponent(instance, 10));
     }
 
