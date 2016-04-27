@@ -3,36 +3,20 @@
 
 package com.cburch.logisim.instance;
 
-import java.awt.Font;
-import java.awt.Graphics;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-
-import org.apache.commons.collections15.list.UnmodifiableList;
-
 import com.cburch.logisim.circuit.CircuitState;
 import com.cburch.logisim.comp.Component;
-import com.cburch.logisim.comp.ComponentDrawContext;
-import com.cburch.logisim.comp.ComponentEvent;
-import com.cburch.logisim.comp.ComponentFactory;
-import com.cburch.logisim.comp.ComponentListener;
-import com.cburch.logisim.comp.ComponentUserEvent;
-import com.cburch.logisim.comp.EndData;
-import com.cburch.logisim.data.Attribute;
-import com.cburch.logisim.data.AttributeEvent;
-import com.cburch.logisim.data.AttributeListener;
-import com.cburch.logisim.data.AttributeSet;
-import com.cburch.logisim.data.BitWidth;
-import com.cburch.logisim.data.Bounds;
-import com.cburch.logisim.data.Location;
+import com.cburch.logisim.comp.*;
+import com.cburch.logisim.data.*;
 import com.cburch.logisim.tools.TextEditable;
 import com.cburch.logisim.tools.ToolTipMaker;
 import com.cburch.logisim.util.EventSourceWeakSupport;
+import org.apache.commons.collections15.list.UnmodifiableList;
 
-class InstanceComponent implements Component, AttributeListener, ToolTipMaker {
+import java.awt.*;
+import java.util.*;
+import java.util.List;
+
+public class InstanceComponent implements Component, AttributeListener, ToolTipMaker {
     private EventSourceWeakSupport<ComponentListener> listeners;
     private InstanceFactory factory;
     private Instance instance;

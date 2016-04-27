@@ -10,6 +10,7 @@ import java.util.ArrayList;
 public class AllComponents {
     private static AllComponents me;
     private ArrayList<Component> components;
+    private static int c = 0;
 
     private AllComponents(){
         components = new ArrayList<Component>();
@@ -18,7 +19,6 @@ public class AllComponents {
     public static AllComponents getMyInstance(){
         if(me == null)
             me = new AllComponents();
-
         return me;
     }
 
@@ -63,4 +63,8 @@ public class AllComponents {
         }
     }
 
+    public int getNextID() {
+        c++;
+        return c;
+    }
 }

@@ -1,5 +1,6 @@
 package cl.uchile.dcc.cc4401.protosim.components;
 
+import cl.uchile.dcc.cc4401.protosim.AllComponents;
 import cl.uchile.dcc.cc4401.protosim.libraries.ProtoValue;
 import com.cburch.logisim.data.*;
 import com.cburch.logisim.instance.*;
@@ -17,17 +18,20 @@ import java.util.List;
 public class Capacitor extends InstanceFactory {
 
     public static InstanceFactory FACTORY = new Capacitor();
+    public ArrayList<Integer> capacitors = new ArrayList<>();
 
     List<Port> ports;
 
     public Capacitor() {
         super("Capacitor");
         setAttributes(new Attribute[] {
+                        Io.ATTR_COMPONENT_ID,
                         StdAttr.LABEL,
                         Io.ATTR_CAPACITANCE,
                         Io.ATTR_CAPACITANCE_MULTIPLIER
                 },
                 new Object[] {
+                        null,
                         "",
                         Capacitance.C10,
                         CapacitanceMultiplier.CM1u
@@ -45,6 +49,27 @@ public class Capacitor extends InstanceFactory {
         ports.add(new Port(10, 20, Port.INPUT, Breadboard.PORT_WIDTH));
         setPorts(ports);
         setInstanceLogger(com.cburch.logisim.std.io.Led.Logger.class);
+    }
+
+    @Override
+    protected void configureNewInstance(Instance instance) {
+        instance.addAttributeListener();
+        InstanceComponent component = instance.getInstanceComponent();
+        Integer cid = component.getAttributeSet().getValue(Io.ATTR_COMPONENT_ID);
+        if(cid==null){
+            cid = AllComponents.getMyInstance().getNextID();
+            component.getAttributeSet().setValue(Io.ATTR_COMPONENT_ID,cid);
+            component.getAttributeSet().setReadOnly(Io.ATTR_COMPONENT_ID,true);
+            capacitors.add(cid);
+            System.out.println("New capacitor added with ID "+cid);
+        }
+    }
+
+
+
+    @Override
+    protected void instanceAttributeChanged(Instance instance, Attribute<?> attr) {
+
     }
 
     @Override
