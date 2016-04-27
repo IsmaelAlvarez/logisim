@@ -72,6 +72,9 @@ repositories {
     maven {
         url 'http://nexus.gephi.org/nexus/content/repositories/public'
     }
+    maven {
+    	url 'https://raw.githubusercontent.com/gephi/gephi/mvn-thirdparty-repo/'
+    }
 }
 
 dependencies {
