@@ -60,6 +60,9 @@ public class Led extends InstanceFactory {
 
     @Override
     protected void configureNewInstance(Instance instance) {
+    	if (instance.getAttributeSet().getValue(Io.ATTR_DIRECTION_LEFT_RIGHT).equals(Direction.WEST)) {
+        	instance.setPorts(new Port[]{ports.get(1), ports.get(0)});
+        }
         AllComponents.getMyInstance().addComponent(instance,0);
         instance.addAttributeListener();
     }
