@@ -61,11 +61,10 @@ public class Capacitor extends InstanceFactory {
             component.getAttributeSet().setValue(Io.ATTR_COMPONENT_ID,cid);
             component.getAttributeSet().setReadOnly(Io.ATTR_COMPONENT_ID,true);
             capacitors.add(cid);
+            AllComponents.getMyInstance().addComponent(instance,100);
             System.out.println("New capacitor added with ID "+cid);
         }
     }
-
-
 
     @Override
     protected void instanceAttributeChanged(Instance instance, Attribute<?> attr) {
@@ -112,40 +111,26 @@ public class Capacitor extends InstanceFactory {
 
     @Override
     public void propagate(InstanceState state) {
-        Value val = state.getPort(0); // the val of the signal, receive the voltage
-        Value valGround = state.getPort(1); // the val of the ground, 0 is ground
-        InstanceDataSingleton data = (InstanceDataSingleton) state.getData();
+        if (state.getPort(0).equals(ProtoValue.TRUE)) {
+            Integer cid = state.getInstance().getComponentId();
+            Integer k = state.getPort(0).getFromId();
 
-        // 0 is ground , if this value is x (not connected) or 1 (deadshort)
-        // the ground is incorrectly connected.
-        if (valGround.equals(ProtoValue.FALSE)) {
+            if(cid!=null && k!=null)
+                AllComponents.getMyInstance().connectGraph(k,cid);
 
-            if (data == null) {
-                state.setData(new InstanceDataSingleton(val));
-            } else {
-                data.setValue(val);
-            }
+            // TODO cambiar a values dinamicos
+            Value a = getOutputVoltage(state);
+            a.setFromId(cid);
+            state.setPort(1, a, Breadboard.DELAY);
+        }else{
+            state.setPort(1, ProtoValue.NOT_CONNECTED, Breadboard.DELAY);
+
+            //Change connection in AllComponents
+            AllComponents.getMyInstance().connect(state.getInstance().getComponentId(), false);
         }
+    }
 
-        else if (valGround.equals(ProtoValue.TRUE) && val.equals(ProtoValue.TRUE)) {
-
-            val = Value.createError(BitWidth.create(Breadboard.PORT_WIDTH));
-
-            if (data == null) {
-                state.setData(new InstanceDataSingleton(val));
-            } else {
-                data.setValue(val);
-            }
-        }
-        else if (valGround.equals(ProtoValue.NOT_CONNECTED)
-                || valGround.toString().equals("0")) {
-
-            val = Value.createKnown(BitWidth.create(Breadboard.PORT_WIDTH), 0);
-            if (data == null) {
-                state.setData(new InstanceDataSingleton(val));
-            } else {
-                data.setValue(val);
-            }
-        }
+    private Value getOutputVoltage(InstanceState state) {
+        return ProtoValue.FALSE;
     }
 }

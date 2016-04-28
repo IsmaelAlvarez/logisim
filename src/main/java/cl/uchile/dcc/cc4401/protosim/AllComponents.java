@@ -10,6 +10,7 @@ import java.util.ArrayList;
 public class AllComponents {
     private static AllComponents me;
     private ArrayList<Component> components;
+    private ArrayList<ComponentConnection> connections =  new ArrayList<>();
     private static int c = 0;
 
     private AllComponents(){
@@ -59,12 +60,19 @@ public class AllComponents {
     public void print(){
         for(Component c : components){
             System.out.println("-------------------------------------");
-            System.out.println("name: " + c.component.getFactory().getName());
+            System.out.println("name: " + c.component.getFactory().getName() + " ID: "+c.component.getComponentId());
+        }
+        for(ComponentConnection connection : connections){
+            System.out.println(connection.getFromId()+"->"+connection.getToId());
         }
     }
 
     public int getNextID() {
         c++;
         return c;
+    }
+
+    public void connectGraph(int fromId, int cid) {
+        connections.add(new ComponentConnection(fromId,cid));
     }
 }

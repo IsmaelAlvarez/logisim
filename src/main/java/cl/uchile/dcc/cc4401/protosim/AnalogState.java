@@ -36,6 +36,7 @@ public class AnalogState {
     public void tickOnce() {
         time += 1;
         System.out.println("Current time: "+time);
+        AllComponents.getMyInstance().print();
     }
 
 }
