@@ -23,6 +23,16 @@ public class AllComponents {
     }
 
     public int addComponent(Instance c, int resistance){
+        int id = c.getComponentId();
+        if(id != -1){
+            System.out.println("new component");
+            for(Component co : components){
+                if(co.id == id){
+                    return id;
+                }
+            }
+        }
+
         Component component = new Component(components.size(), c, resistance);
         components.add(component);
         return component.id;
@@ -54,6 +64,23 @@ public class AllComponents {
         }
 
         return totalRes;
+    }
+
+    public void addListener(int id){
+        for(Component c : components){
+            if(c.id == id){
+                c.addListener();
+            }
+        }
+    }
+
+    public boolean isListenerAdded(int id){
+        for(Component c : components){
+            if(c.id == id){
+                return c.isListenerAdded();
+            }
+        }
+        return true;
     }
 
     public void print(){

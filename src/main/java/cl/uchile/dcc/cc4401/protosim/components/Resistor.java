@@ -2,6 +2,8 @@ package cl.uchile.dcc.cc4401.protosim.components;
 
 import cl.uchile.dcc.cc4401.protosim.AllComponents;
 import cl.uchile.dcc.cc4401.protosim.libraries.ProtoValue;
+import com.cburch.logisim.circuit.CircuitEvent;
+import com.cburch.logisim.circuit.CircuitListener;
 import com.cburch.logisim.data.*;
 import com.cburch.logisim.instance.*;
 import com.cburch.logisim.std.io.Io;
@@ -55,6 +57,7 @@ public class Resistor extends InstanceFactory {
     protected void configureNewInstance(Instance instance) {
         instance.addAttributeListener();
         instance.setComponentId(allComponents.addComponent(instance, 10));
+        System.out.println("configureNewInstance");
     }
 
     @Override
@@ -80,6 +83,31 @@ public class Resistor extends InstanceFactory {
 
     @Override
     public void paintInstance(InstancePainter painter) {
+        int compId = painter.getInstance().getComponentId();
+
+        if (!allComponents.isListenerAdded(compId)){
+            allComponents.addListener(compId);
+            painter.getCircuit().addCircuitListener(new CircuitListener() {
+                int lastValue = 0;
+                Integer componentId = null;
+
+                @Override
+                public void circuitChanged(CircuitEvent event) {
+
+                    if(componentId == null){
+                        componentId = compId;
+                    }
+
+                    if((event.getAction() == 6) && (lastValue == 2)){
+                        //Change connection in AllComponents
+                        allComponents.connect(componentId, false);
+                    }
+
+                    lastValue = event.getAction();
+                }
+            });
+        }
+
         Location loc = painter.getLocation();
         int x = loc.getX();
         int y = loc.getY();
@@ -126,7 +154,6 @@ public class Resistor extends InstanceFactory {
     	double new_volt = current * rm.getMultiplier() * state.getInstance().getResistance();
 
     	out.setVoltage(new_volt);
-    	System.out.println("Out: " + out);
     	return out;
     }
     

@@ -7,6 +7,7 @@ import com.cburch.logisim.instance.Instance;
  */
 public class Component {
     public int id;
+    public boolean listenerAdded = false;
     public Instance component;
     private boolean connected;
     private int resistance;
@@ -32,5 +33,13 @@ public class Component {
 
     public int getResistance(){
         return resistance;
+    }
+
+    public void addListener(){
+        listenerAdded = true;
+    };
+
+    public boolean isListenerAdded(){
+        return listenerAdded;
     }
 }
