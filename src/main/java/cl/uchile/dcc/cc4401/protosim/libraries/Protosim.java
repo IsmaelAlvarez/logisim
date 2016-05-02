@@ -18,6 +18,7 @@ import cl.uchile.dcc.cc4401.protosim.components.OrChip;
 import cl.uchile.dcc.cc4401.protosim.components.Resistor;
 import cl.uchile.dcc.cc4401.protosim.components.Switch;
 import cl.uchile.dcc.cc4401.protosim.components.VoltageGenerator;
+import cl.uchile.dcc.cc4401.protosim.components.Zoom;
 
 /*
  * Protosim components library for Logisim
@@ -41,6 +42,7 @@ public class Protosim extends Library {
             new AddTool(AndChip.FACTORY),
             new AddTool(OrChip.FACTORY),
             new AddTool(NandChip.FACTORY),
+            new AddTool(Zoom.FACTORY),
     };
 
     public Protosim() {
