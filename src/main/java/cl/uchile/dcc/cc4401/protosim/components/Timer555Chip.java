@@ -45,7 +45,7 @@ public class Timer555Chip extends InstanceFactory{
 		//Lower Ports
 		ports.add(new Port(0, 30, Port.INPUT, Breadboard.PORT_WIDTH));	//GND
 		ports.add(new Port(10, 30, Port.INPUT, Breadboard.PORT_WIDTH));	//TRIG
-		ports.add(new Port(20, 30, Port.INPUT, Breadboard.PORT_WIDTH));	//OUT
+		ports.add(new Port(20, 30, Port.OUTPUT, Breadboard.PORT_WIDTH));	//OUT
 		ports.add(new Port(30, 30, Port.INPUT, Breadboard.PORT_WIDTH));	//RESET
 
 		setPorts(ports);
@@ -58,7 +58,7 @@ public class Timer555Chip extends InstanceFactory{
 
 	@Override
 	public Bounds getOffsetBounds(AttributeSet attrs){
-		return Bounds.create(0, 0, 50, 30);
+		return Bounds.create(0, 0, 30, 30);
 	}
 	
 	@Override
@@ -71,24 +71,29 @@ public class Timer555Chip extends InstanceFactory{
 
 		// Chip
 		g.setColor(Color.black);
-		g.fillRect(x - 2, y + 5, 24, 20);
+		g.fillRect(x - 2, y + 5, 34, 20);
 
 		// Text
 		g.setColor(Color.white);
 		g.setFont(new Font("Courier", Font.BOLD, 8));
-		g.drawString("555 TIMER IC", x + 3, y + 18);
-		g.drawString("+", x - 1, y + 12);
-		g.drawString("-", x + 17, y + 24);
+		g.drawString("555", x + 8, y + 13);
+		g.drawString("IC", x + 10, y + 22);
+		
+		//g.drawString("+", x - 1, y + 12);
+		//g.drawString("-", x + 17, y + 24);
 
 		// Pins
 		g.setColor(Color.gray);
 		g.fillRect(x - 2, y, 4, 5);
 		g.fillRect(x + 8, y, 4, 5);
 		g.fillRect(x + 18, y, 4, 5);
+		g.fillRect(x + 28, y, 4, 5);
 
 		g.fillRect(x - 2, y + 25, 4, 5);
 		g.fillRect(x + 8, y + 25, 4, 5);
 		g.fillRect(x + 18, y + 25, 4, 5);
+		g.fillRect(x + 28, y + 25, 4, 5);
+
 
 		painter.drawPorts();
 		
@@ -99,5 +104,7 @@ public class Timer555Chip extends InstanceFactory{
 		// TODO Auto-generated method stub
 		
 	}
+	
+	
 
 }
