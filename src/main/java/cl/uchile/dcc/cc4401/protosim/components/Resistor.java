@@ -2,8 +2,6 @@ package cl.uchile.dcc.cc4401.protosim.components;
 
 import cl.uchile.dcc.cc4401.protosim.AllComponents;
 import cl.uchile.dcc.cc4401.protosim.libraries.ProtoValue;
-import com.cburch.logisim.circuit.CircuitEvent;
-import com.cburch.logisim.circuit.CircuitListener;
 import com.cburch.logisim.data.*;
 import com.cburch.logisim.instance.*;
 import com.cburch.logisim.std.io.Io;
@@ -56,7 +54,6 @@ public class Resistor extends InstanceFactory {
     @Override
     protected void configureNewInstance(Instance instance) {
         instance.addAttributeListener();
-        instance.setComponentId(allComponents.addComponent(instance, 10));
         System.out.println("configureNewInstance");
     }
 
@@ -68,15 +65,10 @@ public class Resistor extends InstanceFactory {
 
             ResistanceMultiplier rm = ((ResistanceMultiplier) instance.getAttributeSet().getValue(Io.ATTR_RESISTANCE_MULTIPLIER));
 
-            //Change Resistance in AllComponents
-            allComponents.changeResistance(instance.getComponentId(),res.getResistance()*rm.getMultiplier());
             instance.setResistance(res.getResistance());
         } else if (attr == Io.ATTR_RESISTANCE_MULTIPLIER){
             ResistanceMultiplier rm = ((ResistanceMultiplier) instance.getAttributeSet().getValue(attr));
             instance.recomputeBounds();
-
-            //Change Resistance in AllComponents
-            allComponents.changeResistance(instance.getComponentId(),instance.getResistance()*rm.getMultiplier());
         }
     }
 
@@ -84,29 +76,6 @@ public class Resistor extends InstanceFactory {
     @Override
     public void paintInstance(InstancePainter painter) {
         int compId = painter.getInstance().getComponentId();
-
-        if (!allComponents.isListenerAdded(compId)){
-            allComponents.addListener(compId);
-            painter.getCircuit().addCircuitListener(new CircuitListener() {
-                int lastValue = 0;
-                Integer componentId = null;
-
-                @Override
-                public void circuitChanged(CircuitEvent event) {
-
-                    if(componentId == null){
-                        componentId = compId;
-                    }
-
-                    if((event.getAction() == 6) && (lastValue == 2)){
-                        //Change connection in AllComponents
-                        allComponents.connect(componentId, false);
-                    }
-
-                    lastValue = event.getAction();
-                }
-            });
-        }
 
         Location loc = painter.getLocation();
         int x = loc.getX();
@@ -161,14 +130,8 @@ public class Resistor extends InstanceFactory {
     public void propagate(InstanceState state) {
     	if (state.getPort(0).equals(ProtoValue.TRUE)) {
             state.setPort(1, getOutputVoltage(state), Breadboard.DELAY);
-
-            //Change connection in AllComponents
-            allComponents.connect(state.getInstance().getComponentId(), true);
         }else{
             state.setPort(1, ProtoValue.NOT_CONNECTED, Breadboard.DELAY);
-
-            //Change connection in AllComponents
-            allComponents.connect(state.getInstance().getComponentId(), false);
         }
     }
 

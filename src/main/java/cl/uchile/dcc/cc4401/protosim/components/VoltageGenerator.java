@@ -1,6 +1,7 @@
 package cl.uchile.dcc.cc4401.protosim.components;
 
-import cl.uchile.dcc.cc4401.protosim.AllComponents;
+import cl.uchile.dcc.cc4401.protosim.*;
+import cl.uchile.dcc.cc4401.protosim.Component;
 import cl.uchile.dcc.cc4401.protosim.libraries.ProtoValue;
 import com.cburch.logisim.data.*;
 import com.cburch.logisim.instance.*;
@@ -36,6 +37,13 @@ public class VoltageGenerator extends InstanceFactory {
         ports.add(new Port(30, 20, Port.OUTPUT, Breadboard.PORT_WIDTH));
         
         setPorts(ports);
+
+
+        AllComponents allComponents = AllComponents.getMyInstance();
+        System.out.println("Probar res eq");
+        allComponents.setCircuit();
+        System.out.println("Entre V -> V");
+        System.out.println("" + allComponents.calculateEqResistance(new cl.uchile.dcc.cc4401.protosim.Component(1,0), new Component(1,0)));
     }
 
     @Override
@@ -45,7 +53,6 @@ public class VoltageGenerator extends InstanceFactory {
 
     @Override
     protected void configureNewInstance(Instance instance) {
-        AllComponents.getMyInstance().addComponent(instance, 0);
         instance.addAttributeListener();
     }
 
@@ -53,10 +60,6 @@ public class VoltageGenerator extends InstanceFactory {
     protected void instanceAttributeChanged(Instance instance, Attribute<?> attr) {
         if (attr == Io.ATTR_VOLTAGE ) {
             Voltage vol = ((Voltage) instance.getAttributeSet().getValue(attr));
-
-            if(vol.getVoltage() == 20){
-                System.out.println("Resistencia total: " + AllComponents.getMyInstance().getTotalResistance());
-            }
 
             instance.recomputeBounds();
             //computeTextField(instance);

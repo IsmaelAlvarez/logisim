@@ -1,6 +1,5 @@
 package cl.uchile.dcc.cc4401.protosim.components;
 
-import cl.uchile.dcc.cc4401.protosim.AllComponents;
 import cl.uchile.dcc.cc4401.protosim.libraries.ProtoValue;
 import com.cburch.logisim.circuit.Wire;
 import com.cburch.logisim.data.*;
@@ -64,7 +63,6 @@ public class Switch extends InstanceFactory {
     @Override
     protected void configureNewInstance(Instance instance) {
         instance.addAttributeListener();
-        AllComponents.getMyInstance().addComponent(instance,0);
         computeTextField(instance);
     }
 

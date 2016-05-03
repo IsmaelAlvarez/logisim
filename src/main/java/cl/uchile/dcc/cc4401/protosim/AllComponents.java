@@ -1,7 +1,5 @@
 package cl.uchile.dcc.cc4401.protosim;
 
-import com.cburch.logisim.instance.Instance;
-
 import java.util.ArrayList;
 
 /**
@@ -22,72 +20,57 @@ public class AllComponents {
         return me;
     }
 
-    public int addComponent(Instance c, int resistance){
-        int id = c.getComponentId();
-        if(id != -1){
-            System.out.println("new component");
-            for(Component co : components){
-                if(co.id == id){
-                    return id;
-                }
+    /**
+    //Calculo de resistencia equivalente
+     */
+    public class ComponentConnection {
+        Component from;
+        Component to;
+
+        public ComponentConnection(Component from, Component to){
+            this.from = from;
+            this.to = to;
+        }
+    }
+    ArrayList<ComponentConnection> listCC = new ArrayList<ComponentConnection>();
+
+    //Metodo para probar
+    public void setCircuit(){
+        //SET LIST COMPONENTS CONNECTIONS
+        /**                     ___R3__
+         *         _____R2_____|___R4__|
+         *     V__|____________________|
+         *
+         *     R2 -> 20
+         *     R3 -> 30   Req = 37.14
+         *     R4 -> 40
+         */
+        listCC.add(new ComponentConnection(new Component(1,0),new Component(2,20)));
+        listCC.add(new ComponentConnection(new Component(2,20),new Component(3,30)));
+        listCC.add(new ComponentConnection(new Component(2,20),new Component(4,40)));
+        listCC.add(new ComponentConnection(new Component(3,30),new Component(1,0)));
+        listCC.add(new ComponentConnection(new Component(4,40),new Component(1,0)));
+    }
+
+    //Calcula la resistencia entre 2 puntos
+    public double calculateEqResistance(Component c1, Component c2){
+        double res = 0;
+        for(ComponentConnection cc : listCC){
+            if(cc.from.id == c1.id){
+
+                //Si esta conectado a c2 retorno su resistencia
+                if(cc.to.id == c2.id)
+                    return c1.res;
+
+                res += (1/calculateEqResistance(cc.to,c2));
             }
         }
 
-        Component component = new Component(components.size(), c, resistance);
-        components.add(component);
-        return component.id;
+        return 1/res;
     }
 
-    public void connect(int id, boolean b){
-        for(Component c : components){
-            if(c.id == id){
-                c.connect(b);
-            }
-        }
-    }
-
-    public void changeResistance(int id, int res){
-        System.out.println("Resistencia de: " + res);
-        for(Component c : components){
-            if(c.id == id){
-                c.changeResistance(res);
-            }
-        }
-    }
-
-    public int getTotalResistance(){
-        int totalRes = 0;
-        for(Component c : components){
-            if(c.isConnected()){
-                totalRes += c.getResistance();
-            }
-        }
-
-        return totalRes;
-    }
-
-    public void addListener(int id){
-        for(Component c : components){
-            if(c.id == id){
-                c.addListener();
-            }
-        }
-    }
-
-    public boolean isListenerAdded(int id){
-        for(Component c : components){
-            if(c.id == id){
-                return c.isListenerAdded();
-            }
-        }
-        return true;
-    }
-
-    public void print(){
-        for(Component c : components){
-            System.out.println("-------------------------------------");
-            System.out.println("name: " + c.component.getFactory().getName());
-        }
-    }
+    /**
+     //Fin de calculo de resistencia equivalente
+     */
 
 }
