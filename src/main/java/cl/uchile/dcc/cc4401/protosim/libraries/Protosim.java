@@ -17,6 +17,7 @@ import cl.uchile.dcc.cc4401.protosim.components.NotChip;
 import cl.uchile.dcc.cc4401.protosim.components.OrChip;
 import cl.uchile.dcc.cc4401.protosim.components.Resistor;
 import cl.uchile.dcc.cc4401.protosim.components.Switch;
+import cl.uchile.dcc.cc4401.protosim.components.Timer555Chip;
 import cl.uchile.dcc.cc4401.protosim.components.VoltageGenerator;
 
 /*
@@ -36,6 +37,7 @@ public class Protosim extends Library {
 
             new AddTool(ClockChip.FACTORY),
             new AddTool(FlipFlopChip.FACTORY),
+            new AddTool(Timer555Chip.FACTORY),
 
             new AddTool(NotChip.FACTORY),
             new AddTool(AndChip.FACTORY),
