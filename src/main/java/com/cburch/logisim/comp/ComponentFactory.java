@@ -14,7 +14,7 @@ import com.cburch.logisim.data.Location;
 
 /**
  * Represents a category of components that appear in a circuit. This class
- * and <code>Component</code> share the same sort of relationship as the
+ * and <code>AnalogComponent</code> share the same sort of relationship as the
  * relation between <em>classes</em> and <em>instances</em> in Java. Normally,
  * there is only one ComponentFactory created for any particular category.
  */
@@ -41,7 +41,7 @@ public interface ComponentFactory extends AttributeDefaultProvider {
      * Retrieves special-purpose features for this factory. This technique
      * allows for future Logisim versions to add new features
      * for components without requiring changes to existing components.
-     * It also removes the necessity for the Component API to directly
+     * It also removes the necessity for the AnalogComponent API to directly
      * declare methods for each individual feature.
      * In most cases, the <code>key</code> is a <code>Class</code> object
      * corresponding to an interface, and the method should return an

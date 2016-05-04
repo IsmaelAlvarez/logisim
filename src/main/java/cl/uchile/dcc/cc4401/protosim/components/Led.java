@@ -1,6 +1,5 @@
 package cl.uchile.dcc.cc4401.protosim.components;
 
-import cl.uchile.dcc.cc4401.protosim.AllComponents;
 import cl.uchile.dcc.cc4401.protosim.libraries.ProtoValue;
 import com.cburch.logisim.data.*;
 import com.cburch.logisim.instance.*;
@@ -58,7 +57,7 @@ public class Led extends InstanceFactory {
 
     @Override
     protected void configureNewInstance(Instance instance) {
-        AllComponents.getMyInstance().addComponent(instance,0);
+        //AllComponents.getMyInstance().addComponent(instance,0);
         instance.addAttributeListener();
     }
 

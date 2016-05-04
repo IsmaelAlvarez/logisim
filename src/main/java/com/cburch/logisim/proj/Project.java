@@ -3,21 +3,8 @@
 
 package com.cburch.logisim.proj;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-
-import javax.swing.JFileChooser;
-
-import com.cburch.logisim.circuit.Circuit;
-import com.cburch.logisim.circuit.CircuitListener;
-import com.cburch.logisim.circuit.CircuitState;
-import com.cburch.logisim.circuit.Simulator;
-import com.cburch.logisim.circuit.SubcircuitFactory;
-import com.cburch.logisim.file.Loader;
-import com.cburch.logisim.file.LogisimFile;
-import com.cburch.logisim.file.LibraryEvent;
-import com.cburch.logisim.file.LibraryListener;
-import com.cburch.logisim.file.Options;
+import com.cburch.logisim.circuit.*;
+import com.cburch.logisim.file.*;
 import com.cburch.logisim.gui.log.LogFrame;
 import com.cburch.logisim.gui.main.Canvas;
 import com.cburch.logisim.gui.main.Frame;
@@ -29,6 +16,10 @@ import com.cburch.logisim.tools.Library;
 import com.cburch.logisim.tools.Tool;
 import com.cburch.logisim.util.EventSourceWeakSupport;
 import com.cburch.logisim.util.JFileChoosers;
+
+import javax.swing.*;
+import java.util.HashMap;
+import java.util.LinkedList;
 
 public class Project {
     private static final int MAX_UNDO_SIZE = 64;
@@ -75,7 +66,7 @@ public class Project {
     private Simulator simulator = new Simulator();
     private LogisimFile file;
     private CircuitState circuitState;
-    private HashMap<Circuit,CircuitState> stateMap
+    public HashMap<Circuit,CircuitState> stateMap
         = new HashMap<Circuit,CircuitState>();
     private Frame frame = null;
     private OptionsFrame optionsFrame = null;

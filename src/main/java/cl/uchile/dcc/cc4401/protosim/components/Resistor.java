@@ -16,9 +16,9 @@ public class Resistor extends InstanceFactory {
 
     private double max_voltage = 50;
     private AllComponents allComponents = AllComponents.getMyInstance();
-    
+
     private List<Port> ports;
-    
+
     private double current = 0.001;	// eliminar al sacar la resistencia
 
     public Resistor() {
@@ -26,11 +26,13 @@ public class Resistor extends InstanceFactory {
         setIconName("protosimComponentResistor.svg");
 
         setAttributes(new Attribute[] {
+                        Io.ATTR_COMPONENT_ID,
                         StdAttr.LABEL,
                         Io.ATTR_RESISTANCE,
-                        Io.ATTR_RESISTANCE_MULTIPLIER
+                        Io.ATTR_RESISTANCE_MULTIPLIER,
                 },
                 new Object[] {
+                        null,
                         "",
                         Resistance.R10,
                         ResistanceMultiplier.RM1
@@ -42,7 +44,6 @@ public class Resistor extends InstanceFactory {
         ports.add(new Port(0, 0, Port.INPUT, Breadboard.PORT_WIDTH));
         ports.add(new Port(40, 0, Port.OUTPUT, Breadboard.PORT_WIDTH));
 
-
         setPorts(ports);
     }
 
@@ -51,10 +52,27 @@ public class Resistor extends InstanceFactory {
         return "Resistor";
     }
 
+    /*
+     * Configures new instance using the aa
+     * @see com.cburch.logisim.instance.InstanceFactory#configureNewInstance(com.cburch.logisim.instance.Instance)
+     */
     @Override
     protected void configureNewInstance(Instance instance) {
         instance.addAttributeListener();
-        instance.setComponentId(allComponents.addComponent(instance, 10));
+        InstanceComponent component = instance.getInstanceComponent();
+        Integer cid = component.getAttributeSet().getValue(Io.ATTR_COMPONENT_ID);
+        if(cid==null){
+            cid = AllComponents.getMyInstance().getNextID();
+            component.getAttributeSet().setValue(Io.ATTR_COMPONENT_ID,cid);
+            component.getAttributeSet().setReadOnly(Io.ATTR_COMPONENT_ID,true);
+            //AllComponents.getMyInstance().addComponent(instance,100);
+            System.out.println("New resistor added with ID "+cid);
+        }
+
+        /*if (instance.getAttributeSet().getValue(Io.ATTR_DIRECTION_LEFT_RIGHT).equals(Direction.WEST)) {
+            instance.setPorts(new Port[]{ports.get(1), ports.get(0)});
+        }
+        instance.setComponentId(allComponents.addComponent(instance, 10));*/
     }
 
     @Override
@@ -66,15 +84,23 @@ public class Resistor extends InstanceFactory {
             ResistanceMultiplier rm = ((ResistanceMultiplier) instance.getAttributeSet().getValue(Io.ATTR_RESISTANCE_MULTIPLIER));
 
             //Change Resistance in AllComponents
-            allComponents.changeResistance(instance.getComponentId(),res.getResistance()*rm.getMultiplier());
+            //allComponents.changeResistance(instance.getComponentId(),res.getResistance()*rm.getMultiplier());
             instance.setResistance(res.getResistance());
         } else if (attr == Io.ATTR_RESISTANCE_MULTIPLIER){
             ResistanceMultiplier rm = ((ResistanceMultiplier) instance.getAttributeSet().getValue(attr));
             instance.recomputeBounds();
 
             //Change Resistance in AllComponents
-            allComponents.changeResistance(instance.getComponentId(),instance.getResistance()*rm.getMultiplier());
-        }
+            //allComponents.changeResistance(instance.getComponentId(),instance.getResistance()*rm.getMultiplier());
+        } /*else if (attr == Io.ATTR_DIRECTION_LEFT_RIGHT) {
+            // Intercambia la posicion de ambos puertos en la lista.
+            Direction direction = ((Direction) instance.getAttributeSet().getValue(Io.ATTR_DIRECTION_LEFT_RIGHT));
+            if (direction.equals(Direction.EAST)) {
+                instance.setPorts(new Port[]{ports.get(0), ports.get(1)});
+            } else {
+                instance.setPorts(new Port[]{ports.get(1), ports.get(0)});
+            }
+        }*/
     }
 
 
@@ -105,45 +131,60 @@ public class Resistor extends InstanceFactory {
     }
 
     private Value getInputVoltage(InstanceState state) {
-    	double volt = state.getPort(0).getVoltage();
+        double volt = state.getPort(0).getVoltage();
 
-    	if (volt > max_voltage) {
-    		state.getInstance().killComponent();
-    		System.out.println(this.toString() + " quemado");
-    	}
+        if (volt > max_voltage) {
+            state.getInstance().killComponent();
+            System.out.println(this.toString() + " quemado");
+        }
 
-    	return state.getPort(0);
+        return state.getPort(0);
     }
-    
+
     private Value getOutputVoltage(InstanceState state) {
-    	Value in = getInputVoltage(state);
-    	Value out = ProtoValue.TRUE;
-    	if (!state.getInstance().getHealthState())
-    		return ProtoValue.NOT_CONNECTED;
+        Value in = getInputVoltage(state);
+        Value out = Value.createKnown(BitWidth.create(Breadboard.PORT_WIDTH), -1);
+        if (!state.getInstance().getHealthState())
+            return ProtoValue.NOT_CONNECTED;
 
         ResistanceMultiplier rm = ((ResistanceMultiplier) state.getInstance().getAttributeSet().getValue(Io.ATTR_RESISTANCE_MULTIPLIER));
 
-    	double new_volt = current * rm.getMultiplier() * state.getInstance().getResistance();
+        double new_volt = current * rm.getMultiplier() * state.getInstance().getResistance();
 
-    	out.setVoltage(new_volt);
-    	System.out.println("Out: " + out);
-    	return out;
+        out.setVoltage(new_volt);
+
+        return out;
     }
-    
+
     @Override
     public void propagate(InstanceState state) {
-    	if (state.getPort(0).equals(ProtoValue.TRUE)) {
-            state.setPort(1, getOutputVoltage(state), Breadboard.DELAY);
-
-            //Change connection in AllComponents
-            allComponents.connect(state.getInstance().getComponentId(), true);
-        }else{
-            state.setPort(1, ProtoValue.NOT_CONNECTED, Breadboard.DELAY);
-
-            //Change connection in AllComponents
-            allComponents.connect(state.getInstance().getComponentId(), false);
+        Value in = state.getPort(0);
+        if (in.a == 0) {
+            if (in.equals(ProtoValue.TRUE)) {
+                Value o = getOutputVoltage(state);
+                state.setPort(1, o, Breadboard.DELAY);
+                allComponents.connect(state.getInstance().getComponentId(), true);
+            } else if (in.equals(ProtoValue.NOT_CONNECTED)) {
+                state.setPort(1, ProtoValue.NOT_CONNECTED, Breadboard.DELAY);
+                allComponents.connect(state.getInstance().getComponentId(), false);
+            } else {
+                state.setPort(1, ProtoValue.UNKNOWN, Breadboard.DELAY);
+                allComponents.connect(state.getInstance().getComponentId(), false);
+            }
+        } else {
+            if (in.equals(ProtoValue.TRUE)) {
+                Value o = getOutputVoltage(state);
+                state.setPort(1, o, Breadboard.DELAY);
+                state.setPort(1, getOutputVoltage(state), Breadboard.DELAY);
+                allComponents.connect(state.getInstance().getComponentId(), true);
+            } else if (in.equals(ProtoValue.NOT_CONNECTED)) {
+                state.setPort(1, ProtoValue.NOT_CONNECTED, Breadboard.DELAY);
+                allComponents.connect(state.getInstance().getComponentId(), false);
+            } else {
+                state.setPort(1, ProtoValue.UNKNOWN, Breadboard.DELAY);
+                allComponents.connect(state.getInstance().getComponentId(), false);
+            }
         }
     }
-
 
 }

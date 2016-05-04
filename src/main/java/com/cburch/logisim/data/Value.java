@@ -30,7 +30,6 @@ public class Value {
     private static final Cache cache = new Cache();
 
     private double voltage = 0;
-    private int fromId;
 
     public static Value create(Value[] values) {
         if (values.length == 0) {
@@ -632,13 +631,5 @@ public class Value {
 
     public double getVoltage(){
         return voltage;
-    }
-
-    public int getFromId() {
-        return fromId;
-    }
-
-    public void setFromId(int fromId) {
-        this.fromId = fromId;
     }
 }

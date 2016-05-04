@@ -34,10 +34,11 @@ public class VoltageGenerator extends InstanceFactory {
 
         ports = new ArrayList<Port>();
         
-        ports.add(new Port(30, 10, Port.OUTPUT, Breadboard.PORT_WIDTH));
         ports.add(new Port(30, 20, Port.INPUT, Breadboard.PORT_WIDTH));
+        ports.add(new Port(30, 10, Port.OUTPUT, Breadboard.PORT_WIDTH));
         
         setPorts(ports);
+        setInstanceLogger(com.cburch.logisim.std.io.Led.Logger.class);
     }
 
     @Override
@@ -54,7 +55,7 @@ public class VoltageGenerator extends InstanceFactory {
             cid = AllComponents.getMyInstance().getNextID();
             component.getAttributeSet().setValue(Io.ATTR_COMPONENT_ID,cid);
             component.getAttributeSet().setReadOnly(Io.ATTR_COMPONENT_ID,true);
-            AllComponents.getMyInstance().addComponent(instance,100);
+            //AllComponents.getMyInstance().addComponent(instance,100);
             System.out.println("New voltage generator added with ID "+cid);
         }
     }
@@ -65,7 +66,7 @@ public class VoltageGenerator extends InstanceFactory {
             Voltage vol = ((Voltage) instance.getAttributeSet().getValue(attr));
 
             if(vol.getVoltage() == 20){
-                System.out.println("Resistencia total: " + AllComponents.getMyInstance().getTotalResistance());
+                //System.out.println("Resistencia total: " + AllComponents.getMyInstance().getTotalResistance());
             }
 
             instance.recomputeBounds();
@@ -109,17 +110,10 @@ public class VoltageGenerator extends InstanceFactory {
 
     @Override
     public void propagate(InstanceState state) {
-        setOutputValue(state, 0, 1);
-    }
-    
-    private void setOutputValue(InstanceState state, int portAIndex, int portBIndex) {
-        Voltage vol = ((Voltage) state.getInstance().getAttributeSet().getValue(Io.ATTR_VOLTAGE));
-
-        // TODO cambiar a Values dinamicos
-        ProtoValue.TRUE.setVoltage(vol.getVoltage());
-        ProtoValue.TRUE.setFromId(state.getInstance().getComponentId());
-        state.setPort(portAIndex, ProtoValue.TRUE, Breadboard.DELAY);
-        //state.setPort(portBIndex, ProtoValue.FALSE, Breadboard.DELAY);
+        Integer cid = state.getInstance().getComponentId();
+        Value o = ProtoValue.TRUE;
+        o.setFromId(cid);
+        state.setPort(0,o,Breadboard.DELAY);
     }
     
 }

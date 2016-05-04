@@ -5,19 +5,19 @@ package cl.uchile.dcc.cc4401.protosim;
  */
 public class ComponentConnection {
 
-    private int fromId;
-    private int toId;
+    private AnalogComponent fromId;
+    private AnalogComponent toId;
 
-    public ComponentConnection(int f, int t){
+    public ComponentConnection(AnalogComponent f, AnalogComponent t){
         fromId = f;
         toId = t;
     }
 
-    public int getToId() {
+    public AnalogComponent getTo() {
         return toId;
     }
 
-    public int getFromId() {
+    public AnalogComponent getFrom() {
         return fromId;
     }
 }

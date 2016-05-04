@@ -18,7 +18,6 @@ import java.util.List;
 public class Capacitor extends InstanceFactory {
 
     public static InstanceFactory FACTORY = new Capacitor();
-    public ArrayList<Integer> capacitors = new ArrayList<>();
 
     List<Port> ports;
 
@@ -46,7 +45,7 @@ public class Capacitor extends InstanceFactory {
         //for the moment, i put the port width in 1 bit Breadboard.PORT_WIDTH
         //the pin 0 is where our received the voltage, and the pin 1 is ground (ground is 0 always) or our for the moment show a exception
         ports.add(new Port(0, 20, Port.INPUT, Breadboard.PORT_WIDTH));
-        ports.add(new Port(10, 20, Port.INPUT, Breadboard.PORT_WIDTH));
+        ports.add(new Port(10, 20, Port.OUTPUT, Breadboard.PORT_WIDTH));
         setPorts(ports);
         setInstanceLogger(com.cburch.logisim.std.io.Led.Logger.class);
     }
@@ -60,8 +59,7 @@ public class Capacitor extends InstanceFactory {
             cid = AllComponents.getMyInstance().getNextID();
             component.getAttributeSet().setValue(Io.ATTR_COMPONENT_ID,cid);
             component.getAttributeSet().setReadOnly(Io.ATTR_COMPONENT_ID,true);
-            capacitors.add(cid);
-            AllComponents.getMyInstance().addComponent(instance,100);
+            //AllComponents.getMyInstance().addComponent(instance,100);
             System.out.println("New capacitor added with ID "+cid);
         }
     }
@@ -111,26 +109,24 @@ public class Capacitor extends InstanceFactory {
 
     @Override
     public void propagate(InstanceState state) {
-        if (state.getPort(0).equals(ProtoValue.TRUE)) {
-            Integer cid = state.getInstance().getComponentId();
-            Integer k = state.getPort(0).getFromId();
-
-            if(cid!=null && k!=null)
-                AllComponents.getMyInstance().connectGraph(k,cid);
-
-            // TODO cambiar a values dinamicos
-            Value a = getOutputVoltage(state);
-            a.setFromId(cid);
-            state.setPort(1, a, Breadboard.DELAY);
-        }else{
+        Value in = state.getPort(0);
+        Integer fromId = in.getFromId();
+        Integer cid = state.getInstance().getComponentId();
+        if (in.equals(ProtoValue.TRUE)) {
+            Value o = getOutputVoltage(state);
+            o.setFromId(cid);
+            System.out.println(0);
+            state.setPort(1, o, Breadboard.DELAY);
+        } else if (in.equals(ProtoValue.NOT_CONNECTED)) {
             state.setPort(1, ProtoValue.NOT_CONNECTED, Breadboard.DELAY);
-
-            //Change connection in AllComponents
-            AllComponents.getMyInstance().connect(state.getInstance().getComponentId(), false);
+            //allComponents.connect(state.getInstance().getComponentId(), false);
+        } else {
+            state.setPort(1, ProtoValue.UNKNOWN, Breadboard.DELAY);
+            //allComponents.connect(state.getInstance().getComponentId(), false);
         }
     }
 
     private Value getOutputVoltage(InstanceState state) {
-        return ProtoValue.FALSE;
+        return Value.createKnown(BitWidth.create(Breadboard.PORT_WIDTH),-1);
     }
 }
