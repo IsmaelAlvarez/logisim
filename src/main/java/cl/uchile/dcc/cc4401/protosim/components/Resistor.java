@@ -159,31 +159,16 @@ public class Resistor extends InstanceFactory {
     @Override
     public void propagate(InstanceState state) {
         Value in = state.getPort(0);
-        if (in.a == 0) {
-            if (in.equals(ProtoValue.TRUE)) {
-                Value o = getOutputVoltage(state);
-                state.setPort(1, o, Breadboard.DELAY);
-                allComponents.connect(state.getInstance().getComponentId(), true);
-            } else if (in.equals(ProtoValue.NOT_CONNECTED)) {
-                state.setPort(1, ProtoValue.NOT_CONNECTED, Breadboard.DELAY);
-                allComponents.connect(state.getInstance().getComponentId(), false);
-            } else {
-                state.setPort(1, ProtoValue.UNKNOWN, Breadboard.DELAY);
-                allComponents.connect(state.getInstance().getComponentId(), false);
-            }
+        if (in.equals(ProtoValue.TRUE)) {
+            Value o = getOutputVoltage(state);
+            state.setPort(1, o, Breadboard.DELAY);
+            allComponents.connect(state.getInstance().getComponentId(), true);
+        } else if (in.equals(ProtoValue.NOT_CONNECTED)) {
+            state.setPort(1, ProtoValue.NOT_CONNECTED, Breadboard.DELAY);
+            allComponents.connect(state.getInstance().getComponentId(), false);
         } else {
-            if (in.equals(ProtoValue.TRUE)) {
-                Value o = getOutputVoltage(state);
-                state.setPort(1, o, Breadboard.DELAY);
-                state.setPort(1, getOutputVoltage(state), Breadboard.DELAY);
-                allComponents.connect(state.getInstance().getComponentId(), true);
-            } else if (in.equals(ProtoValue.NOT_CONNECTED)) {
-                state.setPort(1, ProtoValue.NOT_CONNECTED, Breadboard.DELAY);
-                allComponents.connect(state.getInstance().getComponentId(), false);
-            } else {
-                state.setPort(1, ProtoValue.UNKNOWN, Breadboard.DELAY);
-                allComponents.connect(state.getInstance().getComponentId(), false);
-            }
+            state.setPort(1, ProtoValue.UNKNOWN, Breadboard.DELAY);
+            allComponents.connect(state.getInstance().getComponentId(), false);
         }
     }
 
