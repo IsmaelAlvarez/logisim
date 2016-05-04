@@ -139,7 +139,7 @@ public class MenuSimulate extends Menu {
                 AnalogState.getInstance().resetTime();
             }
             else if(src == analogTickTime){
-                AnalogState.getInstance().tickOnce(menubar.getProject());
+                AnalogState.getInstance().computeGraph(menubar.getProject());
             }
         }
 

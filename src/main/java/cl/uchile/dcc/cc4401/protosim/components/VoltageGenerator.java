@@ -112,7 +112,6 @@ public class VoltageGenerator extends InstanceFactory {
     public void propagate(InstanceState state) {
         Integer cid = state.getInstance().getComponentId();
         Value o = ProtoValue.TRUE;
-        o.setFromId(cid);
         state.setPort(0,o,Breadboard.DELAY);
     }
     

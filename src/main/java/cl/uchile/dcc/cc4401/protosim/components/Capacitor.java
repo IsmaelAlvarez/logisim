@@ -110,11 +110,9 @@ public class Capacitor extends InstanceFactory {
     @Override
     public void propagate(InstanceState state) {
         Value in = state.getPort(0);
-        Integer fromId = in.getFromId();
         Integer cid = state.getInstance().getComponentId();
         if (in.equals(ProtoValue.TRUE)) {
             Value o = getOutputVoltage(state);
-            o.setFromId(cid);
             System.out.println(0);
             state.setPort(1, o, Breadboard.DELAY);
         } else if (in.equals(ProtoValue.NOT_CONNECTED)) {
