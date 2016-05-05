@@ -1,6 +1,8 @@
 package cl.uchile.dcc.cc4401.protosim;
 
 import com.cburch.logisim.data.AttributeSet;
+import com.cburch.logisim.data.Resistance;
+import com.cburch.logisim.data.ResistanceMultiplier;
 import com.cburch.logisim.std.io.Io;
 
 public class AnalogComponent {
@@ -22,11 +24,12 @@ public class AnalogComponent {
     }
     
     public double getRes() {
-    	Double res = (Double) attrs.getValue(Io.ATTR_RESISTANCE);
+    	Resistance res = (Resistance) attrs.getValue(Io.ATTR_RESISTANCE);
     	if (res == null) {
     		return 0;
     	}
-    	return res * (Double) attrs.getValue(Io.ATTR_RESISTANCE_MULTIPLIER);
+    	ResistanceMultiplier rm = (ResistanceMultiplier) attrs.getValue(Io.ATTR_RESISTANCE_MULTIPLIER);
+    	return res.getResistance() * rm.getMultiplier();
     	
     }
 
