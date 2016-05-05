@@ -1,7 +1,5 @@
 package cl.uchile.dcc.cc4401.protosim.components;
 
-import cl.uchile.dcc.cc4401.protosim.*;
-import cl.uchile.dcc.cc4401.protosim.Component;
 import cl.uchile.dcc.cc4401.protosim.libraries.ProtoValue;
 import com.cburch.logisim.data.*;
 import com.cburch.logisim.instance.*;
@@ -37,13 +35,6 @@ public class VoltageGenerator extends InstanceFactory {
         ports.add(new Port(30, 20, Port.OUTPUT, Breadboard.PORT_WIDTH));
         
         setPorts(ports);
-
-
-        AllComponents allComponents = AllComponents.getMyInstance();
-        System.out.println("Probar res eq");
-        allComponents.setCircuit();
-        System.out.println("Entre V -> V");
-        System.out.println("" + allComponents.calculateEqResistance(new cl.uchile.dcc.cc4401.protosim.Component(1,0), new Component(1,0)));
     }
 
     @Override
