@@ -23,7 +23,7 @@ public class AllComponents {
     }
 
     public void connect(int id, boolean b){
-
+        //
     }
 
     public void print(){
@@ -44,5 +44,9 @@ public class AllComponents {
 
     public void resetGraph() {
         connections.clear();
+    }
+
+    public ArrayList<ComponentConnection> getConnections(){
+        return connections;
     }
 }

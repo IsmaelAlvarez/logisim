@@ -84,7 +84,7 @@ public class AnalogState {
         for(CompTuple tuple : cons){
             AllComponents.getMyInstance().connectGraph(tuple.from,tuple.to);
         }
-        System.out.println("Grpah:");
+        System.out.println("Graph:");
         AllComponents.getMyInstance().print();
     }
 

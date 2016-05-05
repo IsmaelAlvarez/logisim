@@ -1,5 +1,6 @@
 package cl.uchile.dcc.cc4401.protosim.components;
 
+import cl.uchile.dcc.cc4401.protosim.AllComponents;
 import cl.uchile.dcc.cc4401.protosim.libraries.ProtoValue;
 import com.cburch.logisim.data.*;
 import com.cburch.logisim.instance.*;
@@ -21,6 +22,7 @@ public class Led extends InstanceFactory {
     public Led() {
         super("LED");
         setAttributes(new Attribute[] {
+                Io.ATTR_COMPONENT_ID,
                 StdAttr.FACING,
                 Io.ATTR_ON_COLOR,
                 Io.ATTR_OFF_COLOR,
@@ -31,6 +33,7 @@ public class Led extends InstanceFactory {
                 Io.ATTR_LABEL_COLOR
             },
             new Object[] {
+                null,
                 Direction.WEST,
                 new Color(240, 0, 0),
                 Color.DARK_GRAY,
@@ -59,6 +62,15 @@ public class Led extends InstanceFactory {
     protected void configureNewInstance(Instance instance) {
         //AllComponents.getMyInstance().addComponent(instance,0);
         instance.addAttributeListener();
+        InstanceComponent component = instance.getInstanceComponent();
+        Integer cid = component.getAttributeSet().getValue(Io.ATTR_COMPONENT_ID);
+        if(cid==null){
+            cid = AllComponents.getMyInstance().getNextID();
+            component.getAttributeSet().setValue(Io.ATTR_COMPONENT_ID,cid);
+            component.getAttributeSet().setReadOnly(Io.ATTR_COMPONENT_ID,true);
+            //AllComponents.getMyInstance().addComponent(instance,100);
+            System.out.println("New LED added with ID "+cid);
+        }
     }
 
 
