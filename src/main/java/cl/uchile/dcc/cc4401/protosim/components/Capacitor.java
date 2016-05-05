@@ -18,7 +18,6 @@ import java.util.List;
 public class Capacitor extends InstanceFactory {
 
     public static InstanceFactory FACTORY = new Capacitor();
-    public ArrayList<Integer> capacitors = new ArrayList<>();
 
     List<Port> ports;
 
@@ -46,7 +45,7 @@ public class Capacitor extends InstanceFactory {
         //for the moment, i put the port width in 1 bit Breadboard.PORT_WIDTH
         //the pin 0 is where our received the voltage, and the pin 1 is ground (ground is 0 always) or our for the moment show a exception
         ports.add(new Port(0, 20, Port.INPUT, Breadboard.PORT_WIDTH));
-        ports.add(new Port(10, 20, Port.INPUT, Breadboard.PORT_WIDTH));
+        ports.add(new Port(10, 20, Port.OUTPUT, Breadboard.PORT_WIDTH));
         setPorts(ports);
         setInstanceLogger(com.cburch.logisim.std.io.Led.Logger.class);
     }
@@ -60,12 +59,10 @@ public class Capacitor extends InstanceFactory {
             cid = AllComponents.getMyInstance().getNextID();
             component.getAttributeSet().setValue(Io.ATTR_COMPONENT_ID,cid);
             component.getAttributeSet().setReadOnly(Io.ATTR_COMPONENT_ID,true);
-            capacitors.add(cid);
+            //AllComponents.getMyInstance().addComponent(instance,100);
             System.out.println("New capacitor added with ID "+cid);
         }
     }
-
-
 
     @Override
     protected void instanceAttributeChanged(Instance instance, Attribute<?> attr) {
@@ -112,40 +109,22 @@ public class Capacitor extends InstanceFactory {
 
     @Override
     public void propagate(InstanceState state) {
-        Value val = state.getPort(0); // the val of the signal, receive the voltage
-        Value valGround = state.getPort(1); // the val of the ground, 0 is ground
-        InstanceDataSingleton data = (InstanceDataSingleton) state.getData();
-
-        // 0 is ground , if this value is x (not connected) or 1 (deadshort)
-        // the ground is incorrectly connected.
-        if (valGround.equals(ProtoValue.FALSE)) {
-
-            if (data == null) {
-                state.setData(new InstanceDataSingleton(val));
-            } else {
-                data.setValue(val);
-            }
+        Value in = state.getPort(0);
+        Integer cid = state.getInstance().getComponentId();
+        if (in.equals(ProtoValue.TRUE)) {
+            Value o = getOutputVoltage(state);
+            System.out.println(0);
+            state.setPort(1, o, Breadboard.DELAY);
+        } else if (in.equals(ProtoValue.NOT_CONNECTED)) {
+            state.setPort(1, ProtoValue.NOT_CONNECTED, Breadboard.DELAY);
+            //allComponents.connect(state.getInstance().getComponentId(), false);
+        } else {
+            state.setPort(1, ProtoValue.UNKNOWN, Breadboard.DELAY);
+            //allComponents.connect(state.getInstance().getComponentId(), false);
         }
+    }
 
-        else if (valGround.equals(ProtoValue.TRUE) && val.equals(ProtoValue.TRUE)) {
-
-            val = Value.createError(BitWidth.create(Breadboard.PORT_WIDTH));
-
-            if (data == null) {
-                state.setData(new InstanceDataSingleton(val));
-            } else {
-                data.setValue(val);
-            }
-        }
-        else if (valGround.equals(ProtoValue.NOT_CONNECTED)
-                || valGround.toString().equals("0")) {
-
-            val = Value.createKnown(BitWidth.create(Breadboard.PORT_WIDTH), 0);
-            if (data == null) {
-                state.setData(new InstanceDataSingleton(val));
-            } else {
-                data.setValue(val);
-            }
-        }
+    private Value getOutputVoltage(InstanceState state) {
+        return Value.createKnown(BitWidth.create(Breadboard.PORT_WIDTH),-1);
     }
 }

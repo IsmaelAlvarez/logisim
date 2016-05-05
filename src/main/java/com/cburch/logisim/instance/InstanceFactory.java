@@ -32,7 +32,7 @@ import com.cburch.logisim.util.StringUtil;
 
 /**
  * Represents a category of components that appear in a circuit. This class
- * and <code>Component</code> share the same sort of relationship as the
+ * and <code>AnalogComponent</code> share the same sort of relationship as the
  * relation between <em>classes</em> and <em>instances</em> in Java. Normally,
  * there is only one ComponentFactory created for any particular category.
  */

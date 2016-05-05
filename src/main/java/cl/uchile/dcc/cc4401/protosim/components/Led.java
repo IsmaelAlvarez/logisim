@@ -1,6 +1,5 @@
 package cl.uchile.dcc.cc4401.protosim.components;
 
-import cl.uchile.dcc.cc4401.protosim.AllComponents;
 import cl.uchile.dcc.cc4401.protosim.libraries.ProtoValue;
 import com.cburch.logisim.data.*;
 import com.cburch.logisim.instance.*;
@@ -64,7 +63,7 @@ public class Led extends InstanceFactory {
     	if (instance.getAttributeSet().getValue(Io.ATTR_DIRECTION_LEFT_RIGHT).equals(Direction.WEST)) {
         	instance.setPorts(new Port[]{ports.get(1), ports.get(0)});
         }
-        AllComponents.getMyInstance().addComponent(instance,0);
+        //AllComponents.getMyInstance().addComponent(instance,0);
         instance.addAttributeListener();
     }
 

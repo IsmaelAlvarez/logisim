@@ -9,6 +9,7 @@ import com.cburch.logisim.data.Attribute;
 import com.cburch.logisim.data.AttributeSet;
 import com.cburch.logisim.data.Bounds;
 import com.cburch.logisim.data.Location;
+import com.cburch.logisim.std.io.Io;
 
 import java.awt.*;
 import java.util.List;
@@ -26,8 +27,8 @@ public class Instance {
     private int resistance = 0;
     private boolean health_state = true;
 
-    public int getComponentId() {
-        return componentId;
+    public Integer getComponentId() {
+        return comp.getAttributeSet().getValue(Io.ATTR_COMPONENT_ID);
     }
 
     public void setComponentId(int cmpId){

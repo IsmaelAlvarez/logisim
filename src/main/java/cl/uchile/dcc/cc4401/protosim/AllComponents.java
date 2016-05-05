@@ -1,6 +1,6 @@
 package cl.uchile.dcc.cc4401.protosim;
 
-import com.cburch.logisim.instance.Instance;
+import com.cburch.logisim.comp.Component;
 
 import java.util.ArrayList;
 
@@ -9,11 +9,11 @@ import java.util.ArrayList;
  */
 public class AllComponents {
     private static AllComponents me;
-    private ArrayList<Component> components;
+    private ArrayList<ComponentConnection> connections;
     private static int c = 0;
 
     private AllComponents(){
-        components = new ArrayList<Component>();
+        connections =  new ArrayList<>();
     }
 
     public static AllComponents getMyInstance(){
@@ -23,49 +23,27 @@ public class AllComponents {
         return me;
     }
 
-    public int addComponent(Instance c, int resistance){
-        Component component = new Component(components.size(), c, resistance);
-        components.add(component);
-        return component.id;
-    }
-
     public void connect(int id, boolean b){
-        for(Component c : components){
-            if(c.id == id){
-                c.connect(b);
-            }
-        }
-    }
 
-    public void changeResistance(int id, int res){
-        System.out.println("Resistencia de: " + res);
-        for(Component c : components){
-            if(c.id == id){
-                c.changeResistance(res);
-            }
-        }
-    }
-
-    public int getTotalResistance(){
-        int totalRes = 0;
-        for(Component c : components){
-            if(c.isConnected()){
-                totalRes += c.getResistance();
-            }
-        }
-
-        return totalRes;
     }
 
     public void print(){
-        for(Component c : components){
-            System.out.println("-------------------------------------");
-            System.out.println("name: " + c.component.getFactory().getName());
+        for(ComponentConnection connection : connections){
+            System.out.println(connection.getFrom().getId()+"->"+connection.getTo().getId());
         }
     }
 
     public int getNextID() {
         c++;
         return c;
+    }
+
+    public void connectGraph(Component from, Component to) {
+        connections.add(new ComponentConnection(new AnalogComponent(from.getAttributeSet()),
+                new AnalogComponent(to.getAttributeSet())));
+    }
+
+    public void resetGraph() {
+        connections.clear();
     }
 }

@@ -35,7 +35,7 @@ public interface Component {
      * Retrieves information about a special-purpose feature for this
      * component. This technique allows future Logisim versions to add
      * new features for components without requiring changes to existing
-     * components. It also removes the necessity for the Component API to
+     * components. It also removes the necessity for the AnalogComponent API to
      * directly declare methods for each individual feature.
      * In most cases, the <code>key</code> is a <code>Class</code> object
      * corresponding to an interface, and the method should return an
