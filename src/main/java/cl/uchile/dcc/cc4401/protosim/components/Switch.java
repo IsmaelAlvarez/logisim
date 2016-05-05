@@ -63,7 +63,6 @@ public class Switch extends InstanceFactory {
     @Override
     protected void configureNewInstance(Instance instance) {
         instance.addAttributeListener();
-        //AllComponents.getMyInstance().addComponent(instance,0);
         computeTextField(instance);
     }
 

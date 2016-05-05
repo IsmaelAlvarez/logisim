@@ -49,6 +49,10 @@ public class Io extends Library {
                     ResistanceMultiplier.RM1K, ResistanceMultiplier.RM10K, ResistanceMultiplier.RM100K,
                     ResistanceMultiplier.RM1M, ResistanceMultiplier.RM10M, ResistanceMultiplier.RM100M});
 
+    public static final Attribute<Object> ATTR_DIRECTION_LEFT_RIGHT = Attributes.forOption("orientation",
+    		"Orientation",
+    		new Object[] {Direction.EAST, Direction.WEST});
+    
     public static final Attribute<Object> ATTR_CAPACITANCE = Attributes.forOption("capacitance",
             "Capacitance",
             new Object[] {Capacitance.C10,Capacitance.C11,Capacitance.C12,Capacitance.C13,Capacitance.C15,Capacitance.C16,

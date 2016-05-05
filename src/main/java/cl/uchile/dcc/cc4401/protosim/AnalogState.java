@@ -86,6 +86,8 @@ public class AnalogState {
         }
         System.out.println("Graph:");
         AllComponents.getMyInstance().print();
+        double res = AllComponents.getMyInstance().calculateEqResistance(AllComponents.getMyInstance().getVoltageGenerator(), AllComponents.getMyInstance().getVoltageGenerator());
+        System.out.println(res);
     }
 
     private boolean isWiredConnected(Set<Wire> wires, Location loc1, Location loc2) {
@@ -127,4 +129,17 @@ public class AnalogState {
             return (o instanceof CompTuple) && ((CompTuple) o).from == from && ((CompTuple) o).to == to;
         }
     }
+    
+    
+    public void simulate() {
+    	ArrayList<ComponentConnection> graph = AllComponents.getMyInstance().getGraph();
+    	// Lista de componentes del circuito
+    	ArrayList<AnalogComponent> componentes = new ArrayList<AnalogComponent>();
+    	for (ComponentConnection cc : graph) {
+    		if (!componentes.contains(cc))
+    			componentes.add(cc.getFrom());
+    	}
+    	
+    }
+    
 }

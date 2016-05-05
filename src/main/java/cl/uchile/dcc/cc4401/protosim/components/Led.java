@@ -30,7 +30,8 @@ public class Led extends InstanceFactory {
                 StdAttr.LABEL,
                 Io.ATTR_LABEL_LOC,
                 StdAttr.LABEL_FONT,
-                Io.ATTR_LABEL_COLOR
+                Io.ATTR_LABEL_COLOR,
+                Io.ATTR_DIRECTION_LEFT_RIGHT
             },
             new Object[] {
                 null,
@@ -41,7 +42,8 @@ public class Led extends InstanceFactory {
                 "",
                 Io.LABEL_CENTER,
                 StdAttr.DEFAULT_LABEL_FONT,
-                Color.BLACK
+                Color.BLACK,
+                Direction.EAST
             }
         );
 
@@ -60,7 +62,10 @@ public class Led extends InstanceFactory {
 
     @Override
     protected void configureNewInstance(Instance instance) {
-        //AllComponents.getMyInstance().addComponent(instance,0);
+
+    	if (instance.getAttributeSet().getValue(Io.ATTR_DIRECTION_LEFT_RIGHT).equals(Direction.WEST)) {
+        	instance.setPorts(new Port[]{ports.get(1), ports.get(0)});
+        }
         instance.addAttributeListener();
         InstanceComponent component = instance.getInstanceComponent();
         Integer cid = component.getAttributeSet().getValue(Io.ATTR_COMPONENT_ID);
@@ -142,15 +147,31 @@ public class Led extends InstanceFactory {
         
         // 0 is ground , if this value is x (not connected) or 1 (deadshort)
         // the ground is incorrectly connected.
-        if (valGround.equals(ProtoValue.FALSE)) {
+        /*if (valGround.equals(ProtoValue.FALSE)) {
         	
             if (data == null) {
                 state.setData(new InstanceDataSingleton(val));
             } else {
                 data.setValue(val);
             }
+        }*/
+        if (val.equals(ProtoValue.TRUE) && !valGround.equals(ProtoValue.NOT_CONNECTED) && !valGround.equals(ProtoValue.UNKNOWN)) {
+        	if (data == null) {
+        		state.setData(new InstanceDataSingleton(val));
+        	} else {
+        		data.setValue(val);
+        	}
+        	System.out.println("a");
+        } else {
+        	val = Value.createKnown(BitWidth.create(Breadboard.PORT_WIDTH), 0);
+        	if (data == null) {
+        		state.setData(new InstanceDataSingleton(val));
+        	} else {
+        		data.setValue(valGround);
+        	}
+        	System.out.println("b");
         }
-
+/*
         else if (valGround.equals(ProtoValue.TRUE) && val.equals(ProtoValue.TRUE)) {
 
             val = Value.createError(BitWidth.create(Breadboard.PORT_WIDTH));
@@ -170,6 +191,6 @@ public class Led extends InstanceFactory {
             } else {
                 data.setValue(val);
             }
-        }
+        }*/
     }
 }
