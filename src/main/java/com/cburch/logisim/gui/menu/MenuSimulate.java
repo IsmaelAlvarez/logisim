@@ -3,35 +3,21 @@
 
 package com.cburch.logisim.gui.menu;
 
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
-
-import javax.swing.ActionMap;
-import javax.swing.InputMap;
-import javax.swing.JComponent;
-import javax.swing.JMenu;
-import javax.swing.JMenuItem;
-import javax.swing.JRadioButtonMenuItem;
-import javax.swing.ButtonGroup;
-import javax.swing.KeyStroke;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
-
-import com.cburch.logisim.circuit.Circuit;
-import com.cburch.logisim.circuit.CircuitEvent;
-import com.cburch.logisim.circuit.CircuitListener;
-import com.cburch.logisim.circuit.CircuitState;
-import com.cburch.logisim.circuit.Simulator;
-import com.cburch.logisim.circuit.SimulatorEvent;
-import com.cburch.logisim.circuit.SimulatorListener;
+import cl.uchile.dcc.cc4401.protosim.AnalogState;
+import com.cburch.logisim.circuit.*;
 import com.cburch.logisim.gui.log.LogFrame;
 import com.cburch.logisim.proj.Project;
 import com.cburch.logisim.util.CustomAction;
 
+import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 
-import static com.cburch.logisim.util.LocaleString.*;
+import static com.cburch.logisim.util.LocaleString.getFromLocale;
 
 @SuppressWarnings("serial")
 public class MenuSimulate extends Menu {
@@ -140,6 +126,21 @@ public class MenuSimulate extends Menu {
                 LogFrame frame = menubar.getProject().getLogFrame(true);
                 frame.setVisible(true);
             }
+            else if(src == analogEdit){
+                AnalogState.getInstance().setMode(AnalogState.AnalogMode.EDIT_MODE);
+            }
+            else if(src == analogSimulate){
+                AnalogState.getInstance().setMode(AnalogState.AnalogMode.SIMULATION_MODE);
+            }
+            else if(src == analogExec){
+                AnalogState.getInstance().setMode(AnalogState.AnalogMode.SIMULATION_MODE);
+            }
+            else if(src == analogResetTime){
+                AnalogState.getInstance().resetTime();
+            }
+            else if(src == analogTickTime){
+                AnalogState.getInstance().computeGraph(menubar.getProject());
+            }
         }
 
         @Override
@@ -205,6 +206,11 @@ public class MenuSimulate extends Menu {
     private ArrayList<CircuitStateMenuItem> upStateItems
         = new ArrayList<CircuitStateMenuItem>();
     private JMenuItem log = new JMenuItem();
+    private JMenuItem analogEdit = new JMenuItem();
+    private JMenuItem analogSimulate = new JMenuItem();
+    private JMenuItem analogExec = new JMenuItem();
+    private JMenuItem analogTickTime = new JMenuItem();
+    private JMenuItem analogResetTime = new JMenuItem();
 
     public MenuSimulate(LogisimMenuBar menubar) {
         this.menubar = menubar;
@@ -230,6 +236,7 @@ public class MenuSimulate extends Menu {
                 KeyEvent.VK_T, menuMask));
         ticksEnabled.setAccelerator(KeyStroke.getKeyStroke(
                 KeyEvent.VK_K, menuMask));
+        analogTickTime.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_W,menuMask));
         InputMap im = this.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
         ActionMap am = this.getActionMap();
         im.put(KeyStroke.getKeyStroke(KeyEvent.VK_SPACE, 0), "Space");
@@ -253,6 +260,13 @@ public class MenuSimulate extends Menu {
         add(tickFreq);
         addSeparator();
         add(log);
+        addSeparator();
+        add(analogEdit);
+        add(analogSimulate);
+        add(analogExec);
+        addSeparator();
+        add(analogResetTime);
+        add(analogTickTime);
 
         setEnabled(false);
         run.setEnabled(false);
@@ -275,6 +289,12 @@ public class MenuSimulate extends Menu {
         // tickOnce.addActionListener(myListener);
         // ticksEnabled.addActionListener(myListener);
         log.addActionListener(myListener);
+
+        analogEdit.addActionListener(myListener);
+        analogSimulate.addActionListener(myListener);
+        analogExec.addActionListener(myListener);
+        analogTickTime.addActionListener(myListener);
+        analogResetTime.addActionListener(myListener);
 
         computeEnabled();
     }
@@ -300,6 +320,11 @@ public class MenuSimulate extends Menu {
         downStateMenu.setText(getFromLocale("simulateDownStateMenu"));
         upStateMenu.setText(getFromLocale("simulateUpStateMenu"));
         log.setText(getFromLocale("simulateLogItem"));
+        analogEdit.setText(getFromLocale("simulateAnalogEdit"));
+        analogSimulate.setText(getFromLocale("simulateAnalogSimulate"));
+        analogExec.setText(getFromLocale("simulateAnalogExec"));
+        analogTickTime.setText(getFromLocale("simulateAnalogTickTime"));
+        analogResetTime.setText(getFromLocale("simulateAnalogResetTime"));
     }
 
     public void setCurrentState(Simulator sim, CircuitState value) {

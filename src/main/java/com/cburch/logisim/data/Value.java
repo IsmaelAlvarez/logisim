@@ -632,6 +632,4 @@ public class Value {
     public double getVoltage(){
         return voltage;
     }
-
-
 }
