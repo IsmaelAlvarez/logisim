@@ -32,6 +32,7 @@ public class Resistor extends InstanceFactory {
                         Io.ATTR_RESISTANCE,
                         Io.ATTR_RESISTANCE_MULTIPLIER,
                         Io.ATTR_DIRECTION_LEFT_RIGHT
+
                 },
                 new Object[] {
                         "",
@@ -146,6 +147,7 @@ public class Resistor extends InstanceFactory {
     
     @Override
     public void propagate(InstanceState state) {
+
     	Value in = state.getPort(0); 
     	if (in.equals(ProtoValue.TRUE)) {
     		state.setPort(1, getOutputVoltage(state), Breadboard.DELAY);
@@ -158,5 +160,4 @@ public class Resistor extends InstanceFactory {
     		allComponents.connect(state.getInstance().getComponentId(), false);
     	} 
     }
-
 }

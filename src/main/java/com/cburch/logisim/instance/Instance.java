@@ -57,6 +57,10 @@ public class Instance {
 
     private InstanceComponent comp;
 
+    public InstanceComponent getInstanceComponent(){
+        return comp;
+    }
+
     Instance(InstanceComponent comp) {
         this.comp = comp;
     }

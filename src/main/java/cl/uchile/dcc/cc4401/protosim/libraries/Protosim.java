@@ -1,23 +1,12 @@
 package cl.uchile.dcc.cc4401.protosim.libraries;
 
-import java.util.Arrays;
-import java.util.List;
-
+import cl.uchile.dcc.cc4401.protosim.components.*;
 import com.cburch.logisim.tools.AddTool;
 import com.cburch.logisim.tools.Library;
 import com.cburch.logisim.tools.Tool;
 
-import cl.uchile.dcc.cc4401.protosim.components.AndChip;
-import cl.uchile.dcc.cc4401.protosim.components.Breadboard;
-import cl.uchile.dcc.cc4401.protosim.components.ClockChip;
-import cl.uchile.dcc.cc4401.protosim.components.FlipFlopChip;
-import cl.uchile.dcc.cc4401.protosim.components.Led;
-import cl.uchile.dcc.cc4401.protosim.components.NandChip;
-import cl.uchile.dcc.cc4401.protosim.components.NotChip;
-import cl.uchile.dcc.cc4401.protosim.components.OrChip;
-import cl.uchile.dcc.cc4401.protosim.components.Resistor;
-import cl.uchile.dcc.cc4401.protosim.components.Switch;
-import cl.uchile.dcc.cc4401.protosim.components.VoltageGenerator;
+import java.util.Arrays;
+import java.util.List;
 
 /*
  * Protosim components library for Logisim
@@ -32,6 +21,7 @@ public class Protosim extends Library {
             
             new AddTool(Resistor.FACTORY),  
             new AddTool(Led.FACTORY),
+            new AddTool(Capacitor.FACTORY),
             new AddTool(Switch.FACTORY),
 
             new AddTool(ClockChip.FACTORY),
