@@ -46,4 +46,8 @@ public class AllComponents {
     public void resetGraph() {
         connections.clear();
     }
+    
+    public ArrayList<ComponentConnection> getGraph() {
+    	return connections;
+    }
 }

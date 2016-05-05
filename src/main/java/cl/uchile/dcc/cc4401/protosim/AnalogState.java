@@ -127,4 +127,17 @@ public class AnalogState {
             return (o instanceof CompTuple) && ((CompTuple) o).from == from && ((CompTuple) o).to == to;
         }
     }
+    
+    
+    public void simulate() {
+    	ArrayList<ComponentConnection> graph = AllComponents.getMyInstance().getGraph();
+    	// Lista de componentes del circuito
+    	ArrayList<AnalogComponent> componentes = new ArrayList<AnalogComponent>();
+    	for (ComponentConnection cc : graph) {
+    		if (!componentes.contains(cc))
+    			componentes.add(cc.getFrom());
+    	}
+    	
+    }
+    
 }
