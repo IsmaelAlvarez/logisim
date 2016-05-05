@@ -172,6 +172,6 @@ public class Resistor extends InstanceFactory {
     	} else {
     		state.setPort(1, ProtoValue.UNKNOWN, Breadboard.DELAY);
     		allComponents.connect(state.getInstance().getComponentId(), false);
-    	} 
+    	}
     }
 }

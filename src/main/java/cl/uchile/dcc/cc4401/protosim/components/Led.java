@@ -136,15 +136,31 @@ public class Led extends InstanceFactory {
         
         // 0 is ground , if this value is x (not connected) or 1 (deadshort)
         // the ground is incorrectly connected.
-        if (valGround.equals(ProtoValue.FALSE)) {
+        /*if (valGround.equals(ProtoValue.FALSE)) {
         	
             if (data == null) {
                 state.setData(new InstanceDataSingleton(val));
             } else {
                 data.setValue(val);
             }
+        }*/
+        if (val.equals(ProtoValue.TRUE) && !valGround.equals(ProtoValue.NOT_CONNECTED) && !valGround.equals(ProtoValue.UNKNOWN)) {
+        	if (data == null) {
+        		state.setData(new InstanceDataSingleton(val));
+        	} else {
+        		data.setValue(val);
+        	}
+        	System.out.println("a");
+        } else {
+        	val = Value.createKnown(BitWidth.create(Breadboard.PORT_WIDTH), 0);
+        	if (data == null) {
+        		state.setData(new InstanceDataSingleton(val));
+        	} else {
+        		data.setValue(valGround);
+        	}
+        	System.out.println("b");
         }
-
+/*
         else if (valGround.equals(ProtoValue.TRUE) && val.equals(ProtoValue.TRUE)) {
 
             val = Value.createError(BitWidth.create(Breadboard.PORT_WIDTH));
@@ -164,6 +180,6 @@ public class Led extends InstanceFactory {
             } else {
                 data.setValue(val);
             }
-        }
+        }*/
     }
 }
