@@ -186,7 +186,7 @@ public class Frame extends LFrame implements LocaleListener {
     private Toolbox         toolbox;
     private SimulationExplorer simExplorer;
     private AttrTable       attrTable;
-    private ZoomControl     zoom;
+    public static ZoomControl     zoom;
 
     // for the Layout view
     private LayoutToolbarModel layoutToolbarModel;
@@ -300,6 +300,10 @@ public class Frame extends LFrame implements LocaleListener {
 
         LocaleManager.addLocaleListener(this);
     }
+    
+    //public static ZoomControl getZoomControl(){
+    //	return this.zoom;
+    //}
 
     private void placeToolbar() {
         String loc = AppPreferences.TOOLBAR_PLACEMENT.get();
