@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.cburch.logisim.tools.AddTool;
 import com.cburch.logisim.tools.Library;
+import com.cburch.logisim.tools.PokeTool;
 import com.cburch.logisim.tools.Tool;
 
 import cl.uchile.dcc.cc4401.protosim.components.AndChip;
@@ -42,7 +43,8 @@ public class Protosim extends Library {
             new AddTool(AndChip.FACTORY),
             new AddTool(OrChip.FACTORY),
             new AddTool(NandChip.FACTORY),
-            new AddTool(Zoom.FACTORY),
+            new PokeTool(),
+            new Zoom(),
     };
 
     public Protosim() {

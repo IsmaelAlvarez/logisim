@@ -5,13 +5,18 @@ import java.awt.Graphics;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import com.cburch.logisim.data.Attribute;
 import com.cburch.logisim.data.AttributeSet;
 import com.cburch.logisim.data.Bounds;
+import com.cburch.logisim.data.Direction;
 import com.cburch.logisim.data.Location;
 import com.cburch.logisim.instance.InstanceFactory;
 import com.cburch.logisim.instance.InstancePainter;
 import com.cburch.logisim.instance.InstanceState;
 import com.cburch.logisim.instance.Port;
+import com.cburch.logisim.instance.StdAttr;
+import com.cburch.logisim.std.io.Io;
 import com.cburch.logisim.util.Icons;
 
 public class Breadboard extends InstanceFactory {
@@ -32,6 +37,8 @@ public class Breadboard extends InstanceFactory {
 	public Breadboard() {
 		super("Breadboard");
 		setIcon(Icons.getIcon("protosimBreadboard.svg"));
+		
+		
 
 		ports = new ArrayList<Port>();
 		connected = new HashMap<Port, Integer>();
