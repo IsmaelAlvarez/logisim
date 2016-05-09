@@ -27,13 +27,17 @@ public class Capacitor extends InstanceFactory {
                         Io.ATTR_COMPONENT_ID,
                         StdAttr.LABEL,
                         Io.ATTR_CAPACITANCE,
-                        Io.ATTR_CAPACITANCE_MULTIPLIER
+                        Io.ATTR_CAPACITANCE_MULTIPLIER,
+                        Io.ATTR_DISPLAY_CHARGE,
+                        Io.ATTR_CHARGE
                 },
                 new Object[] {
                         null,
                         "",
                         Capacitance.C10,
-                        CapacitanceMultiplier.CM1u
+                        CapacitanceMultiplier.CM1u,
+                        false,
+                        0.0
                 }
         );
 
@@ -59,6 +63,7 @@ public class Capacitor extends InstanceFactory {
             cid = AllComponents.getMyInstance().getNextID();
             component.getAttributeSet().setValue(Io.ATTR_COMPONENT_ID,cid);
             component.getAttributeSet().setReadOnly(Io.ATTR_COMPONENT_ID,true);
+            component.getAttributeSet().setReadOnly(Io.ATTR_CHARGE,true);
             //AllComponents.getMyInstance().addComponent(instance,100);
             System.out.println("New capacitor added with ID "+cid);
         }
@@ -98,6 +103,15 @@ public class Capacitor extends InstanceFactory {
         g.setFont(new Font("Courier", Font.BOLD, 7));
         g.drawString("+", x - 3, y + 10);
         g.drawString("-", x + 8, y + 10);
+
+        // Charge state
+        if(painter.getInstance().getAttributeSet().getValue(Io.ATTR_DISPLAY_CHARGE)){
+            g.setColor(Color.green);
+            int k = (int) (32*painter.getInstance().getAttributeSet().getValue(Io.ATTR_CHARGE));
+            g.fillRect(x+17, y - 19 + (32 - k), 4, k);
+            g.setColor(Color.black);
+            g.drawRect(x+16,y-20,4,32);
+        }
 
         // Pins
         g.setColor(Color.gray);

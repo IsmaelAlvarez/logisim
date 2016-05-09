@@ -1,6 +1,8 @@
 package cl.uchile.dcc.cc4401.protosim;
 
 
+import cl.uchile.dcc.cc4401.protosim.simulators.AnalogSimulator;
+import cl.uchile.dcc.cc4401.protosim.simulators.AnalogTimeSimulator;
 import com.cburch.logisim.circuit.Circuit;
 import com.cburch.logisim.circuit.Wire;
 import com.cburch.logisim.comp.Component;
@@ -14,41 +16,15 @@ import java.util.Set;
 
 public class AnalogState {
 
-    public enum AnalogMode {EDIT_MODE, SIMULATION_MODE, EXECUTION_MODE};
-
-    private AnalogMode mode;
-    private float time = 0;
     private static AnalogState state = new AnalogState();
+    private AnalogTimeSimulator timeSimulator;
 
     private AnalogState(){
-        mode = AnalogMode.EDIT_MODE;
+        //Singleton pattern
     }
 
     public static AnalogState getInstance() {
         return state;
-    }
-
-    public AnalogMode getMode(){
-        return mode;
-    }
-
-    public void setMode(AnalogMode am){
-        mode = am;
-    }
-
-    public float getElapsedTime(){
-        return time;
-    }
-
-    public void resetTime(){
-        time = 0;
-    }
-
-    public void tickOnce() {
-        time += 1;
-        System.out.println("Current time: "+time);
-        AllComponents.getMyInstance().print();
-
     }
 
     //Triggered when Ctrl + W
@@ -140,6 +116,21 @@ public class AnalogState {
     			componentes.add(cc.getFrom());
     	}
     	
+    }
+
+    public void startSimpleSimulator(AnalogSimulator simulator){
+        simulator.simulate(AllComponents.getMyInstance().getGraph());
+    }
+
+    public void startTimedSimulator(AnalogTimeSimulator simulator){
+        timeSimulator = simulator;
+        timeSimulator.simulate(AllComponents.getMyInstance().getGraph());
+    }
+
+    public void simulatorTickOnce(float dt){
+        if(timeSimulator!=null){
+            timeSimulator.simulateTick(AllComponents.getMyInstance().getGraph(),dt);
+        }
     }
     
 }

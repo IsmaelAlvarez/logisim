@@ -65,6 +65,8 @@ public class Io extends Library {
             new Object[] {CapacitanceMultiplier.CM1,CapacitanceMultiplier.CM100m,CapacitanceMultiplier.CM10m,CapacitanceMultiplier.CM1m,
                     CapacitanceMultiplier.CM100u,CapacitanceMultiplier.CM10u,CapacitanceMultiplier.CM1u,CapacitanceMultiplier.CM100p,
                     CapacitanceMultiplier.CM10p,CapacitanceMultiplier.CM1p});
+    public static final Attribute<Boolean> ATTR_DISPLAY_CHARGE = Attributes.forBoolean("Display charge");
+    public static final Attribute<Double> ATTR_CHARGE = Attributes.forDouble("Charge");
     public static final Attribute<Integer> ATTR_COMPONENT_ID = Attributes.forInteger("ID");
 
     public static final Attribute<Color> ATTR_LABEL_COLOR = Attributes.forColor("labelcolor",

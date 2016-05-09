@@ -1,8 +1,6 @@
 package cl.uchile.dcc.cc4401.protosim;
 
-import com.cburch.logisim.data.AttributeSet;
-import com.cburch.logisim.data.Resistance;
-import com.cburch.logisim.data.ResistanceMultiplier;
+import com.cburch.logisim.data.*;
 import com.cburch.logisim.std.io.Io;
 
 public class AnalogComponent {
@@ -40,5 +38,14 @@ public class AnalogComponent {
     @Override
     public boolean equals(Object o) {
         return (o instanceof AnalogComponent) && ((AnalogComponent) o).id == this.id;
+    }
+
+    public double getCap() {
+        Capacitance cap = (Capacitance) attrs.getValue(Io.ATTR_CAPACITANCE);
+        if (cap == null) {
+            return 0;
+        }
+        CapacitanceMultiplier cm = (CapacitanceMultiplier) attrs.getValue(Io.ATTR_CAPACITANCE_MULTIPLIER);
+        return cap.getCapacitance() * cm.getMultiplier();
     }
 }
