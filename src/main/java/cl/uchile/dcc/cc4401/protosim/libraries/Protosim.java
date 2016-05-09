@@ -7,6 +7,7 @@ import com.cburch.logisim.tools.AddTool;
 import com.cburch.logisim.tools.Library;
 import com.cburch.logisim.tools.Tool;
 
+import cl.uchile.dcc.cc4401.protosim.components.ACounterChip;
 import cl.uchile.dcc.cc4401.protosim.components.AndChip;
 import cl.uchile.dcc.cc4401.protosim.components.Breadboard;
 import cl.uchile.dcc.cc4401.protosim.components.ClockChip;
@@ -38,6 +39,7 @@ public class Protosim extends Library {
             new AddTool(ClockChip.FACTORY),
             new AddTool(FlipFlopChip.FACTORY),
             new AddTool(CounterChip.FACTORY),
+            new AddTool (ACounterChip.FACTORY),
 
             new AddTool(NotChip.FACTORY),
             new AddTool(AndChip.FACTORY),
