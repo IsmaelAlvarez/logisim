@@ -3,10 +3,7 @@
 
 package com.cburch.logisim.std;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-
+import cl.uchile.dcc.cc4401.protosim.libraries.Protosim;
 import com.cburch.logisim.std.arith.Arithmetic;
 import com.cburch.logisim.std.base.Base;
 import com.cburch.logisim.std.gates.Gates;
@@ -17,24 +14,24 @@ import com.cburch.logisim.std.wiring.Wiring;
 import com.cburch.logisim.tools.Library;
 import com.cburch.logisim.tools.Tool;
 
-import cl.uchile.dcc.cc4401.protosim.libraries.Protosim;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
-import static com.cburch.logisim.util.LocaleString.*;
+import static com.cburch.logisim.util.LocaleString.getFromLocale;
 
 public class Builtin extends Library {
     private List<Library> libraries = null;
 
     public Builtin() {
-        libraries = Arrays.asList(new Library[] {
-            new Base(),
-            new Gates(),
-            new Wiring(),
-            new Plexers(),
-            new Arithmetic(),
-            new Memory(),
-            new Io(),
-            new Protosim(),
-        });
+        libraries = Arrays.asList(new Base(),
+                new Gates(),
+                new Wiring(),
+                new Plexers(),
+                new Arithmetic(),
+                new Memory(),
+                new Io(),
+                new Protosim());
     }
 
     @Override

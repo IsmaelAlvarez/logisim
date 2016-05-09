@@ -1,30 +1,17 @@
 package cl.uchile.dcc.cc4401.protosim.components;
 
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Graphics;
-import java.util.ArrayList;
-import java.util.List;
-
+import cl.uchile.dcc.cc4401.protosim.AllComponents;
 import cl.uchile.dcc.cc4401.protosim.libraries.ProtoValue;
-
-import com.cburch.logisim.data.Attribute;
-import com.cburch.logisim.data.AttributeSet;
-import com.cburch.logisim.data.BitWidth;
-import com.cburch.logisim.data.Bounds;
-import com.cburch.logisim.data.Direction;
-import com.cburch.logisim.data.Location;
-import com.cburch.logisim.data.Value;
-import com.cburch.logisim.instance.InstanceDataSingleton;
-import com.cburch.logisim.instance.InstanceFactory;
-import com.cburch.logisim.instance.InstancePainter;
-import com.cburch.logisim.instance.InstanceState;
-import com.cburch.logisim.instance.Port;
-import com.cburch.logisim.instance.StdAttr;
+import com.cburch.logisim.data.*;
+import com.cburch.logisim.instance.*;
 import com.cburch.logisim.std.io.Io;
 import com.cburch.logisim.std.io.Led.Logger;
 import com.cburch.logisim.util.GraphicsUtil;
 import com.cburch.logisim.util.Icons;
+
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Led extends InstanceFactory {
     
@@ -35,6 +22,7 @@ public class Led extends InstanceFactory {
     public Led() {
         super("LED");
         setAttributes(new Attribute[] {
+                Io.ATTR_COMPONENT_ID,
                 StdAttr.FACING,
                 Io.ATTR_ON_COLOR,
                 Io.ATTR_OFF_COLOR,
@@ -42,9 +30,11 @@ public class Led extends InstanceFactory {
                 StdAttr.LABEL,
                 Io.ATTR_LABEL_LOC,
                 StdAttr.LABEL_FONT,
-                Io.ATTR_LABEL_COLOR
+                Io.ATTR_LABEL_COLOR,
+                Io.ATTR_DIRECTION_LEFT_RIGHT
             },
             new Object[] {
+                null,
                 Direction.WEST,
                 new Color(240, 0, 0),
                 Color.DARK_GRAY,
@@ -52,7 +42,8 @@ public class Led extends InstanceFactory {
                 "",
                 Io.LABEL_CENTER,
                 StdAttr.DEFAULT_LABEL_FONT,
-                Color.BLACK
+                Color.BLACK,
+                Direction.EAST
             }
         );
 
@@ -64,11 +55,30 @@ public class Led extends InstanceFactory {
         //for the moment, i put the port width in 1 bit Breadboard.PORT_WIDTH
         //the pin 0 is where our received the voltage, and the pin 1 is ground (ground is 0 always) or our for the moment show a exception
         ports.add(new Port(0, 20, Port.INPUT, Breadboard.PORT_WIDTH));
-        ports.add(new Port(10, 20, Port.INPUT, Breadboard.PORT_WIDTH));
+        ports.add(new Port(10, 20, Port.OUTPUT, Breadboard.PORT_WIDTH));
         setPorts(ports);
         setInstanceLogger(Logger.class);
     }
-    
+
+    @Override
+    protected void configureNewInstance(Instance instance) {
+
+    	if (instance.getAttributeSet().getValue(Io.ATTR_DIRECTION_LEFT_RIGHT).equals(Direction.WEST)) {
+        	instance.setPorts(new Port[]{ports.get(1), ports.get(0)});
+        }
+        instance.addAttributeListener();
+        InstanceComponent component = instance.getInstanceComponent();
+        Integer cid = component.getAttributeSet().getValue(Io.ATTR_COMPONENT_ID);
+        if(cid==null){
+            cid = AllComponents.getMyInstance().getNextID();
+            component.getAttributeSet().setValue(Io.ATTR_COMPONENT_ID,cid);
+            component.getAttributeSet().setReadOnly(Io.ATTR_COMPONENT_ID,true);
+            //AllComponents.getMyInstance().addComponent(instance,100);
+            System.out.println("New LED added with ID "+cid);
+        }
+    }
+
+
     @Override
     public Bounds getOffsetBounds(AttributeSet attrs) {
         return Bounds.create(-6, -6, 20, 25);
@@ -137,15 +147,31 @@ public class Led extends InstanceFactory {
         
         // 0 is ground , if this value is x (not connected) or 1 (deadshort)
         // the ground is incorrectly connected.
-        if (valGround.equals(ProtoValue.FALSE)) {
+        /*if (valGround.equals(ProtoValue.FALSE)) {
         	
             if (data == null) {
                 state.setData(new InstanceDataSingleton(val));
             } else {
                 data.setValue(val);
             }
+        }*/
+        if (val.equals(ProtoValue.TRUE) && !valGround.equals(ProtoValue.NOT_CONNECTED) && !valGround.equals(ProtoValue.UNKNOWN)) {
+        	if (data == null) {
+        		state.setData(new InstanceDataSingleton(val));
+        	} else {
+        		data.setValue(val);
+        	}
+        	System.out.println("a");
+        } else {
+        	val = Value.createKnown(BitWidth.create(Breadboard.PORT_WIDTH), 0);
+        	if (data == null) {
+        		state.setData(new InstanceDataSingleton(val));
+        	} else {
+        		data.setValue(valGround);
+        	}
+        	System.out.println("b");
         }
-
+/*
         else if (valGround.equals(ProtoValue.TRUE) && val.equals(ProtoValue.TRUE)) {
 
             val = Value.createError(BitWidth.create(Breadboard.PORT_WIDTH));
@@ -165,6 +191,6 @@ public class Led extends InstanceFactory {
             } else {
                 data.setValue(val);
             }
-        }
+        }*/
     }
 }
