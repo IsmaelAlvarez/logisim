@@ -126,6 +126,8 @@ public class Led extends InstanceFactory {
         g.fillRect(x - 2, y + 11, 4, 9);
         g.fillRect(x + 8, y + 11, 4, 9);
 
+        // Shorted circuit
+
         painter.drawPorts();
     }
 
