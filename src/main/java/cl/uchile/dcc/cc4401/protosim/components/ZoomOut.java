@@ -54,72 +54,44 @@ import com.cburch.logisim.prefs.AppPreferences;
 import com.cburch.logisim.proj.Project;
 import com.cburch.logisim.util.Icons;
 
-public class Zoom extends Tool {
+public class ZoomOut extends Tool {
 	private static final Icon toolIcon=null;// = Icons.getIcon("poke.svg");
     private static final Color caretColor = new Color(255, 255, 150);
     
-    private static Cursor cursor = Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR);
+    private static Cursor cursor = Cursor.getPredefinedCursor(Cursor.NW_RESIZE_CURSOR);
     
-    private class Listener implements CircuitListener {
-
-		@Override
-		public void circuitChanged(CircuitEvent event) {
-			// TODO Auto-generated method stub
-			
-		}
-    }
     
-    private Listener listener;
 	
-	public Zoom() {
-		this.listener = new Listener();
+	public ZoomOut() {
+		
 	}
 
 	@Override
 	public String getName() {
-		// TODO Auto-generated method stub
-		return null;
+		return "Zoom out";
 	}
 
 	@Override
 	public String getDisplayName() {
-		// TODO Auto-generated method stub
-		return null;
+		return "Zoom out";
 	}
 
 	@Override
 	public String getDescription() {
-		// TODO Auto-generated method stub
-		return null;
+		return "Zooms out the circuit";
 	}
 	
 	public void mousePressed(Canvas canvas, Graphics g, MouseEvent e) {
-		this.zoomIn();
+		this.zoomOut();
 	}
 	
 	 @Override
 	 public void paintIcon(ComponentDrawContext c, int x, int y) {
 	        Graphics g = c.getGraphics();
-	        if (toolIcon != null) {
-	            toolIcon.paintIcon(c.getDestination(), g, x + 2, y + 2);
-	        } else {
-	            g.setColor(java.awt.Color.black);
-	            /*
-	             * The code below draws two arrows. It's only executed if the icon of the PokeTool is not available.
-	             * 1st segment is arrow down.
-	             * L1 Line Up Down |
-	             * L2 Line Mid Left Mid Down \
-	             * L3 Line Mid Right Mid Down /
-	             * 2nd segment is arrow up.
-	             * L1 Line Up Down |
-	             * L2 Line Mid Left Mid Up /
-	             * L3 Line Mid Right Mid Up \ 
-	             */
-	            g.drawOval(x + 4, y + 4, 9, 9);
-	            g.drawLine(x +12, y +12, x+20, y+20);
-	            g.drawLine(x +5, y +16, x+10, y+16);
-	            g.drawLine(x +8, y +14, x+8, y+20);
-	        }
+	        g.setColor(java.awt.Color.black);
+	        g.drawOval(x + 4, y + 4, 9, 9);
+            g.drawLine(x +12, y +12, x+20, y+20);
+            g.drawLine(x +5, y +16, x+10, y+16);
 	}
 	 
 	 @Override
