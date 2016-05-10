@@ -1,4 +1,6 @@
 .DS_Store
+.idea/*
+Logisim.iml
 
 target
 reports
@@ -15,6 +17,7 @@ bin/
 /nbproject/private/
 .externalToolBuilders
 *.orig
+.idea/*
 
 # Temp files
 *~

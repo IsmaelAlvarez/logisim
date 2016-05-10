@@ -109,7 +109,7 @@ public final class Wire implements Component, AttributeSet, CustomHandles,
     }
 
     //
-    // Component methods
+    // AnalogComponent methods
     //
     // (Wire never issues ComponentEvents, so we don't need to track listeners)
     @Override

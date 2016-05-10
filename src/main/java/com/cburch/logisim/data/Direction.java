@@ -20,7 +20,7 @@ public class Direction implements AttributeOptionInterface {
                 getFromLocale("directionSouthVertical"), 3);
     public static final Direction[] cardinals
         = { NORTH, EAST, SOUTH, WEST };
-
+    
     public static Direction parse(String str) {
         if (str.equals(EAST.name)) {
              return EAST;

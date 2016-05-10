@@ -3,19 +3,12 @@
 
 package com.cburch.logisim.std.base;
 
+import com.cburch.logisim.tools.*;
+
 import java.util.Arrays;
 import java.util.List;
 
-import com.cburch.logisim.tools.Library;
-import com.cburch.logisim.tools.MenuTool;
-import com.cburch.logisim.tools.PokeTool;
-import com.cburch.logisim.tools.SelectTool;
-import com.cburch.logisim.tools.TextTool;
-import com.cburch.logisim.tools.AddTool;
-import com.cburch.logisim.tools.EditTool;
-import com.cburch.logisim.tools.Tool;
-import com.cburch.logisim.tools.WiringTool;
-import static com.cburch.logisim.util.LocaleString.*;
+import static com.cburch.logisim.util.LocaleString.getFromLocale;
 
 public class Base extends Library {
     private List<Tool> tools = null;
@@ -24,15 +17,13 @@ public class Base extends Library {
         SelectTool select = new SelectTool();
         WiringTool wiring = new WiringTool();
 
-        tools = Arrays.asList(new Tool[] {
-            new PokeTool(),
-            new EditTool(select, wiring),
-            select,
-            wiring,
-            new TextTool(),
-            new MenuTool(),
-            new AddTool(Text.FACTORY),
-        });
+        tools = Arrays.asList(new PokeTool(),
+                new EditTool(select, wiring),
+                select,
+                wiring,
+                new TextTool(),
+                new MenuTool(),
+                new AddTool(Text.FACTORY));
     }
 
     @Override

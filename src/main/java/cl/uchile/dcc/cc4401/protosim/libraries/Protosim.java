@@ -1,16 +1,18 @@
 package cl.uchile.dcc.cc4401.protosim.libraries;
 
-import java.util.Arrays;
-import java.util.List;
-
+import cl.uchile.dcc.cc4401.protosim.components.*;
 import com.cburch.logisim.tools.AddTool;
 import com.cburch.logisim.tools.Library;
 import com.cburch.logisim.tools.PokeTool;
 import com.cburch.logisim.tools.Tool;
 
+import java.util.Arrays;
+import java.util.List;
+import cl.uchile.dcc.cc4401.protosim.components.ACounterChip;
 import cl.uchile.dcc.cc4401.protosim.components.AndChip;
 import cl.uchile.dcc.cc4401.protosim.components.Breadboard;
 import cl.uchile.dcc.cc4401.protosim.components.ClockChip;
+import cl.uchile.dcc.cc4401.protosim.components.CounterChip;
 import cl.uchile.dcc.cc4401.protosim.components.FlipFlopChip;
 import cl.uchile.dcc.cc4401.protosim.components.Led;
 import cl.uchile.dcc.cc4401.protosim.components.NandChip;
@@ -36,10 +38,13 @@ public class Protosim extends Library {
             
             new AddTool(Resistor.FACTORY),  
             new AddTool(Led.FACTORY),
+            new AddTool(Capacitor.FACTORY),
             new AddTool(Switch.FACTORY),
 
             new AddTool(ClockChip.FACTORY),
             new AddTool(FlipFlopChip.FACTORY),
+            new AddTool(CounterChip.FACTORY),
+            new AddTool (ACounterChip.FACTORY),
 
             new AddTool(NotChip.FACTORY),
             new AddTool(AndChip.FACTORY),
