@@ -7,6 +7,19 @@ import com.cburch.logisim.tools.Tool;
 
 import java.util.Arrays;
 import java.util.List;
+import cl.uchile.dcc.cc4401.protosim.components.ACounterChip;
+import cl.uchile.dcc.cc4401.protosim.components.AndChip;
+import cl.uchile.dcc.cc4401.protosim.components.Breadboard;
+import cl.uchile.dcc.cc4401.protosim.components.ClockChip;
+import cl.uchile.dcc.cc4401.protosim.components.CounterChip;
+import cl.uchile.dcc.cc4401.protosim.components.FlipFlopChip;
+import cl.uchile.dcc.cc4401.protosim.components.Led;
+import cl.uchile.dcc.cc4401.protosim.components.NandChip;
+import cl.uchile.dcc.cc4401.protosim.components.NotChip;
+import cl.uchile.dcc.cc4401.protosim.components.OrChip;
+import cl.uchile.dcc.cc4401.protosim.components.Resistor;
+import cl.uchile.dcc.cc4401.protosim.components.Switch;
+import cl.uchile.dcc.cc4401.protosim.components.VoltageGenerator;
 
 /*
  * Protosim components library for Logisim
@@ -26,6 +39,8 @@ public class Protosim extends Library {
 
             new AddTool(ClockChip.FACTORY),
             new AddTool(FlipFlopChip.FACTORY),
+            new AddTool(CounterChip.FACTORY),
+            new AddTool (ACounterChip.FACTORY),
 
             new AddTool(NotChip.FACTORY),
             new AddTool(AndChip.FACTORY),
