@@ -32,6 +32,7 @@ import com.cburch.logisim.util.CollectionUtil;
 import com.cburch.logisim.util.EventSourceWeakSupport;
 
 import cl.uchile.dcc.cc4401.protosim.components.ClockChip;
+import cl.uchile.dcc.cc4401.protosim.components.Timer555Chip;
 
 public class Circuit {
     private static final PrintStream DEBUG_STREAM = null;
@@ -118,6 +119,8 @@ public class Circuit {
         // wires is package-protected for CircuitState and Analyze only.
     private ArrayList<Component> clocks = new ArrayList<Component>();
     private ArrayList<Component> clockchips = new ArrayList<Component>();
+    private ArrayList<Component> timer555chips = new ArrayList<Component>();
+
     private CircuitLocker locker;
     private WeakHashMap<Component, Circuit> circuitsUsingThis;
 
@@ -406,6 +409,9 @@ public class Circuit {
         return clockchips;
     }
 
+    ArrayList<Component> getTimer555Chips() {
+        return timer555chips;
+    }
     //
     // action methods
     //
@@ -456,6 +462,9 @@ public class Circuit {
                 clocks.add(c);
             } else if (factory instanceof ClockChip) {
                 clockchips.add(c);
+            }
+            else if (factory instanceof Timer555Chip) {
+            	timer555chips.add(c);
             } else if (factory instanceof SubcircuitFactory) {
                 SubcircuitFactory subcirc = (SubcircuitFactory) factory;
                 subcirc.getSubcircuit().circuitsUsingThis.put(c, this);
@@ -479,6 +488,8 @@ public class Circuit {
                 clocks.remove(c);
             } else if (factory instanceof ClockChip) {
             	clockchips.remove(c);
+            } else if (factory instanceof Timer555Chip) {
+            	timer555chips.remove(c);
             } else if (factory instanceof SubcircuitFactory) {
                 SubcircuitFactory subcirc = (SubcircuitFactory) factory;
                 subcirc.getSubcircuit().circuitsUsingThis.remove(c);
