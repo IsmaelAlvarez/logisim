@@ -28,6 +28,7 @@ import com.cburch.logisim.std.wiring.Clock;
 import com.cburch.logisim.std.wiring.Pin;
 
 import cl.uchile.dcc.cc4401.protosim.components.ClockChip;
+import cl.uchile.dcc.cc4401.protosim.components.Timer555Chip;
 
 public class CircuitState implements InstanceData {
     private class MyCircuitListener implements CircuitListener {
@@ -448,6 +449,10 @@ public class CircuitState implements InstanceData {
         
         for (Component clock : circuit.getClockChips()) {
             ret |= ClockChip.tick(this, ticks, clock);
+        }
+        
+        for (Component clock : circuit.getTimer555Chips()) {
+            ret |= Timer555Chip.tick(this, ticks, clock);
         }
 
         CircuitState[] subs = new CircuitState[substates.size()];
