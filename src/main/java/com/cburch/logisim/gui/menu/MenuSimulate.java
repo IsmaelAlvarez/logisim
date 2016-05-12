@@ -131,7 +131,7 @@ public class MenuSimulate extends Menu {
                 AnalogState.getInstance().simulatorTickOnce(0.1f);
             }
             else if(src == analogTick){
-                System.out.println("To be implemented");
+                AnalogState.getInstance().autoTickSimuator();
             }
             else if(src == analogStartRC){
                 AnalogState.getInstance().startTimedSimulator(new RCSimulator());

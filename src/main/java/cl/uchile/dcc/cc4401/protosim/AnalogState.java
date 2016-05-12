@@ -13,14 +13,16 @@ import com.cburch.logisim.proj.Project;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
+import java.util.Timer;
 
 public class AnalogState {
 
     private static AnalogState state = new AnalogState();
     private AnalogTimeSimulator timeSimulator;
+    private Timer timer;
 
     private AnalogState(){
-        //Singleton pattern
+        timer = new Timer();
     }
 
     public static AnalogState getInstance() {
@@ -131,6 +133,12 @@ public class AnalogState {
         if(timeSimulator!=null){
             timeSimulator.simulateTick(AllComponents.getMyInstance().getGraph(),dt);
         }
+    }
+
+    public void autoTickSimuator(){
+        timer.cancel();
+        timer = new Timer();
+        timer.schedule(new TickerTask(timeSimulator),0,200);
     }
     
 }
