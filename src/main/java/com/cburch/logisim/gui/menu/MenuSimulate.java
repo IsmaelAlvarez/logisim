@@ -133,6 +133,9 @@ public class MenuSimulate extends Menu {
             else if(src == analogTick){
                 AnalogState.getInstance().autoTickSimuator();
             }
+            else if(src == analogStopTick){
+                AnalogState.getInstance().stopAutoTickSimulator();
+            }
             else if(src == analogStartRC){
                 AnalogState.getInstance().startTimedSimulator(new RCSimulator());
             }
@@ -206,6 +209,7 @@ public class MenuSimulate extends Menu {
     private JMenuItem log = new JMenuItem();
     private JMenuItem analogTickOnce = new JMenuItem();
     private JMenuItem analogTick = new JMenuItem();
+    private JMenuItem analogStopTick = new JMenuItem();
     private JMenuItem analogStartRC = new JMenuItem();
     private JMenuItem analogComputeGraph = new JMenuItem();
 
@@ -262,6 +266,7 @@ public class MenuSimulate extends Menu {
         add(analogComputeGraph);
         add(analogTickOnce);
         add(analogTick);
+        add(analogStopTick);
         addSeparator();
         add(analogStartRC);
 
@@ -289,6 +294,7 @@ public class MenuSimulate extends Menu {
 
         analogTickOnce.addActionListener(myListener);
         analogTick.addActionListener(myListener);
+        analogStopTick.addActionListener(myListener);
         analogStartRC.addActionListener(myListener);
         analogComputeGraph.addActionListener(myListener);
 
@@ -318,6 +324,7 @@ public class MenuSimulate extends Menu {
         log.setText(getFromLocale("simulateLogItem"));
         analogTickOnce.setText(getFromLocale("simulateTickOnce"));
         analogTick.setText(getFromLocale("simulateTick"));
+        analogStopTick.setText(getFromLocale("simulateStopTick"));
         analogStartRC.setText(getFromLocale("simulateStartRC"));
         analogComputeGraph.setText(getFromLocale("simulateAnalogGraph"));
     }

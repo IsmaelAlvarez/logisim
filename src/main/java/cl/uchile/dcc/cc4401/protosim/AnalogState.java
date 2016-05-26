@@ -140,5 +140,9 @@ public class AnalogState {
         timer = new Timer();
         timer.schedule(new TickerTask(timeSimulator),0,200);
     }
+
+    public void stopAutoTickSimulator(){
+        timer.cancel();
+    }
     
 }
