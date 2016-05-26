@@ -32,17 +32,25 @@ public class AllComponents {
 
     //Calcula la resistencia entre 2 puntos
     public double calculateEqResistance(AnalogComponent c1, AnalogComponent c2){
-        return calculateResistanceRecursive(c1,c2) - c1.getRes();
+        return calculateResistanceRecursive(c1,c2);
     }
 
     //Calcula la resistencia entre 2 puntos
     private double calculateResistanceRecursive(AnalogComponent c1, AnalogComponent c2){
         double res = 0;
+        int froms = 0;
+
+        for(ComponentConnection cc : getGraph()){
+            if(cc.getTo().getId() == c1.getId()) froms++;
+        }
+        
         for(ComponentConnection cc : getGraph()){
             if(cc.getFrom().getId() == c1.getId()){
                 //Si esta conectado a c2 retorno su resistencia
-                if(cc.getTo().getId() == c2.getId())
-                    return c1.getRes();
+                if(cc.getTo().getId() == c2.getId()) {
+                    System.out.println("Componente: " + c1.getId() + ", froms: " + froms);
+                    return (c1.getRes() * froms);
+                }
 
                 res += (1/calculateResistanceRecursive(cc.getTo(),c2));
             }
