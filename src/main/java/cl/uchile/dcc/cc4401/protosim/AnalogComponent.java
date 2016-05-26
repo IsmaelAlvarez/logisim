@@ -48,4 +48,15 @@ public class AnalogComponent {
         CapacitanceMultiplier cm = (CapacitanceMultiplier) attrs.getValue(Io.ATTR_CAPACITANCE_MULTIPLIER);
         return cap.getCapacitance() * cm.getMultiplier();
     }
+    
+    public void checkIfBurns(double input) {
+    	if (attrs.containsAttribute(Io.ATTR_COMPONENT_STATUS)) {
+    		if (attrs.containsAttribute(Io.ATTR_MAXIMUM_VOLTAGE)) {
+    			double max = (double) attrs.getValue(Io.ATTR_MAXIMUM_VOLTAGE);
+    			if (input > max) {
+    				attrs.setValue(Io.ATTR_COMPONENT_STATUS, ComponentStatus.BURNT);
+    			}
+    		}
+    	}
+    }
 }

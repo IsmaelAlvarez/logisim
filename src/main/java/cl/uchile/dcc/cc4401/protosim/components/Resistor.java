@@ -32,14 +32,18 @@ public class Resistor extends InstanceFactory {
                         StdAttr.LABEL,
                         Io.ATTR_RESISTANCE,
                         Io.ATTR_RESISTANCE_MULTIPLIER,
-                        Io.ATTR_DIRECTION_LEFT_RIGHT
+                        Io.ATTR_DIRECTION_LEFT_RIGHT,
+                        Io.ATTR_MAXIMUM_VOLTAGE,
+                        Io.ATTR_COMPONENT_STATUS
                 },
                 new Object[] {
                         null,
                         "",
                         Resistance.R10,
                         ResistanceMultiplier.RM1,
-                        Direction.EAST
+                        Direction.EAST,
+                        10.0,
+                        ComponentStatus.GOOD
                 }
         );
 
