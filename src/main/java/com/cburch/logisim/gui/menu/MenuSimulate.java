@@ -329,7 +329,7 @@ public class MenuSimulate extends Menu {
         analogTick.setText(getFromLocale("simulateTick"));
         analogStartRC.setText(getFromLocale("simulateStartRC"));
         analogComputeGraph.setText(getFromLocale("simulateAnalogGraph"));
-        voltageSimulate.setText(getFromLocale("Simulate Voltage"));
+        voltageSimulate.setText(getFromLocale("simulateVoltage"));
     }
 
     public void setCurrentState(Simulator sim, CircuitState value) {

@@ -14,7 +14,7 @@ import cl.uchile.dcc.cc4401.protosim.ComponentConnection;
 
 public class VoltageSimulator implements AnalogSimulator {
 
-	private HashMap<AnalogComponent, ArrayList<AnalogComponent>> connected_to = new HashMap<AnalogComponent, ArrayList<AnalogComponent>>();
+	private HashMap<AnalogComponent, ArrayList<AnalogComponent>> connected_to;
 	private double current;
 	
 	
@@ -26,33 +26,30 @@ public class VoltageSimulator implements AnalogSimulator {
 		double voltage = ((Voltage) vol_gen.getAttrs().getValue(Io.ATTR_VOLTAGE)).getVoltage();
 		current = voltage / total_resistance;
 		
-		connected_to.clear();
+		connected_to = new HashMap<AnalogComponent, ArrayList<AnalogComponent>>();
 		
 		for (ComponentConnection cc : graph) {
-			if (connected_to.containsKey(cc.getFrom())) {
-				connected_to.get(cc.getFrom()).add(cc.getTo());
+			if (!connected_to.containsKey(cc.getFrom())) {
+				connected_to.put(cc.getFrom(), new ArrayList<AnalogComponent>());
 			}
+			connected_to.get(cc.getFrom()).add(cc.getTo());
 		}
 		
-		ArrayList<AnalogComponent> components = new ArrayList<AnalogComponent>();
-		components.add(vol_gen);
-		AnalogComponent component = vol_gen;
-		propagate_voltage(vol_gen, voltage);
+		propagate_voltage(vol_gen, current);
 	}
 	
 	// Solo funciona en serie
 	public void propagate_voltage(AnalogComponent comp, double input) {
 		
-		comp.checkIfBurns(input);
-		double output = input - comp.getRes() * current;
-		try {
-			for (AnalogComponent cc: connected_to.get(comp)) {
-				if (cc != null)
-					propagate_voltage(cc, output);
-			}
-		} catch (Exception e) {
-			System.out.print(e);
+		double voltage = input * comp.getRes();
+		comp.checkIfBurns(voltage);
+		double output = input - voltage / comp.getRes();
+		ArrayList<AnalogComponent> to = connected_to.get(comp);
+		if (to == null)
+			return;
+		for (AnalogComponent cc: to) {
+			if (cc != null)
+				propagate_voltage(cc, output);
 		}
 	}
-
 }
