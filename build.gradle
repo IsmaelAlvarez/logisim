@@ -120,8 +120,8 @@ processResources << {
         if (locale.name.length() == 2) { // Locale names are two characters long
             // Build contents.xml with the id=>text mapping from locale/html/contents.html
             def dict = [:]
-            def doc = new XmlParser(parser).parse("${doc_src}/${locale.name}/html/contents.html")
-            doc.'**'.A.each { dict[it.@id] = it.text() }
+            //def doc = new XmlParser(parser).parse("${doc_src}/${locale.name}/html/contents.html")
+            //doc.'**'.A.each { dict[it.@id] = it.text() }
 
             // Rewrite support/base-contents.xml as locale/contents.xml.
             def contents = new XmlParser().parse("${doc_src}/support/base-contents.xml")

@@ -105,6 +105,8 @@ public class Io extends Library {
                 "led.svg", "Led"),
         new FactoryDescription("7-Segment Display", getFromLocale("sevenSegmentComponent"),
                 "7seg.svg", "SevenSegment"),
+        new FactoryDescription("14-Segment Display", getFromLocale("fourteenSegmentComponent"),
+                "14seg.svg", "FourteenSegment"),
         new FactoryDescription("Hex Digit Display", getFromLocale("hexDigitComponent"),
                 "hexdig.svg", "HexDigit"),
         new FactoryDescription("DotMatrix", getFromLocale("dotMatrixComponent"),

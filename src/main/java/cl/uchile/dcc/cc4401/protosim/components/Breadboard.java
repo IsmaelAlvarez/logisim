@@ -31,6 +31,8 @@ public class Breadboard extends InstanceFactory {
 	public Breadboard() {
 		super("Breadboard");
 		setIcon(Icons.getIcon("protosimBreadboard.svg"));
+		
+		
 
 		ports = new ArrayList<Port>();
 		connected = new HashMap<Port, Integer>();
