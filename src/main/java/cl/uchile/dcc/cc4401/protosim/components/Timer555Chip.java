@@ -193,7 +193,7 @@ public class Timer555Chip extends InstanceFactory{
 		Value valueGround = state.getPort(4);
 
 		
-		boolean isEnergized = ProtoValue.isEnergized(valueVcc, valueGround);
+		boolean isEnergized = (valueVcc == ProtoValue.FALSE);
 
 		// ignore if no change
 		if ( ! val.equals(q.sending) && isEnergized) {
