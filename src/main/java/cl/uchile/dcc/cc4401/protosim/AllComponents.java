@@ -40,10 +40,9 @@ public class AllComponents {
         double res = 0;
         for(ComponentConnection cc : getGraph()){
             if(cc.getFrom().getId() == c1.getId()){
-                //Si esta conectado a c2 retorno su resistencia
-                if(cc.getTo().getId() == c2.getId())
-                    return c1.getRes();
-
+                if(cc.getTo().getId() == c2.getId()){
+                    return c1.getRes() + c2.getRes();
+                }
                 res += (1/calculateResistanceRecursive(cc.getTo(),c2));
             }
         }
@@ -79,8 +78,9 @@ public class AllComponents {
     }
 
     public void connectGraph(Component from, Component to) {
-        connections.add(new ComponentConnection(new AnalogComponent(from.getAttributeSet()),
-                new AnalogComponent(to.getAttributeSet())));
+        if(from.getAttributeSet().containsAttribute(Io.ATTR_COMPONENT_ID) && to.getAttributeSet().containsAttribute(Io.ATTR_COMPONENT_ID))
+            connections.add(new ComponentConnection(new AnalogComponent(from.getAttributeSet()),
+                    new AnalogComponent(to.getAttributeSet())));
     }
 
     public void resetGraph() {
