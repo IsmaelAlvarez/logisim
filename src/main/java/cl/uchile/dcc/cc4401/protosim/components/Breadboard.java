@@ -14,6 +14,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+//clase impactada
+
 public class Breadboard extends InstanceFactory {
 
 	public static final int PORT_WIDTH = 32;

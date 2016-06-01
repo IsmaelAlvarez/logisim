@@ -24,6 +24,7 @@ import cl.uchile.dcc.cc4401.protosim.components.VoltageGenerator;
 import cl.uchile.dcc.cc4401.protosim.components.Zoom;
 import cl.uchile.dcc.cc4401.protosim.components.ZoomIn;
 import cl.uchile.dcc.cc4401.protosim.components.ZoomOut;
+//clase impactada
 
 /*
  * Protosim components library for Logisim
