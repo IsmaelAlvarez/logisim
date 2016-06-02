@@ -28,6 +28,8 @@ public class TestCapacitor {
     public void testGetDisplayName() {
         assertEquals("Capacitor", capacitor.getDisplayName());
     }
+
+
         
 
 }

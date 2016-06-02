@@ -61,20 +61,17 @@ public class AllComponents {
     	
     	AnalogComponent ret = null;
     	for (ComponentConnection cc : getGraph()) {
-    		if (cc.getFrom().getAttrs().containsAttribute(Io.ATTR_VOLTAGE)) {
-    			ret = cc.getFrom();
-    			break;
-    		}
-    	}
-    	
+            if (cc.getFrom().getAttrs().containsAttribute(Io.ATTR_VOLTAGE)) {
+                ret = cc.getFrom();
+                break;
+            }
+        }
     	return ret;
-    	
     }
             
     public void print(){
         for(ComponentConnection connection : connections){
             System.out.println(connection.getFrom().getId()+"->"+connection.getTo().getId());
-
         }
     }
     /**
