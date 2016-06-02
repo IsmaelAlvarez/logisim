@@ -161,7 +161,6 @@ public class Led extends InstanceFactory {
         	} else {
         		data.setValue(val);
         	}
-        	System.out.println("a");
         } else {
         	val = Value.createKnown(BitWidth.create(Breadboard.PORT_WIDTH), 0);
         	if (data == null) {
@@ -169,7 +168,6 @@ public class Led extends InstanceFactory {
         	} else {
         		data.setValue(valGround);
         	}
-        	System.out.println("b");
         }
 /*
         else if (valGround.equals(ProtoValue.TRUE) && val.equals(ProtoValue.TRUE)) {

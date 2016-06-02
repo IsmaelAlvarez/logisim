@@ -48,7 +48,6 @@ public class AllComponents {
             if(cc.getFrom().getId() == c1.getId()){
                 //Si esta conectado a c2 retorno su resistencia
                 if(cc.getTo().getId() == c2.getId()) {
-                    System.out.println("Componente: " + c1.getId() + ", froms: " + froms);
                     return (c1.getRes() * froms);
                 }
                 res += (1/calculateResistanceRecursive(cc.getTo(),c2));

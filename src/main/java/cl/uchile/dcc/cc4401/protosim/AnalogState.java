@@ -3,6 +3,8 @@ package cl.uchile.dcc.cc4401.protosim;
 
 import cl.uchile.dcc.cc4401.protosim.simulators.AnalogSimulator;
 import cl.uchile.dcc.cc4401.protosim.simulators.AnalogTimeSimulator;
+import cl.uchile.dcc.cc4401.protosim.simulators.VoltageSimulator;
+
 import com.cburch.logisim.circuit.Circuit;
 import com.cburch.logisim.circuit.Wire;
 import com.cburch.logisim.comp.Component;
@@ -20,6 +22,7 @@ public class AnalogState {
     private static AnalogState state = new AnalogState();
     private AnalogTimeSimulator timeSimulator;
     private Timer timer;
+    private VoltageSimulator voltageSimulator;
 
     private AnalogState(){
         timer = new Timer();
@@ -143,6 +146,11 @@ public class AnalogState {
 
     public void stopAutoTickSimulator(){
         timer.cancel();
+    }
+    
+    public void simulateVoltage(VoltageSimulator simulator) {
+    	voltageSimulator = simulator;
+    	simulator.simulate(AllComponents.getMyInstance().getGraph());
     }
     
 }

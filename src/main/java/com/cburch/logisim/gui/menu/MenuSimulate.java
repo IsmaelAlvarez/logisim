@@ -5,6 +5,8 @@ package com.cburch.logisim.gui.menu;
 
 import cl.uchile.dcc.cc4401.protosim.AnalogState;
 import cl.uchile.dcc.cc4401.protosim.simulators.RCSimulator;
+import cl.uchile.dcc.cc4401.protosim.simulators.VoltageSimulator;
+
 import com.cburch.logisim.circuit.*;
 import com.cburch.logisim.gui.log.LogFrame;
 import com.cburch.logisim.proj.Project;
@@ -93,7 +95,8 @@ public class MenuSimulate extends Menu {
     }
 
     private class MyListener implements ActionListener, SimulatorListener, ChangeListener { 	
-        @Override
+
+		@Override
         public void actionPerformed(ActionEvent e) {
             Object src = e.getSource();
             Project proj = menubar.getProject();
@@ -141,6 +144,9 @@ public class MenuSimulate extends Menu {
             }
             else if(src == analogComputeGraph){
                 AnalogState.getInstance().computeGraph(menubar.getProject());
+            }
+            else if (src == voltageSimulate) {
+            	AnalogState.getInstance().simulateVoltage(new VoltageSimulator());
             }
         }
 
@@ -212,6 +218,7 @@ public class MenuSimulate extends Menu {
     private JMenuItem analogStopTick = new JMenuItem();
     private JMenuItem analogStartRC = new JMenuItem();
     private JMenuItem analogComputeGraph = new JMenuItem();
+    private JMenuItem voltageSimulate = new JMenuItem();
 
     public MenuSimulate(LogisimMenuBar menubar) {
         this.menubar = menubar;
@@ -269,6 +276,7 @@ public class MenuSimulate extends Menu {
         add(analogStopTick);
         addSeparator();
         add(analogStartRC);
+        add(voltageSimulate);
 
         setEnabled(false);
         run.setEnabled(false);
@@ -297,7 +305,8 @@ public class MenuSimulate extends Menu {
         analogStopTick.addActionListener(myListener);
         analogStartRC.addActionListener(myListener);
         analogComputeGraph.addActionListener(myListener);
-
+        voltageSimulate.addActionListener(myListener);
+        
         computeEnabled();
     }
     
@@ -327,6 +336,7 @@ public class MenuSimulate extends Menu {
         analogStopTick.setText(getFromLocale("simulateStopTick"));
         analogStartRC.setText(getFromLocale("simulateStartRC"));
         analogComputeGraph.setText(getFromLocale("simulateAnalogGraph"));
+        voltageSimulate.setText(getFromLocale("simulateVoltage"));
     }
 
     public void setCurrentState(Simulator sim, CircuitState value) {
