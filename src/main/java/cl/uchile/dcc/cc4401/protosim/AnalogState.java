@@ -67,8 +67,13 @@ public class AnalogState {
         }
         System.out.println("Graph:");
         AllComponents.getMyInstance().print();
+        /*
         double res = AllComponents.getMyInstance().calculateEqResistance(AllComponents.getMyInstance().getVoltageGenerator(), AllComponents.getMyInstance().getVoltageGenerator());
         System.out.println(res);
+        */
+        ReductorCapacitor reductor = new ReductorCapacitor(AllComponents.getMyInstance().getGraph());
+        double capEq = reductor.reduce();
+        System.out.println(capEq);
     }
 
     private boolean isWiredConnected(Set<Wire> wires, Location loc1, Location loc2) {

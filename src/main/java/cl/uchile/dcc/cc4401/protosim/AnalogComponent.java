@@ -43,7 +43,7 @@ public class AnalogComponent {
     public double getCap() {
         Capacitance cap = (Capacitance) attrs.getValue(Io.ATTR_CAPACITANCE);
         if (cap == null) {
-            return 0;
+            return Double.POSITIVE_INFINITY;
         }
         CapacitanceMultiplier cm = (CapacitanceMultiplier) attrs.getValue(Io.ATTR_CAPACITANCE_MULTIPLIER);
         return cap.getCapacitance() * cm.getMultiplier();
