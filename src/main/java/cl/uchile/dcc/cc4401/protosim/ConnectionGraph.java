@@ -3,7 +3,7 @@ package cl.uchile.dcc.cc4401.protosim;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class ConnectionGraph {
+public abstract class ConnectionGraph {
 
     ArrayList<SConecction> connections;
     HashMap<Integer,ArrayList<SConecction>> cFroms;
@@ -15,19 +15,17 @@ public class ConnectionGraph {
         computeHashTables();
     }
 
-    /*public ConnectionGraph(ArrayList<SConecction> sc, boolean lazy){
-        connections = sc;
-        if(!lazy)
-            computeHashTables();
-    }*/
-
     private void createSConnection(ArrayList<ComponentConnection> c) {
         connections =  new ArrayList<>();
         for(ComponentConnection cc : c){
-            connections.add(new SConecction(cc.getFrom().getId(),cc.getFrom().getCap(),cc.getTo().getId(),cc.getTo().getCap()));
+            //connections.add(new SConecction(cc.getFrom().getId(),cc.getFrom().getCap(),cc.getTo().getId(),cc.getTo().getCap()));
+            connections.add(new SConecction(cc.getFrom().getId(), getValue(cc.getFrom()), cc.getTo().getId(), getValue(cc.getTo())));
         }
         cacheVal = null;
     }
+
+    protected abstract double getValue(AnalogComponent component);
+
 
     private void computeHashTables() {
         cFroms = new HashMap<>();
