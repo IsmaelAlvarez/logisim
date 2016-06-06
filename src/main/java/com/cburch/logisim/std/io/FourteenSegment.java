@@ -26,23 +26,23 @@ public class FourteenSegment extends InstanceFactory {
                     Io.ATTR_BACKGROUND, Io.ATTR_ACTIVE },
                 new Object[] { new Color(240, 0, 0), DEFAULT_OFF,
                     Io.DEFAULT_BACKGROUND, Boolean.TRUE });
-        setOffsetBounds(Bounds.create(-5, 0, 40, 60));
+        setOffsetBounds(Bounds.create(-10, 0, 40, 60));
         setIconName("14seg.svg");
         setPorts(new Port[] {
-                new Port(25,  0, Port.INPUT, 1),
-                new Port(20,  0, Port.INPUT, 1),
                 new Port(30,  0, Port.INPUT, 1),
-                new Port(25, 60, Port.INPUT, 1),
-                new Port(20, 60, Port.INPUT, 1),
-                new Port(15, 60, Port.INPUT, 1),
-                new Port(10, 60, Port.INPUT, 1),
-                new Port( 5, 60, Port.INPUT, 1),
-                new Port( 0, 60, Port.INPUT, 1),
-                new Port(15,  0, Port.INPUT, 1),
+                new Port(20,  0, Port.INPUT, 1),
                 new Port(10,  0, Port.INPUT, 1),
-                new Port( 5,  0, Port.INPUT, 1),
                 new Port( 0,  0, Port.INPUT, 1),
-                new Port(35, 60, Port.INPUT, 1),
+                new Port(-10, 0, Port.INPUT, 1),
+                new Port(-10,10, Port.INPUT, 1),
+                new Port(-10,20, Port.INPUT, 1),
+                new Port(-10,30, Port.INPUT, 1),
+                new Port(-10,40, Port.INPUT, 1),
+                new Port(-10,50, Port.INPUT, 1),
+                new Port(-10,60, Port.INPUT, 1),
+                new Port( 0, 60, Port.INPUT, 1),
+                new Port(10, 60, Port.INPUT, 1),
+                new Port(20, 60, Port.INPUT, 1),
                 new Port(30, 60, Port.INPUT, 1),
             });
     }
@@ -50,7 +50,7 @@ public class FourteenSegment extends InstanceFactory {
     @Override
     public void propagate(InstanceState state) {
         int summary = 0;
-        for (int i = 0; i < 8; i++) {
+        for (int i = 0; i < 15; i++) {
             Value val = state.getPort(i);
             if (val == Value.TRUE) {
                 summary |= 1 << i;
@@ -108,8 +108,9 @@ public class FourteenSegment extends InstanceFactory {
                 g.fillRect(x + seg.getX(), y + seg.getY(), seg.getWidth(), seg.getHeight());
             }else if(i>=10 && i<14){
             		// draw diagonal lines
-            		//System.out.println("dibujando diagonales");
-            	  g.fillPolygon(DIAGONAL_SEGMENTS[i-10][0], DIAGONAL_SEGMENTS[i-10][1], 4);
+            		Bounds seg = SEGMENTS[i];
+            	  g.fillPolygon(new int[]{x+seg.getX(),x+seg.getWidth(),x+seg.getWidth()+3,x+seg.getX()+3},
+            			  new int[]{y+seg.getY(),y+seg.getHeight(),y+seg.getHeight(),y+seg.getY()},4);
             } else {
                 // draw decimal point
                 g.fillOval(x + 28, y + 48, 5, 5);
@@ -130,7 +131,11 @@ public class FourteenSegment extends InstanceFactory {
                     Bounds.create( 2, 28, 10,  4),
                     Bounds.create(14, 28, 10,  4),
                     Bounds.create(10, 30,  4, 19),
-                    Bounds.create(10, 10,  4, 19)
+                    Bounds.create(10, 10,  4, 19),
+                    Bounds.create( 0, 10, 10, 27),//diagonal 1
+                    Bounds.create(26, 10, 13, 27),//diagonal 2
+                    Bounds.create(10, 29,  0, 50),//diagonal 3
+                    Bounds.create(13, 29, 26, 50) //diagonal 4
             };
         }
     }
