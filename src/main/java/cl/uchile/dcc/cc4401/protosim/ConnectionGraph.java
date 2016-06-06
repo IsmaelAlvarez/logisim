@@ -70,4 +70,9 @@ public class ConnectionGraph {
             cacheVal = connections.get(0).getValTo();
         computeHashTables();
     }
+
+    public void reduce(SConecction conn1, SConecction conn2){
+        connections.remove(conn1);
+        reduce(conn2);
+    }
 }
