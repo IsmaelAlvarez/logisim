@@ -126,39 +126,9 @@ public class Led extends InstanceFactory {
         g.fillRect(x - 2, y + 11, 4, 9);
         g.fillRect(x + 8, y + 11, 4, 9);
 
-        // Shorted circuit
-
-        g.setColor(Color.red);
-        g.fillPolygon(new int[]{x - 10, x + 20, x + 18, x - 12},
-                      new int[]{y + 20, y - 10, y - 12, x + 18}, 4);
-
-        g.setColor(Color.yellow);
-        g.fillPolygon(new int[]{x + 8, x - 4, x + 5, x + 2, x + 14, x + 5},
-                      new int[]{y - 10, y + 8, y + 5, x + 20, y + 2, y + 3}, 6);
-        g.setColor(Color.black);
-        g.drawPolygon(new int[]{x + 8, x - 4, x + 5, x + 2, x + 14, x + 5},
-                new int[]{y - 10, y + 8, y + 5, x + 20, y + 2, y + 3}, 6);
-
         painter.drawPorts();
     }
 
-    public void paintShortCircuit(InstancePainter painter) {
-        Location loc = painter.getLocation();
-        int x = loc.getX();
-        int y = loc.getY();
-        Graphics g = painter.getGraphics();
-
-        g.setColor(Color.red);
-        g.fillPolygon(new int[]{x - 10, x + 20, x + 18, x - 12},
-                new int[]{y + 20, y - 10, y - 12, x + 18}, 4);
-
-        g.setColor(Color.yellow);
-        g.fillPolygon(new int[]{x + 8, x - 4, x + 5, x + 2, x + 14, x + 5},
-                new int[]{y - 10, y + 8, y + 5, x + 20, y + 2, y + 3}, 6);
-        g.setColor(Color.black);
-        g.drawPolygon(new int[]{x + 8, x - 4, x + 5, x + 2, x + 14, x + 5},
-                new int[]{y - 10, y + 8, y + 5, x + 20, y + 2, y + 3}, 6);
-    }
 
     @Override
     public void propagate(InstanceState state) {
