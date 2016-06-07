@@ -17,7 +17,6 @@ import com.cburch.logisim.data.AttributeOption;
 import com.cburch.logisim.data.AttributeSet;
 import com.cburch.logisim.data.Bounds;
 import com.cburch.logisim.data.Capacitance;
-import com.cburch.logisim.data.CapacitanceMultiplier;
 import com.cburch.logisim.data.Direction;
 import com.cburch.logisim.data.Location;
 import com.cburch.logisim.data.Resistance;
@@ -199,7 +198,7 @@ public class Timer555Chip extends InstanceFactory{
             component.getAttributeSet().setValue(Io.ATTR_COMPONENT_ID,cid);
             component.getAttributeSet().setReadOnly(Io.ATTR_COMPONENT_ID,true);
             //AllComponents.getMyInstance().addComponent(instance,100);
-            System.out.println("New capacitor added with ID "+cid);
+            System.out.println("New 555 Timer IC added with ID "+cid);
         }
 	}
 
@@ -231,8 +230,8 @@ public class Timer555Chip extends InstanceFactory{
 		Value valueGround = state.getPort(4);
 		Value valueTrigger = state.getPort(5);
 		
-		boolean isEnergized = (valueVcc == ProtoValue.FALSE && valueGround == ProtoValue.TRUE);
-		boolean isTriggered = (valueTrigger == ProtoValue.FALSE);
+		boolean isEnergized = (valueVcc == ProtoValue.TRUE && valueGround == ProtoValue.FALSE);
+		boolean isTriggered = (valueTrigger == ProtoValue.TRUE);
 		// ignore if no change
 		if ( ! val.equals(q.sending) && isEnergized && isTriggered) {
 			state.setPort(6, q.sending, 1);
