@@ -32,18 +32,24 @@ public class AllComponents {
 
     //Calcula la resistencia entre 2 puntos
     public double calculateEqResistance(AnalogComponent c1, AnalogComponent c2){
-        return calculateResistanceRecursive(c1,c2) - c1.getRes();
+        return calculateResistanceRecursive(c1,c2);
     }
 
     //Calcula la resistencia entre 2 puntos
     private double calculateResistanceRecursive(AnalogComponent c1, AnalogComponent c2){
         double res = 0;
+        int froms = 0;
+
+        for(ComponentConnection cc : getGraph()){
+            if(cc.getTo().getId() == c1.getId()) froms++;
+        }
+        
         for(ComponentConnection cc : getGraph()){
             if(cc.getFrom().getId() == c1.getId()){
                 //Si esta conectado a c2 retorno su resistencia
-                if(cc.getTo().getId() == c2.getId())
-                    return c1.getRes();
-
+                if(cc.getTo().getId() == c2.getId()) {
+                    return (c1.getRes() * froms);
+                }
                 res += (1/calculateResistanceRecursive(cc.getTo(),c2));
             }
         }
@@ -54,20 +60,17 @@ public class AllComponents {
     	
     	AnalogComponent ret = null;
     	for (ComponentConnection cc : getGraph()) {
-    		if (cc.getFrom().getAttrs().containsAttribute(Io.ATTR_VOLTAGE)) {
-    			ret = cc.getFrom();
-    			break;
-    		}
-    	}
-    	
+            if (cc.getFrom().getAttrs().containsAttribute(Io.ATTR_VOLTAGE)) {
+                ret = cc.getFrom();
+                break;
+            }
+        }
     	return ret;
-    	
     }
             
     public void print(){
         for(ComponentConnection connection : connections){
             System.out.println(connection.getFrom().getId()+"->"+connection.getTo().getId());
-
         }
     }
     /**
@@ -79,8 +82,9 @@ public class AllComponents {
     }
 
     public void connectGraph(Component from, Component to) {
-        connections.add(new ComponentConnection(new AnalogComponent(from.getAttributeSet()),
-                new AnalogComponent(to.getAttributeSet())));
+        if(from.getAttributeSet().containsAttribute(Io.ATTR_COMPONENT_ID) && to.getAttributeSet().containsAttribute(Io.ATTR_COMPONENT_ID))
+            connections.add(new ComponentConnection(new AnalogComponent(from.getAttributeSet()),
+                    new AnalogComponent(to.getAttributeSet())));
     }
 
     public void resetGraph() {
