@@ -10,8 +10,6 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import cl.uchile.dcc.cc4401.protosim.libraries.ProtoValue;
-
 public class Resistor extends InstanceFactory {
 
     public static InstanceFactory FACTORY = new Resistor();
@@ -32,14 +30,18 @@ public class Resistor extends InstanceFactory {
                         StdAttr.LABEL,
                         Io.ATTR_RESISTANCE,
                         Io.ATTR_RESISTANCE_MULTIPLIER,
-                        Io.ATTR_DIRECTION_LEFT_RIGHT
+                        Io.ATTR_DIRECTION_LEFT_RIGHT,
+                        Io.ATTR_MAXIMUM_VOLTAGE,
+                        Io.ATTR_COMPONENT_STATUS
                 },
                 new Object[] {
                         null,
                         "",
                         Resistance.R10,
                         ResistanceMultiplier.RM1,
-                        Direction.EAST
+                        Direction.EAST,
+                        10.0,
+                        ComponentStatus.GOOD
                 }
         );
 
@@ -69,6 +71,7 @@ public class Resistor extends InstanceFactory {
             cid = AllComponents.getMyInstance().getNextID();
             component.getAttributeSet().setValue(Io.ATTR_COMPONENT_ID,cid);
             component.getAttributeSet().setReadOnly(Io.ATTR_COMPONENT_ID,true);
+            component.getAttributeSet().setReadOnly(Io.ATTR_COMPONENT_STATUS,true);
             System.out.println("New resistor added with ID "+cid);
         }
 
@@ -121,7 +124,29 @@ public class Resistor extends InstanceFactory {
         g.fillRect(x, y-2, 6, 4);
         g.fillRect(x+34, y-2, 6, 4);
 
+        paintShortCircuit(painter);
+
         painter.drawPorts();
+    }
+
+    public void paintShortCircuit(InstancePainter painter) {
+        Location loc = painter.getLocation();
+        int x = loc.getX();
+        int y = loc.getY();
+        Graphics g = painter.getGraphics();
+
+        int offx = 15;
+        int offy = -5;
+
+        g.setColor(Color.red);
+        g.fillPolygon(new int[]{x - 10 + offx, x + 20 + offx , x + 18 + offx, x - 12 + offx},
+                new int[]{y + 20 + offy, y - 10 + offy, y - 12 + offy, y + 18 + offy}, 4);
+        g.setColor(Color.yellow);
+        g.fillPolygon(new int[]{x + 8 + offx, x - 4 + offx, x + 5 + offx, x + 2 + offx, x + 14 + offx, x + 5 + offx},
+                new int[]{y - 10 + offy, y + 8 + offy, y + 5 + offy, y + 20 + offy, y + 2 + offy, y + 3 + offy}, 6);
+        g.setColor(Color.black);
+        g.drawPolygon(new int[]{x + 8 + offx, x - 4 + offx , x + 5 + offx, x + 2 + offx, x + 14 + offx, x + 5 + offx},
+                new int[]{y - 10 + offy, y + 8 + offy, y + 5 + offy, y + 20 + offy, y + 2 + offy, y + 3 + offy}, 6);
     }
 
     @Override

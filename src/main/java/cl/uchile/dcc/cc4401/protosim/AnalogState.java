@@ -3,6 +3,8 @@ package cl.uchile.dcc.cc4401.protosim;
 
 import cl.uchile.dcc.cc4401.protosim.simulators.AnalogSimulator;
 import cl.uchile.dcc.cc4401.protosim.simulators.AnalogTimeSimulator;
+import cl.uchile.dcc.cc4401.protosim.simulators.VoltageSimulator;
+
 import com.cburch.logisim.circuit.Circuit;
 import com.cburch.logisim.circuit.Wire;
 import com.cburch.logisim.comp.Component;
@@ -13,14 +15,17 @@ import com.cburch.logisim.proj.Project;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
+import java.util.Timer;
 
 public class AnalogState {
 
     private static AnalogState state = new AnalogState();
     private AnalogTimeSimulator timeSimulator;
+    private Timer timer;
+    private VoltageSimulator voltageSimulator;
 
     private AnalogState(){
-        //Singleton pattern
+        timer = new Timer();
     }
 
     public static AnalogState getInstance() {
@@ -62,8 +67,13 @@ public class AnalogState {
         }
         System.out.println("Graph:");
         AllComponents.getMyInstance().print();
+        /*
         double res = AllComponents.getMyInstance().calculateEqResistance(AllComponents.getMyInstance().getVoltageGenerator(), AllComponents.getMyInstance().getVoltageGenerator());
         System.out.println(res);
+        */
+        ReductorResistor reductor = new ReductorResistor(AllComponents.getMyInstance().getGraph());
+        double resEq = reductor.reduce();
+        System.out.println(resEq);
     }
 
     private boolean isWiredConnected(Set<Wire> wires, Location loc1, Location loc2) {
@@ -131,6 +141,21 @@ public class AnalogState {
         if(timeSimulator!=null){
             timeSimulator.simulateTick(AllComponents.getMyInstance().getGraph(),dt);
         }
+    }
+
+    public void autoTickSimuator(){
+        timer.cancel();
+        timer = new Timer();
+        timer.schedule(new TickerTask(timeSimulator),0,200);
+    }
+
+    public void stopAutoTickSimulator(){
+        timer.cancel();
+    }
+    
+    public void simulateVoltage(VoltageSimulator simulator) {
+    	voltageSimulator = simulator;
+    	simulator.simulate(AllComponents.getMyInstance().getGraph());
     }
     
 }

@@ -50,8 +50,8 @@ public class ACounterChip extends InstanceFactory {
     ports.add(new Port(0, 0, Port.INPUT, Breadboard.PORT_WIDTH)); // vcc
     ports.add(new Port(10, 0, Port.INPUT, Breadboard.PORT_WIDTH)); // mr1
     ports.add(new Port(20, 0, Port.INPUT, Breadboard.PORT_WIDTH)); // mr2
-    ports.add(new Port(30, 0, Port.INPUT, Breadboard.PORT_WIDTH)); // not_cp0
-    ports.add(new Port(40, 0, Port.INPUT, Breadboard.PORT_WIDTH)); // not_cp1
+    ports.add(new Port(30, 0, Port.INPUT, Breadboard.PORT_WIDTH)); // cp0
+    ports.add(new Port(40, 0, Port.INPUT, Breadboard.PORT_WIDTH)); // cp1
 
 
     // Lower ports
@@ -118,8 +118,6 @@ public class ACounterChip extends InstanceFactory {
     painter.drawPorts();
   }
 
-
-
   @Override
   public void propagate(InstanceState state) {
     StateData data = (StateData) state.getData();
@@ -127,41 +125,42 @@ public class ACounterChip extends InstanceFactory {
       data = new StateData();
       state.setData(data);
     }
+    
     Object triggerType = state.getAttributeValue(triggerAttribute);
-    boolean triggered1 = data.updateClock(1, state.getPort(3), triggerType);
-    boolean triggered2 = data.updateClock(1, state.getPort(4), triggerType);
+    boolean triggered0 = data.updateClock(1, state.getPort(3), triggerType);
+    boolean triggered1 = data.updateClock(2, state.getPort(4), triggerType);
     
     Value valueVcc = state.getPort(0);
     Value valueGround = state.getPort(9);
     
-    int[] out = {5, 6, 7, 8};
+    int[] ports_out = {5, 6, 7, 8};
     
     if (ProtoValue.isEnergized(valueVcc, valueGround)) {
-      setOutputValue(state, data, triggered1, 0, 1, 2, out);
-      setOutputValue(state, data, triggered2, 1, 1, 2, out);
+      setOutputValue(state, data, triggered0, triggered1, 1, 2, ports_out);
     } 
     else {
-      state.setPort(out[0], ProtoValue.UNKNOWN, Breadboard.DELAY);
-      state.setPort(out[1], ProtoValue.UNKNOWN, Breadboard.DELAY);
-      state.setPort(out[2], ProtoValue.UNKNOWN, Breadboard.DELAY);
-      state.setPort(out[3], ProtoValue.UNKNOWN, Breadboard.DELAY);
+      state.setPort(ports_out[0], ProtoValue.UNKNOWN, Breadboard.DELAY);
+      state.setPort(ports_out[1], ProtoValue.UNKNOWN, Breadboard.DELAY);
+      state.setPort(ports_out[2], ProtoValue.UNKNOWN, Breadboard.DELAY);
+      state.setPort(ports_out[3], ProtoValue.UNKNOWN, Breadboard.DELAY);
     }
   }
 
-  private void setOutputValue(InstanceState state, StateData data, boolean triggered, int counter, 
-      int mr1, int mr2, int[] out) {
+  private void setOutputValue(InstanceState state, StateData data, boolean triggered0, 
+      boolean triggered1, int mr1, int mr2, int[] ports_out) {
     //load requested
     if ((state.getPort(mr1) == ProtoValue.FALSE) && 
         (state.getPort(mr2) == ProtoValue.FALSE)) {
-      data.setCounter(counter, "0");
+      data.resetCounter();
     }
-    else if (triggered) {
-      data.incCounter(counter);
+    else {
+      if (triggered0) data.incCounter(1);
+      if (triggered1) data.incCounter(0);
     }
     
-    state.setPort(out[0], bin2Value(data.getCounter(0).charAt(0)), Memory.DELAY);
-    for (int i = 1; i < out.length; i++) {
-      state.setPort(out[i], bin2Value(data.getCounter(1).charAt(i)), Memory.DELAY);
+    state.setPort(ports_out[0], bin2Value(data.getCounter(0).charAt(0)), Memory.DELAY);
+    for (int i = 0; i < ports_out.length - 1; i++) {
+      state.setPort(ports_out[i + 1], bin2Value(data.getCounter(1).charAt(i)), Memory.DELAY);
     }
   }
   
@@ -171,43 +170,24 @@ public class ACounterChip extends InstanceFactory {
   }
 
   private static class StateData extends ProtosimClockState implements InstanceData {
-    private Counter[] counterArray = {new Counter(2), new Counter(5)};
     
-    public void incCounter(int counter) {
-      counterArray[counter].incCounter();
+    private int[] counters = {0, 0};
+    private int[] mods = {2, 5};
+    private final int[] bits = {1, 3};
+    
+    public void incCounter(int i) {
+      if (counters[i] > mods[i] - 2) counters[i] = 0;
+      else counters[i]++;
     }
     
-    public void setCounter(int counter, String binaryNumber) {
-      counterArray[counter].setCounter(binaryNumber);
+    public void resetCounter() {
+      counters[0] = 0;
+      counters[1] = 0;
     }
     
-    public String getCounter(int counter) {
-      return counterArray[counter].getCounter();
-    }
-  }
-  
-  private static class Counter {
-    private int counter = 0;
-    private int mod;
-    private int bits;
-    
-    public Counter(int counterMod) {
-      mod = counterMod;
-      bits = (int) Math.round(Math.log(mod)/Math.log(2));
-    }
-    
-    public void incCounter() {
-      if (counter > mod - 2) counter = 0;
-      else counter++;
-    }
-    
-    public void setCounter(String binaryNumber) {
-      counter = Integer.parseInt(binaryNumber, 2);
-    }
-    
-    public String getCounter() {
-      String ans = Integer.toString(counter, 2);
-      while (ans.length() < bits) {
+    public String getCounter(int i) {
+      String ans = Integer.toString(counters[i], 2);
+      while (ans.length() < bits[i]) {
         ans = "0" + ans;
       }
       return ans;

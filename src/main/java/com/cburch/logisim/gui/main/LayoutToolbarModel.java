@@ -22,6 +22,9 @@ import com.cburch.logisim.prefs.AppPreferences;
 import com.cburch.logisim.proj.Project;
 import com.cburch.logisim.proj.ProjectEvent;
 import com.cburch.logisim.proj.ProjectListener;
+import com.cburch.logisim.tools.ExecuteTool;
+import com.cburch.logisim.tools.PokeTool;
+import com.cburch.logisim.tools.SimulateTool;
 import com.cburch.logisim.tools.Tool;
 import com.cburch.logisim.util.InputEventUtil;
 
@@ -204,6 +207,11 @@ class LayoutToolbarModel extends AbstractToolbarModel {
         List<ToolbarItem> newItems = new ArrayList<ToolbarItem>();
         int pos = -1;
         ToolbarData data = proj.getLogisimFile().getOptions().getToolbarData();
+
+        // We add simulate and execute buttons
+        data.addTool(new SimulateTool());
+        data.addTool(new ExecuteTool());
+
         for (Tool tool : data.getContents()) {
             ++pos;
             if (tool == null) {
