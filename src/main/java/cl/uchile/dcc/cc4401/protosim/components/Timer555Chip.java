@@ -15,8 +15,11 @@ import com.cburch.logisim.data.Attribute;
 import com.cburch.logisim.data.AttributeOption;
 import com.cburch.logisim.data.AttributeSet;
 import com.cburch.logisim.data.Bounds;
+import com.cburch.logisim.data.Capacitance;
+import com.cburch.logisim.data.CapacitanceMultiplier;
 import com.cburch.logisim.data.Direction;
 import com.cburch.logisim.data.Location;
+import com.cburch.logisim.data.Resistance;
 import com.cburch.logisim.data.Value;
 import com.cburch.logisim.instance.Instance;
 import com.cburch.logisim.instance.InstanceData;
@@ -27,6 +30,7 @@ import com.cburch.logisim.instance.InstancePoker;
 import com.cburch.logisim.instance.InstanceState;
 import com.cburch.logisim.instance.Port;
 import com.cburch.logisim.instance.StdAttr;
+import com.cburch.logisim.std.io.Io;
 import com.cburch.logisim.std.wiring.Pin;
 import com.cburch.logisim.std.wiring.Probe;
 import com.cburch.logisim.util.Icons;
@@ -61,12 +65,20 @@ public class Timer555Chip extends InstanceFactory{
 		ports.add(new Port(30, 30, Port.INPUT, Breadboard.PORT_WIDTH));	//RESET
 
 		setPorts(ports);
-		
-		setAttributes(
-				new Attribute[] { StdAttr.FACING,  StdAttr.LABEL, Pin.ATTR_LABEL_LOC,
-						StdAttr.LABEL_FONT },
-				new Object[] { Direction.EAST, "", Direction.WEST,
-						StdAttr.DEFAULT_LABEL_FONT });
+		setAttributes(new Attribute[] {
+                Io.ATTR_COMPONENT_ID,
+                StdAttr.LABEL,
+                Io.ATTR_CAPACITANCE,
+                Io.ATTR_RESISTANCE
+        },
+        new Object[] {
+                null,
+                "",
+                Capacitance.C10,
+                Resistance.R10
+        }
+		);
+
 		setFacingAttribute(StdAttr.FACING);
 		setInstanceLogger(ClockLogger.class);
 		setInstancePoker(ClockPoker.class);
