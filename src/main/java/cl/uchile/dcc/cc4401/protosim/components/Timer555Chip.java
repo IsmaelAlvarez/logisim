@@ -7,6 +7,7 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 
+import cl.uchile.dcc.cc4401.protosim.AllComponents;
 import cl.uchile.dcc.cc4401.protosim.libraries.ProtoValue;
 
 import com.cburch.logisim.circuit.CircuitState;
@@ -22,6 +23,7 @@ import com.cburch.logisim.data.Location;
 import com.cburch.logisim.data.Resistance;
 import com.cburch.logisim.data.Value;
 import com.cburch.logisim.instance.Instance;
+import com.cburch.logisim.instance.InstanceComponent;
 import com.cburch.logisim.instance.InstanceData;
 import com.cburch.logisim.instance.InstanceFactory;
 import com.cburch.logisim.instance.InstanceLogger;
@@ -40,6 +42,7 @@ public class Timer555Chip extends InstanceFactory{
 	public static InstanceFactory FACTORY = new Timer555Chip();
 	public int r = 10;
 	public int c = 10;
+	private static int count;
 	public boolean f = false;
 	private List<Port> ports;
 
@@ -184,13 +187,36 @@ public class Timer555Chip extends InstanceFactory{
 	@Override
 	protected void configureNewInstance(Instance instance) {
 		instance.addAttributeListener();
-		configureLabel(instance);
+        InstanceComponent component = instance.getInstanceComponent();
+        Integer cid = component.getAttributeSet().getValue(Io.ATTR_COMPONENT_ID);
+        if(cid==null){
+            cid = AllComponents.getMyInstance().getNextID();
+            Capacitance ca = (Capacitance) component.getAttributeSet().getValue(Io.ATTR_CAPACITANCE);
+            c = ca.getCapacitance();
+            Resistance re = (Resistance) component.getAttributeSet().getValue(Io.ATTR_RESISTANCE);
+            r = re.getResistance();     
+            count = (int) (0.7*r*c);
+            component.getAttributeSet().setValue(Io.ATTR_COMPONENT_ID,cid);
+            component.getAttributeSet().setReadOnly(Io.ATTR_COMPONENT_ID,true);
+            //AllComponents.getMyInstance().addComponent(instance,100);
+            System.out.println("New capacitor added with ID "+cid);
+        }
 	}
 
 	@Override
 	protected void instanceAttributeChanged(Instance instance, Attribute<?> attr) {
-		if (attr == Pin.ATTR_LABEL_LOC) {
-			configureLabel(instance);
+		if (attr == Io.ATTR_CAPACITANCE) {
+			InstanceComponent component = instance.getInstanceComponent();
+	        Integer cid = component.getAttributeSet().getValue(Io.ATTR_COMPONENT_ID);
+	        if(cid==null){
+	            cid = AllComponents.getMyInstance().getNextID();
+	            Capacitance ca = (Capacitance) component.getAttributeSet().getValue(Io.ATTR_CAPACITANCE);
+	            c = ca.getCapacitance();
+	            Resistance re = (Resistance) component.getAttributeSet().getValue(Io.ATTR_RESISTANCE);
+	            r = re.getResistance();     
+	            count = (int) (0.7*r*c);
+	        }
+	            
 		} else if (attr == StdAttr.FACING) {
 			instance.recomputeBounds();
 			configureLabel(instance);
@@ -203,12 +229,12 @@ public class Timer555Chip extends InstanceFactory{
 		Value val = state.getPort(6);
 		ClockState q = getState(state);
 		Value valueGround = state.getPort(4);
-
+		Value valueTrigger = state.getPort(5);
 		
-		boolean isEnergized = (valueVcc == ProtoValue.FALSE);
-
+		boolean isEnergized = (valueVcc == ProtoValue.FALSE && valueGround == ProtoValue.TRUE);
+		boolean isTriggered = (valueTrigger == ProtoValue.FALSE);
 		// ignore if no change
-		if ( ! val.equals(q.sending) && isEnergized) {
+		if ( ! val.equals(q.sending) && isEnergized && isTriggered) {
 			state.setPort(6, q.sending, 1);
 		}
 		if ( ! isEnergized) {
@@ -220,8 +246,8 @@ public class Timer555Chip extends InstanceFactory{
 	// package methods
 	//
 	public static boolean tick(CircuitState circState, int ticks, Component comp) {
-		int durationHigh = 10;
-		int durationLow = 10;
+		int durationHigh = count;
+		int durationLow = count;
 		ClockState state = (ClockState) circState.getData(comp);
 		if (state == null) {
 			state = new ClockState();
