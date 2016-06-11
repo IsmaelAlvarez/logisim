@@ -1,10 +1,13 @@
 package com.cburch.logisim.tools;
 
 import com.cburch.logisim.comp.ComponentDrawContext;
+import com.cburch.logisim.gui.main.*;
+import com.cburch.logisim.gui.main.Canvas;
 import com.cburch.logisim.util.Icons;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseEvent;
 
 public class SimulateTool extends Tool {
 
@@ -23,6 +26,21 @@ public class SimulateTool extends Tool {
     @Override
     public String getDescription() {
         return "Simulate Circuit";
+    }
+
+    @Override
+    public void mousePressed(Canvas canvas, Graphics g, MouseEvent e) {
+        
+    }
+
+    @Override
+    public void mouseDragged(com.cburch.logisim.gui.main.Canvas canvas, Graphics g, MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseReleased(Canvas canvas, Graphics g, MouseEvent e) {
+
     }
 
     @Override
