@@ -3,6 +3,7 @@ package cl.uchile.dcc.cc4401.protosim;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+// impakta3
 public abstract class ConnectionGraph {
 
     ArrayList<SConecction> connections;

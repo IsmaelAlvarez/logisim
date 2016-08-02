@@ -1,5 +1,6 @@
 package cl.uchile.dcc.cc4401.protosim;
 
+//impakta3
 public class SConecction {
     private int idFrom;
     private int idTo;
