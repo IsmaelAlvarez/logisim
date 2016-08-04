@@ -36,7 +36,6 @@ public class VoltageGenerator extends InstanceFactory {
 
         ports.add(new Port(30, 20, Port.INPUT, Breadboard.PORT_WIDTH));
         ports.add(new Port(30, 10, Port.OUTPUT, Breadboard.PORT_WIDTH));
-
         setPorts(ports);
         setInstanceLogger(com.cburch.logisim.std.io.Led.Logger.class);
     }

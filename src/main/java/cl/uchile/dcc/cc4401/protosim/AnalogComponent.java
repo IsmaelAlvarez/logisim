@@ -27,6 +27,7 @@ public class AnalogComponent {
     		return 0;
     	}
     	ResistanceMultiplier rm = (ResistanceMultiplier) attrs.getValue(Io.ATTR_RESISTANCE_MULTIPLIER);
+        if(rm == null) rm = ResistanceMultiplier.RM1;
     	return res.getResistance() * rm.getMultiplier();
     	
     }
@@ -49,10 +50,11 @@ public class AnalogComponent {
         return cap.getCapacitance() * cm.getMultiplier();
     }
     
-    public void checkIfBurns(double input) {
-    	if (attrs.containsAttribute(Io.ATTR_COMPONENT_STATUS)) {
+    public void checkIfBurns(Double input) {
+        System.out.println(input);
+        if (attrs.containsAttribute(Io.ATTR_COMPONENT_STATUS)) {
     		if (attrs.containsAttribute(Io.ATTR_MAXIMUM_VOLTAGE)) {
-    			double max = (double) attrs.getValue(Io.ATTR_MAXIMUM_VOLTAGE);
+    			Double max = (Double) attrs.getValue(Io.ATTR_MAXIMUM_VOLTAGE);
     			if (input > max) {
                     attrs.setReadOnly(Io.ATTR_COMPONENT_STATUS,false);
     				attrs.setValue(Io.ATTR_COMPONENT_STATUS, ComponentStatus.BURNT);

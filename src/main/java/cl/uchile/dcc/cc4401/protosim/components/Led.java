@@ -31,7 +31,10 @@ public class Led extends InstanceFactory {
                 Io.ATTR_LABEL_LOC,
                 StdAttr.LABEL_FONT,
                 Io.ATTR_LABEL_COLOR,
-                Io.ATTR_DIRECTION_LEFT_RIGHT
+                Io.ATTR_DIRECTION_LEFT_RIGHT,
+                Io.ATTR_COMPONENT_STATUS,
+                Io.ATTR_MAXIMUM_VOLTAGE,
+                Io.ATTR_RESISTANCE
             },
             new Object[] {
                 null,
@@ -43,7 +46,10 @@ public class Led extends InstanceFactory {
                 Io.LABEL_CENTER,
                 StdAttr.DEFAULT_LABEL_FONT,
                 Color.BLACK,
-                Direction.EAST
+                Direction.EAST,
+                ComponentStatus.GOOD,
+                3.0,
+                Resistance.R10
             }
         );
 
@@ -73,6 +79,9 @@ public class Led extends InstanceFactory {
             cid = AllComponents.getMyInstance().getNextID();
             component.getAttributeSet().setValue(Io.ATTR_COMPONENT_ID,cid);
             component.getAttributeSet().setReadOnly(Io.ATTR_COMPONENT_ID,true);
+            component.getAttributeSet().setReadOnly(Io.ATTR_COMPONENT_STATUS,true);
+            component.getAttributeSet().setReadOnly(Io.ATTR_MAXIMUM_VOLTAGE,true);
+            component.getAttributeSet().setReadOnly(Io.ATTR_RESISTANCE,true);
             //AllComponents.getMyInstance().addComponent(instance,100);
             System.out.println("New LED added with ID "+cid);
         }
