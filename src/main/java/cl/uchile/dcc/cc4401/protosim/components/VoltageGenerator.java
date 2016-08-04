@@ -1,28 +1,14 @@
 package cl.uchile.dcc.cc4401.protosim.components;
 
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Graphics;
-import java.util.ArrayList;
-import java.util.List;
-
-import com.cburch.logisim.data.Attribute;
-import com.cburch.logisim.data.AttributeSet;
-import com.cburch.logisim.data.Bounds;
-import com.cburch.logisim.data.Location;
-import com.cburch.logisim.data.Value;
-import com.cburch.logisim.data.Voltage;
-import com.cburch.logisim.instance.Instance;
-import com.cburch.logisim.instance.InstanceComponent;
-import com.cburch.logisim.instance.InstanceFactory;
-import com.cburch.logisim.instance.InstancePainter;
-import com.cburch.logisim.instance.InstanceState;
-import com.cburch.logisim.instance.Port;
-import com.cburch.logisim.instance.StdAttr;
-import com.cburch.logisim.std.io.Io;
-
 import cl.uchile.dcc.cc4401.protosim.AllComponents;
 import cl.uchile.dcc.cc4401.protosim.libraries.ProtoValue;
+import com.cburch.logisim.data.*;
+import com.cburch.logisim.instance.*;
+import com.cburch.logisim.std.io.Io;
+
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class VoltageGenerator extends InstanceFactory {
 
@@ -49,7 +35,7 @@ public class VoltageGenerator extends InstanceFactory {
         ports = new ArrayList<Port>();
         
         ports.add(new Port(30, 20, Port.INPUT, Breadboard.PORT_WIDTH));
-        ports.add(new Port(30, 10, Port.OUTPUT, Breadboard.PORT_WIDTH));
+        ports.add(new Port(30, 10, Port.INOUT, Breadboard.PORT_WIDTH));
         
         setPorts(ports);
         setInstanceLogger(com.cburch.logisim.std.io.Led.Logger.class);
