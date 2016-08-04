@@ -139,6 +139,7 @@ public class Led extends InstanceFactory {
         painter.drawPorts();
     }
 
+
     @Override
     public void propagate(InstanceState state) {
         Value val = state.getPort(0); // the val of the signal, receive the voltage

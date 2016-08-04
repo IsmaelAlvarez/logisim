@@ -33,10 +33,9 @@ public class VoltageGenerator extends InstanceFactory {
         );
 
         ports = new ArrayList<Port>();
-        
+
         ports.add(new Port(30, 20, Port.INPUT, Breadboard.PORT_WIDTH));
-        ports.add(new Port(30, 10, Port.INOUT, Breadboard.PORT_WIDTH));
-        
+        ports.add(new Port(30, 10, Port.OUTPUT, Breadboard.PORT_WIDTH));
         setPorts(ports);
         setInstanceLogger(com.cburch.logisim.std.io.Led.Logger.class);
     }
@@ -105,8 +104,7 @@ public class VoltageGenerator extends InstanceFactory {
 
     @Override
     public void propagate(InstanceState state) {
-        Value o = ProtoValue.TRUE;
-        state.setPort(0,o,Breadboard.DELAY);
+        state.setPort(0,ProtoValue.TRUE,Breadboard.DELAY);
         state.setPort(1,ProtoValue.FALSE,Breadboard.DELAY);
     }
     

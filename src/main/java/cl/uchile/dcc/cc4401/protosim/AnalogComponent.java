@@ -54,8 +54,10 @@ public class AnalogComponent {
     		if (attrs.containsAttribute(Io.ATTR_MAXIMUM_VOLTAGE)) {
     			double max = (double) attrs.getValue(Io.ATTR_MAXIMUM_VOLTAGE);
     			if (input > max) {
+                    attrs.setReadOnly(Io.ATTR_COMPONENT_STATUS,false);
     				attrs.setValue(Io.ATTR_COMPONENT_STATUS, ComponentStatus.BURNT);
-    			}
+                    attrs.setReadOnly(Io.ATTR_COMPONENT_STATUS,true);
+                }
     		}
     	}
     }
