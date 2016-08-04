@@ -146,6 +146,7 @@ public class MenuSimulate extends Menu {
                 AnalogState.getInstance().computeGraph(menubar.getProject());
             }
             else if (src == voltageSimulate) {
+                AnalogState.getInstance().computeGraph(menubar.getProject());
             	AnalogState.getInstance().simulateVoltage(new VoltageSimulator());
             }
         }

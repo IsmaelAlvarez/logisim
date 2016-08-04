@@ -124,7 +124,8 @@ public class Resistor extends InstanceFactory {
         g.fillRect(x, y-2, 6, 4);
         g.fillRect(x+34, y-2, 6, 4);
 
-        paintShortCircuit(painter);
+        if(painter.getInstance().getAttributeSet().getValue(Io.ATTR_COMPONENT_STATUS).equals(ComponentStatus.BURNT))
+            paintShortCircuit(painter);
 
         painter.drawPorts();
     }
