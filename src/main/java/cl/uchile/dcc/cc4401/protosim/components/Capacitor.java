@@ -15,7 +15,7 @@ import java.util.List;
 /**
  * Created by sergio on 31-03-16.
  */
-public class Capacitor extends InstanceFactory {
+public class Capacitor extends AbstractComponent {
 
     public static InstanceFactory FACTORY = new Capacitor();
 

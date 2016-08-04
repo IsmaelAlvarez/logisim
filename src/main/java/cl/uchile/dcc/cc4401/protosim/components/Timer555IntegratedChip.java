@@ -4,7 +4,7 @@ import com.cburch.logisim.instance.InstanceFactory;
 import com.cburch.logisim.instance.InstancePainter;
 import com.cburch.logisim.instance.InstanceState;
 
-public class Timer555IntegratedChip extends InstanceFactory{
+public class Timer555IntegratedChip extends AbstractComponent{
 
 	public Timer555IntegratedChip(String name) {
 		super(name);

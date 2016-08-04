@@ -31,7 +31,7 @@ import com.cburch.logisim.util.Icons;
 
 import cl.uchile.dcc.cc4401.protosim.libraries.ProtoValue;
 
-public class ClockChip extends InstanceFactory {
+public class ClockChip extends AbstractComponent {
 
 	public static InstanceFactory FACTORY = new ClockChip();
 

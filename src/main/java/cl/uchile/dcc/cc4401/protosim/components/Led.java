@@ -13,7 +13,7 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Led extends InstanceFactory {
+public class Led extends AbstractComponent {
     
     public static InstanceFactory FACTORY = new Led();
     

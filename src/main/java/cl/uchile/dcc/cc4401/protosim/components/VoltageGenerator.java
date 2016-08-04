@@ -10,7 +10,7 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class VoltageGenerator extends InstanceFactory {
+public class VoltageGenerator extends AbstractComponent {
 
     public static InstanceFactory FACTORY = new VoltageGenerator();
 

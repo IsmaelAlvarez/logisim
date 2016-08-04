@@ -29,7 +29,7 @@ import cl.uchile.dcc.cc4401.protosim.libraries.ProtoValue;
  * Implementa un contador sincrono de modulo 10 sin reset, modelo 74190
  * @author Javier
  */
-public class ACounterChip extends InstanceFactory {
+public class ACounterChip extends AbstractComponent {
 
   public static InstanceFactory FACTORY = new ACounterChip();
 

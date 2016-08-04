@@ -36,7 +36,7 @@ import com.cburch.logisim.std.wiring.Pin;
 import com.cburch.logisim.std.wiring.Probe;
 import com.cburch.logisim.util.Icons;
 
-public class Timer555Chip extends InstanceFactory{
+public class Timer555Chip extends AbstractComponent {
 
 	public static InstanceFactory FACTORY = new Timer555Chip();
 	public int r = 10;

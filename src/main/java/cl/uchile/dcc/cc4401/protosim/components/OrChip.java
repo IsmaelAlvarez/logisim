@@ -18,7 +18,7 @@ import com.cburch.logisim.instance.InstanceState;
 import com.cburch.logisim.instance.Port;
 import com.cburch.logisim.util.Icons;
 
-public class OrChip extends InstanceFactory {
+public class OrChip extends AbstractComponent {
 
     public static InstanceFactory FACTORY = new OrChip();
 

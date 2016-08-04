@@ -18,7 +18,7 @@ import com.cburch.logisim.instance.InstanceState;
 import com.cburch.logisim.instance.Port;
 import com.cburch.logisim.util.Icons;
 
-public class NandChip extends InstanceFactory {
+public class NandChip extends AbstractComponent {
     
     public static InstanceFactory FACTORY = new NandChip();
     

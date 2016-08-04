@@ -20,7 +20,7 @@ import java.util.List;
 
 //clase impactada
 
-public class Breadboard extends InstanceFactory {
+public class Breadboard extends AbstractComponent {
 
 	public static final int PORT_WIDTH = 32;
 	public static final int DELAY = 1;

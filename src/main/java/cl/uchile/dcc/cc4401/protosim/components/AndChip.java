@@ -17,7 +17,7 @@ import com.cburch.logisim.instance.InstancePainter;
 import com.cburch.logisim.instance.InstanceState;
 import com.cburch.logisim.instance.Port;
 
-public class AndChip extends InstanceFactory {
+public class AndChip extends AbstractComponent {
 
     public static InstanceFactory FACTORY = new AndChip();
 

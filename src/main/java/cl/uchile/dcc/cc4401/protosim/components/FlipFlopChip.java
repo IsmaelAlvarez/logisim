@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class
-FlipFlopChip extends InstanceFactory {
+FlipFlopChip extends AbstractComponent {
 
 	private Attribute<AttributeOption> triggerAttribute;
 

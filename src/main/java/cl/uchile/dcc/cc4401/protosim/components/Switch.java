@@ -13,7 +13,7 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Switch extends InstanceFactory {
+public class Switch extends AbstractComponent {
     
     public static InstanceFactory FACTORY = new Switch();
 
