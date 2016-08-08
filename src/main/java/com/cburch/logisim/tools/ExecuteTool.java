@@ -16,17 +16,17 @@ public class ExecuteTool extends Tool {
 
     @Override
     public String getName() {
-        return "Execute tool";
+        return "";
     }
 
     @Override
     public String getDisplayName() {
-        return "executeTool";
+        return "";
     }
 
     @Override
     public String getDescription() {
-        return "Execute Circuit";
+        return "";
     }
 
     @Override
