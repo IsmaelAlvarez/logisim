@@ -47,10 +47,6 @@ public class Breadboard extends InstanceFactory {
 		createAttributeSet();
 		setAttributes(new Attribute[] {
                 Io.ATTR_COMPONENT_ID,
-                StdAttr.FACING,
-                Io.ATTR_ON_COLOR,
-                Io.ATTR_OFF_COLOR,
-                Io.ATTR_ACTIVE,
                 StdAttr.LABEL,
                 Io.ATTR_LABEL_LOC,
                 StdAttr.LABEL_FONT,
@@ -58,17 +54,12 @@ public class Breadboard extends InstanceFactory {
             },
             new Object[] {
                 null,
-                Direction.WEST,
-                Color.BLACK,
-                new Color(240, 0, 0),
-                Boolean.TRUE,
                 "",
                 Direction.NORTH,
                 StdAttr.DEFAULT_LABEL_FONT,
                 Color.BLACK,
             }
         );
-		setFacingAttribute(StdAttr.FACING);
 		setPorts(ports);
 	}
 	
