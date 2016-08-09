@@ -246,8 +246,8 @@ public class Timer555Chip extends AbstractComponent {
 		Value valueGround = state.getPort(4);
 		Value valueTrigger = state.getPort(5);
 		
-		boolean isEnergized = (valueVcc == ProtoValue.TRUE && valueGround == ProtoValue.FALSE);
-		boolean isTriggered = (valueTrigger == ProtoValue.TRUE);
+		boolean isEnergized = (valueVcc == ProtoValue.FALSE && valueGround == ProtoValue.TRUE);
+		boolean isTriggered = (valueTrigger == ProtoValue.FALSE);
 				
 		if (shouldEnd){
 			shouldEnd = !isTriggered;
