@@ -17,6 +17,14 @@ public class VoltageSimulator implements AnalogSimulator {
 	private HashMap<Integer, FromToComponent> connected_to;
 	private double current;
 	private AnalogComponent vol_gen;
+	public enum Mode {
+		execute, simulate
+	}
+	private Mode mode = Mode.simulate;
+	
+	public VoltageSimulator(Mode mode) {
+		this.mode = mode;
+	}
 	
 	private class FromToComponent {
 		
@@ -130,7 +138,7 @@ public class VoltageSimulator implements AnalogSimulator {
 		double output_voltage = input_voltage - total_current * comp.getRes();
 		
 		// Ver si el componente se quema
-		comp.checkIfBurns(total_current * comp.getRes());
+		comp.checkIfBurns(total_current * comp.getRes(), this.mode);
 		
 		System.out.println(Integer.toString(comp.getId()) + " voltaje salida: " + Double.toString(output_voltage));
 		

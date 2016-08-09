@@ -3,6 +3,8 @@ package cl.uchile.dcc.cc4401.protosim;
 import com.cburch.logisim.data.*;
 import com.cburch.logisim.std.io.Io;
 
+import cl.uchile.dcc.cc4401.protosim.simulators.VoltageSimulator.Mode;
+
 public class AnalogComponent {
     private int id;
     private AttributeSet attrs;
@@ -50,14 +52,17 @@ public class AnalogComponent {
         return cap.getCapacitance() * cm.getMultiplier();
     }
     
-    public void checkIfBurns(Double input) {
+    public void checkIfBurns(Double input, Mode mode) {
         System.out.println(input);
         if (attrs.containsAttribute(Io.ATTR_COMPONENT_STATUS)) {
     		if (attrs.containsAttribute(Io.ATTR_MAXIMUM_VOLTAGE)) {
     			Double max = (Double) attrs.getValue(Io.ATTR_MAXIMUM_VOLTAGE);
     			if (input > max) {
                     attrs.setReadOnly(Io.ATTR_COMPONENT_STATUS,false);
-    				attrs.setValue(Io.ATTR_COMPONENT_STATUS, ComponentStatus.BURNT);
+                    if (mode == Mode.execute)
+    					attrs.setValue(Io.ATTR_COMPONENT_STATUS, ComponentStatus.BURNT);
+    				else
+    					attrs.setValue(Io.ATTR_COMPONENT_STATUS, ComponentStatus.BAD);
                     attrs.setReadOnly(Io.ATTR_COMPONENT_STATUS,true);
                 }
     		}

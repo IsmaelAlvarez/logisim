@@ -4,9 +4,10 @@ public class ComponentStatus implements AttributeOptionInterface {
 
 	public static final ComponentStatus GOOD = new ComponentStatus(PossibleStatuses.GOOD);
 	public static final ComponentStatus BURNT = new ComponentStatus(PossibleStatuses.BURNT);
+	public static final ComponentStatus BAD = new ComponentStatus(PossibleStatuses.BAD);
 	
 	private static enum PossibleStatuses {
-			GOOD, BURNT
+			GOOD, BURNT, BAD
 	}
 	
 	PossibleStatuses status;
