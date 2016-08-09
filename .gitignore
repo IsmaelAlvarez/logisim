@@ -13,7 +13,7 @@ bin/
 *sonar*.properties
 .sonar
 .settings
-**/*.class
+*.class
 /nbproject/private/
 .externalToolBuilders
 *.orig
