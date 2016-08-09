@@ -218,7 +218,21 @@ public class Timer555Chip extends InstanceFactory{
 	            count = (int) (0.7*r*c);
 	        }
 	            
-		} else if (attr == StdAttr.FACING) {
+		}
+		else if (attr == Io.ATTR_RESISTANCE) {
+			InstanceComponent component = instance.getInstanceComponent();
+	        Integer cid = component.getAttributeSet().getValue(Io.ATTR_COMPONENT_ID);
+	        if(cid==null){
+	            cid = AllComponents.getMyInstance().getNextID();
+	            Capacitance ca = (Capacitance) component.getAttributeSet().getValue(Io.ATTR_CAPACITANCE);
+	            c = ca.getCapacitance();
+	            Resistance re = (Resistance) component.getAttributeSet().getValue(Io.ATTR_RESISTANCE);
+	            r = re.getResistance();     
+	            count = (int) (0.7*r*c);
+	        }
+	            
+		}
+		else if (attr == StdAttr.FACING) {
 			instance.recomputeBounds();
 			configureLabel(instance);
 		}
