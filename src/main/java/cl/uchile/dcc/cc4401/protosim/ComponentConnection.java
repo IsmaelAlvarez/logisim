@@ -3,6 +3,7 @@ package cl.uchile.dcc.cc4401.protosim;
 /**
  * Created by sergio on 28-04-16.
  */
+//impakta3
 public class ComponentConnection {
 
     private AnalogComponent fromId;
