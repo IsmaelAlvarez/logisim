@@ -51,7 +51,7 @@ public class Timer555Chip extends InstanceFactory{
 	
 	public Timer555Chip() {
 		super("Timer555Chip");
-		setIcon(Icons.getIcon("protosimComponentClock.svg"));
+		setIcon(Icons.getIcon("protosimComponent555Chip.svg"));
 		
 		//Set ports
 		ports = new ArrayList<Port>();
