@@ -44,12 +44,14 @@ public class Timer555Chip extends AbstractComponent {
 	private static int count;
 	public boolean f = false;
 	private List<Port> ports;
+	private boolean monoestable = false;
+	private boolean shouldEnd = false;
 
 	private Attribute<AttributeOption> triggerAttribute;
 	
 	public Timer555Chip() {
 		super("Timer555Chip");
-		setIcon(Icons.getIcon("protosimComponentClock.svg"));
+		setIcon(Icons.getIcon("protosimComponent555Chip.svg"));
 		
 		//Set ports
 		ports = new ArrayList<Port>();
@@ -216,7 +218,21 @@ public class Timer555Chip extends AbstractComponent {
 	            count = (int) (0.7*r*c);
 	        }
 	            
-		} else if (attr == StdAttr.FACING) {
+		}
+		else if (attr == Io.ATTR_RESISTANCE) {
+			InstanceComponent component = instance.getInstanceComponent();
+	        Integer cid = component.getAttributeSet().getValue(Io.ATTR_COMPONENT_ID);
+	        if(cid==null){
+	            cid = AllComponents.getMyInstance().getNextID();
+	            Capacitance ca = (Capacitance) component.getAttributeSet().getValue(Io.ATTR_CAPACITANCE);
+	            c = ca.getCapacitance();
+	            Resistance re = (Resistance) component.getAttributeSet().getValue(Io.ATTR_RESISTANCE);
+	            r = re.getResistance();     
+	            count = (int) (0.7*r*c);
+	        }
+	            
+		}
+		else if (attr == StdAttr.FACING) {
 			instance.recomputeBounds();
 			configureLabel(instance);
 		}
@@ -232,12 +248,38 @@ public class Timer555Chip extends AbstractComponent {
 		
 		boolean isEnergized = (valueVcc == ProtoValue.TRUE && valueGround == ProtoValue.FALSE);
 		boolean isTriggered = (valueTrigger == ProtoValue.TRUE);
+				
+		if (shouldEnd){
+			shouldEnd = !isTriggered;
+			if (shouldEnd){
+				state.setPort(6, ProtoValue.FALSE, 1);
+				return;
+			}
+		
+		}
+		
 		// ignore if no change
 		if ( ! val.equals(q.sending) && isEnergized && isTriggered) {
 			state.setPort(6, q.sending, 1);
+		} 
+		
+		if ( ! val.equals(q.sending) && isEnergized && !isTriggered){
+			if (q.sending == ProtoValue.TRUE){
+				monoestable = true;
+				state.setPort(6, q.sending, 1);
+			}
+			else if (q.sending == ProtoValue.FALSE && val == ProtoValue.TRUE){
+				shouldEnd = true;
+				state.setPort(6, q.sending, 1);
+			}
 		}
+		
 		if ( ! isEnergized) {
 			state.setPort(6, ProtoValue.UNKNOWN, 1);
+		}
+		
+		if (shouldEnd){
+			state.setPort(6, ProtoValue.FALSE, 1);
 		}
 	}
 
