@@ -80,7 +80,7 @@ class WireRepair extends CircuitTransaction {
     protected void run(CircuitMutator mutator) {
         doMerges(mutator);
         doOverlaps(mutator);
-        //doSplits(mutator);
+        doSplits(mutator);
     }
 
     /* for debugging:

@@ -81,34 +81,34 @@ public class Breadboard extends InstanceFactory {
 		}
 		pinGroup++;
 		for (int i = 0; i <= 64 * 10; i += 10) {
-			Port port = new Port(10 + i, 20, Port.INOUT, PORT_WIDTH);
+			Port port = new Port(10 + i, 30, Port.INOUT, PORT_WIDTH);
 			ports.add(port);
 			connected.put(port, pinGroup);
 		}
 		pinGroup++;
 		for (int i = 0; i <= 64 * 10; i += 10) {
-			Port port = new Port(10 + i, 170, Port.INOUT, PORT_WIDTH);
+			Port port = new Port(10 + i, 280, Port.INOUT, PORT_WIDTH);
 			ports.add(port);
 			connected.put(port, pinGroup);
 		}
 		pinGroup++;
 		for (int i = 0; i <= 64 * 10; i += 10) {
-			Port port = new Port(10 + i, 180, Port.INOUT, PORT_WIDTH);
+			Port port = new Port(10 + i, 300, Port.INOUT, PORT_WIDTH);
 			ports.add(port);
 			connected.put(port, pinGroup);
 		}
 		pinGroup++;
 		for (int i = 0; i <= 64 * 10; i += 10) {
-			Port port1 = new Port(10 + i, 40, Port.INOUT, PORT_WIDTH);
-			Port port2 = new Port(10 + i, 40 + 10, Port.INOUT, PORT_WIDTH);
-			Port port3 = new Port(10 + i, 40 + 20, Port.INOUT, PORT_WIDTH);
-			Port port4 = new Port(10 + i, 40 + 30, Port.INOUT, PORT_WIDTH);
-			Port port5 = new Port(10 + i, 40 + 40, Port.INOUT, PORT_WIDTH);
-			Port port6 = new Port(10 + i, 110, Port.INOUT, PORT_WIDTH);
-			Port port7 = new Port(10 + i, 110 + 10, Port.INOUT, PORT_WIDTH);
-			Port port8 = new Port(10 + i, 110 + 20, Port.INOUT, PORT_WIDTH);
-			Port port9 = new Port(10 + i, 110 + 30, Port.INOUT, PORT_WIDTH);
-			Port port10 = new Port(10 + i, 110 + 40, Port.INOUT, PORT_WIDTH);
+			Port port1 = new Port(10 + i, 60, Port.INOUT, PORT_WIDTH);
+			Port port2 = new Port(10 + i, 60 + 20, Port.INOUT, PORT_WIDTH);
+			Port port3 = new Port(10 + i, 60 + 40, Port.INOUT, PORT_WIDTH);
+			Port port4 = new Port(10 + i, 60 + 60, Port.INOUT, PORT_WIDTH);
+			Port port5 = new Port(10 + i, 60 + 80, Port.INOUT, PORT_WIDTH);
+			Port port6 = new Port(10 + i, 170, Port.INOUT, PORT_WIDTH);
+			Port port7 = new Port(10 + i, 170 + 20, Port.INOUT, PORT_WIDTH);
+			Port port8 = new Port(10 + i, 170 + 40, Port.INOUT, PORT_WIDTH);
+			Port port9 = new Port(10 + i, 170 + 60, Port.INOUT, PORT_WIDTH);
+			Port port10 = new Port(10 + i, 170 + 80, Port.INOUT, PORT_WIDTH);
 			ports.add(port1);
 			ports.add(port2);
 			ports.add(port3);
@@ -136,7 +136,7 @@ public class Breadboard extends InstanceFactory {
 
 	@Override
 	public Bounds getOffsetBounds(AttributeSet attrs) {
-		return Bounds.create(0, 0, 660, 190);
+		return Bounds.create(0, 0, 660, 320);
 	}
 
 	@Override
@@ -147,16 +147,16 @@ public class Breadboard extends InstanceFactory {
 
 		Graphics g = painter.getGraphics();
 		g.setColor(Color.black);
-		g.drawRect(x, y, 660, 190);
+		g.drawRect(x, y, 660, 320);
 
 		// Breadboard lines
 		g.setColor(Color.red);
-		g.drawLine(x + 10, y + 26, x + 650, y + 26);
-		g.drawLine(x + 10, y + 186, x + 650, y + 186);
+		g.drawLine(x + 10, y + 46, x + 650, y + 46);
+		g.drawLine(x + 10, y + 316, x + 650, y + 316);
 
 		g.setColor(Color.blue);
 		g.drawLine(x + 10, y + 3, x + 650, y + 3);
-		g.drawLine(x + 10, y + 164, x + 650, y + 164);
+		g.drawLine(x + 10, y + 274, x + 650, y + 274);
 
 		painter.drawPorts();
 	}
