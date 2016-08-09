@@ -9,19 +9,25 @@ import com.cburch.logisim.data.Attribute;
 import com.cburch.logisim.data.AttributeOption;
 import com.cburch.logisim.data.AttributeSet;
 import com.cburch.logisim.data.Bounds;
+import com.cburch.logisim.data.ComponentStatus;
 import com.cburch.logisim.data.Direction;
 import com.cburch.logisim.data.Location;
+import com.cburch.logisim.data.Resistance;
 import com.cburch.logisim.data.Value;
+import com.cburch.logisim.instance.Instance;
+import com.cburch.logisim.instance.InstanceComponent;
 import com.cburch.logisim.instance.InstanceData;
 import com.cburch.logisim.instance.InstanceFactory;
 import com.cburch.logisim.instance.InstancePainter;
 import com.cburch.logisim.instance.InstanceState;
 import com.cburch.logisim.instance.Port;
 import com.cburch.logisim.instance.StdAttr;
+import com.cburch.logisim.std.io.Io;
 import com.cburch.logisim.std.memory.Memory;
 import com.cburch.logisim.std.wiring.Pin;
 import com.cburch.logisim.util.Icons;
 
+import cl.uchile.dcc.cc4401.protosim.AllComponents;
 import cl.uchile.dcc.cc4401.protosim.libraries.ProtoValue;
 
 /**
@@ -46,28 +52,22 @@ public class ACounterChip extends AbstractComponent {
     String[] upperPorts = {Port.INPUT, Port.INPUT, Port.INPUT, Port.INPUT,
         Port.INPUT}; //vcc, mr1, mr2, cp0, cp1
     String[] lowerPorts = {Port.OUTPUT, Port.OUTPUT, Port.OUTPUT, Port.OUTPUT,
-        Port.INPUT}; //q_a, q_b, q_c, q_d, gnd
+        Port.OUTPUT}; //q_a, q_b, q_c, q_d, gnd
     ports = addPorts(lowerPorts, upperPorts);
     setPorts(ports);
 
     setAttributes(
-        new Attribute[] { StdAttr.FACING, StdAttr.LABEL, Pin.ATTR_LABEL_LOC,
-            StdAttr.LABEL_FONT },
-        new Object[] { Direction.EAST, "", Direction.WEST,
-            StdAttr.DEFAULT_LABEL_FONT });
+        new Attribute[] { Io.ATTR_COMPONENT_ID, StdAttr.FACING, StdAttr.LABEL, Pin.ATTR_LABEL_LOC,
+            StdAttr.LABEL_FONT, Io.ATTR_MAXIMUM_VOLTAGE, Io.ATTR_COMPONENT_STATUS, Io.ATTR_RESISTANCE},
+        new Object[] { null, Direction.EAST, "", Direction.WEST,
+            StdAttr.DEFAULT_LABEL_FONT, 10.0, ComponentStatus.GOOD, Resistance.R10});
   }
 
-  /**
-   * Crea los bordes de previsualizacion
-   */
   @Override
   public Bounds getOffsetBounds(AttributeSet attrs) {
     return Bounds.create(0, 0, 40, 30);
   }
 
-  /**
-   * Dibuja la instancia del componente
-   */
   @Override
   public void paintInstance(InstancePainter painter) {
     Location loc = painter.getLocation();
@@ -102,6 +102,9 @@ public class ACounterChip extends AbstractComponent {
     g.fillRect(x + 18, y + 25, 4, 5);
     g.fillRect(x + 28, y + 25, 4, 5);
     g.fillRect(x + 38, y + 25, 4, 5);
+
+    if(painter.getInstance().getAttributeSet().getValue(Io.ATTR_COMPONENT_STATUS).equals(ComponentStatus.BURNT))
+      paintShortCircuit(painter);
     painter.drawPorts();
   }
 
@@ -122,15 +125,16 @@ public class ACounterChip extends AbstractComponent {
 
     int[] ports_out = {5, 6, 7, 8};
 
-    if (ProtoValue.isEnergized(valueVcc, valueGround)) {
+    //if (ProtoValue.isEnergized(valueVcc, valueGround)) {
       setOutputValue(state, data, triggered0, triggered1, 1, 2, ports_out);
-    } 
-    else {
+    //} 
+    /*else {
       state.setPort(ports_out[0], ProtoValue.UNKNOWN, Breadboard.DELAY);
       state.setPort(ports_out[1], ProtoValue.UNKNOWN, Breadboard.DELAY);
       state.setPort(ports_out[2], ProtoValue.UNKNOWN, Breadboard.DELAY);
       state.setPort(ports_out[3], ProtoValue.UNKNOWN, Breadboard.DELAY);
     }
+    */
   }
 
   private void setOutputValue(InstanceState state, StateData data, boolean triggered0, 
@@ -144,11 +148,13 @@ public class ACounterChip extends AbstractComponent {
       if (triggered0) data.incCounter(1);
       if (triggered1) data.incCounter(0);
     }
+    
 
     state.setPort(ports_out[0], bin2Value(data.getCounter(0).charAt(0)), Memory.DELAY);
     for (int i = 0; i < ports_out.length - 1; i++) {
       state.setPort(ports_out[i + 1], bin2Value(data.getCounter(1).charAt(i)), Memory.DELAY);
     }
+    state.setPort(0, ProtoValue.TRUE, Memory.DELAY);
   }
 
   private Value bin2Value(char c) {
@@ -179,5 +185,28 @@ public class ACounterChip extends AbstractComponent {
       }
       return ans;
     }
+  }
+  
+  /*
+   * Configures new instance using the aa
+   * @see com.cburch.logisim.instance.InstanceFactory#configureNewInstance(com.cburch.logisim.instance.Instance)
+   */
+  @Override
+  protected void configureNewInstance(Instance instance) {
+    instance.addAttributeListener();
+    InstanceComponent component = instance.getInstanceComponent();
+    Integer cid = component.getAttributeSet().getValue(Io.ATTR_COMPONENT_ID);
+    if(cid==null){
+      cid = AllComponents.getMyInstance().getNextID();
+      component.getAttributeSet().setValue(Io.ATTR_COMPONENT_ID,cid);
+      component.getAttributeSet().setReadOnly(Io.ATTR_COMPONENT_ID,true);
+      component.getAttributeSet().setReadOnly(Io.ATTR_COMPONENT_STATUS,true);
+      System.out.println("New resistor added with ID "+cid);
+    }
+
+    /*if (instance.getAttributeSet().getValue(Io.ATTR_DIRECTION_LEFT_RIGHT).equals(Direction.WEST)) {
+     instance.setPorts(new Port[]{ports.get(0), ports.get(9)});
+    }
+    */
   }
 }
