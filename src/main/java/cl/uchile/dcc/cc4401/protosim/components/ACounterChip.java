@@ -3,7 +3,6 @@ package cl.uchile.dcc.cc4401.protosim.components;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
-import java.util.ArrayList;
 import java.util.List;
 
 import com.cburch.logisim.data.Attribute;
@@ -44,23 +43,11 @@ public class ACounterChip extends AbstractComponent {
     triggerAttribute = StdAttr.TRIGGER;
 
     // Set ports
-    ports = new ArrayList<Port>();
-
-    // Upper ports
-    ports.add(new Port(0, 0, Port.INPUT, Breadboard.PORT_WIDTH)); // vcc
-    ports.add(new Port(10, 0, Port.INPUT, Breadboard.PORT_WIDTH)); // mr1
-    ports.add(new Port(20, 0, Port.INPUT, Breadboard.PORT_WIDTH)); // mr2
-    ports.add(new Port(30, 0, Port.INPUT, Breadboard.PORT_WIDTH)); // cp0
-    ports.add(new Port(40, 0, Port.INPUT, Breadboard.PORT_WIDTH)); // cp1
-
-
-    // Lower ports
-    ports.add(new Port(0, 30, Port.OUTPUT, Breadboard.PORT_WIDTH)); // q_a
-    ports.add(new Port(10, 30, Port.OUTPUT, Breadboard.PORT_WIDTH)); // q_b
-    ports.add(new Port(20, 30, Port.OUTPUT, Breadboard.PORT_WIDTH)); // q_c
-    ports.add(new Port(30, 30, Port.OUTPUT, Breadboard.PORT_WIDTH)); // q_d
-    ports.add(new Port(40, 30, Port.INPUT, Breadboard.PORT_WIDTH)); // gnd
-
+    String[] upperPorts = {Port.INPUT, Port.INPUT, Port.INPUT, Port.INPUT,
+        Port.INPUT}; //vcc, mr1, mr2, cp0, cp1
+    String[] lowerPorts = {Port.OUTPUT, Port.OUTPUT, Port.OUTPUT, Port.OUTPUT,
+        Port.INPUT}; //q_a, q_b, q_c, q_d, gnd
+    ports = addPorts(lowerPorts, upperPorts);
     setPorts(ports);
 
     setAttributes(
@@ -125,16 +112,16 @@ public class ACounterChip extends AbstractComponent {
       data = new StateData();
       state.setData(data);
     }
-    
+
     Object triggerType = state.getAttributeValue(triggerAttribute);
     boolean triggered0 = data.updateClock(1, state.getPort(3), triggerType);
     boolean triggered1 = data.updateClock(2, state.getPort(4), triggerType);
-    
+
     Value valueVcc = state.getPort(0);
     Value valueGround = state.getPort(9);
-    
+
     int[] ports_out = {5, 6, 7, 8};
-    
+
     if (ProtoValue.isEnergized(valueVcc, valueGround)) {
       setOutputValue(state, data, triggered0, triggered1, 1, 2, ports_out);
     } 
@@ -157,34 +144,34 @@ public class ACounterChip extends AbstractComponent {
       if (triggered0) data.incCounter(1);
       if (triggered1) data.incCounter(0);
     }
-    
+
     state.setPort(ports_out[0], bin2Value(data.getCounter(0).charAt(0)), Memory.DELAY);
     for (int i = 0; i < ports_out.length - 1; i++) {
       state.setPort(ports_out[i + 1], bin2Value(data.getCounter(1).charAt(i)), Memory.DELAY);
     }
   }
-  
+
   private Value bin2Value(char c) {
     if (c == '1') return ProtoValue.TRUE;
     else return ProtoValue.FALSE;
   }
 
   private static class StateData extends ProtosimClockState implements InstanceData {
-    
+
     private int[] counters = {0, 0};
     private int[] mods = {2, 5};
     private final int[] bits = {1, 3};
-    
+
     public void incCounter(int i) {
       if (counters[i] > mods[i] - 2) counters[i] = 0;
       else counters[i]++;
     }
-    
+
     public void resetCounter() {
       counters[0] = 0;
       counters[1] = 0;
     }
-    
+
     public String getCounter(int i) {
       String ans = Integer.toString(counters[i], 2);
       while (ans.length() < bits[i]) {

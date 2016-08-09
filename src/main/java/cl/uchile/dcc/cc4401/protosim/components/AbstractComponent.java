@@ -2,10 +2,13 @@ package cl.uchile.dcc.cc4401.protosim.components;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.cburch.logisim.data.Location;
 import com.cburch.logisim.instance.InstanceFactory;
 import com.cburch.logisim.instance.InstancePainter;
+import com.cburch.logisim.instance.Port;
 
 public abstract class AbstractComponent extends InstanceFactory {
 
@@ -32,4 +35,17 @@ public abstract class AbstractComponent extends InstanceFactory {
         g.drawPolygon(new int[]{x + 8 + offx, x - 4 + offx , x + 5 + offx, x + 2 + offx, x + 14 + offx, x + 5 + offx},
                 new int[]{y - 10 + offy, y + 8 + offy, y + 5 + offy, y + 20 + offy, y + 2 + offy, y + 3 + offy}, 6);
     }
+	
+	protected List<Port> addPorts(String[] lowerPorts, String[] upperPorts){
+	  List<Port> ports = new ArrayList<Port>();
+	  for (int i = 0; i < lowerPorts.length; i++) {
+	    ports.add(new Port(10*i, 0, lowerPorts[i], Breadboard.PORT_WIDTH));
+	  }
+	  
+	  for (int i = 0; i < lowerPorts.length; i++) {
+        ports.add(new Port(10*i, 30, upperPorts[i], Breadboard.PORT_WIDTH));
+      }
+	  return ports;
+	  
+	}
 }

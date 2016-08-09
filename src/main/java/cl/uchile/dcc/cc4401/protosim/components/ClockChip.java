@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.MouseEvent;
-import java.util.ArrayList;
 import java.util.List;
 
 import com.cburch.logisim.circuit.CircuitState;
@@ -33,213 +32,205 @@ import cl.uchile.dcc.cc4401.protosim.libraries.ProtoValue;
 
 public class ClockChip extends AbstractComponent {
 
-	public static InstanceFactory FACTORY = new ClockChip();
+  public static InstanceFactory FACTORY = new ClockChip();
 
-	private List<Port> ports;
+  private List<Port> ports;
 
-	public ClockChip() {
-		super("Clock Chip");
-		this.setIcon(Icons.getIcon("protosimComponentClock.svg"));
+  public ClockChip() {
+    super("Clock Chip");
+    this.setIcon(Icons.getIcon("protosimComponentClock.svg"));
 
-		ports = new ArrayList<Port>();
+    // Set ports
+    String[] upperPorts = {Port.INPUT, Port.OUTPUT, Port.OUTPUT};
+    String[] lowerPorts = {Port.OUTPUT, Port.OUTPUT, Port.INPUT};
+    ports = addPorts(lowerPorts, upperPorts);
+    setPorts(ports);
 
-		// Upper ports
-		ports.add(new Port(0, 0, Port.INPUT, Breadboard.PORT_WIDTH));
-		ports.add(new Port(10, 0, Port.OUTPUT, Breadboard.PORT_WIDTH));
-		ports.add(new Port(20, 0, Port.OUTPUT, Breadboard.PORT_WIDTH));
+    setAttributes(
+        new Attribute[] { StdAttr.FACING, Clock.ATTR_HIGH, Clock.ATTR_LOW, StdAttr.LABEL, Pin.ATTR_LABEL_LOC,
+            StdAttr.LABEL_FONT },
+        new Object[] { Direction.EAST, Integer.valueOf(1), Integer.valueOf(1), "", Direction.WEST,
+            StdAttr.DEFAULT_LABEL_FONT });
 
-		// Lower ports
-		ports.add(new Port(0, 30, Port.OUTPUT, Breadboard.PORT_WIDTH));
-		ports.add(new Port(10, 30, Port.OUTPUT, Breadboard.PORT_WIDTH));
-		ports.add(new Port(20, 30, Port.INPUT, Breadboard.PORT_WIDTH));
+    setFacingAttribute(StdAttr.FACING);
+    setInstanceLogger(ClockLogger.class);
+    setInstancePoker(ClockPoker.class);
+  }
 
-		setPorts(ports);
+  @Override
+  public Bounds getOffsetBounds(AttributeSet attrs) {
+    return Bounds.create(0, 0, 20, 30);
+  }
 
-		setAttributes(
-				new Attribute[] { StdAttr.FACING, Clock.ATTR_HIGH, Clock.ATTR_LOW, StdAttr.LABEL, Pin.ATTR_LABEL_LOC,
-						StdAttr.LABEL_FONT },
-				new Object[] { Direction.EAST, Integer.valueOf(1), Integer.valueOf(1), "", Direction.WEST,
-						StdAttr.DEFAULT_LABEL_FONT });
+  @Override
+  public void paintInstance(InstancePainter painter) {
+    Location loc = painter.getLocation();
+    int x = loc.getX();
+    int y = loc.getY();
 
-		setFacingAttribute(StdAttr.FACING);
-		setInstanceLogger(ClockLogger.class);
-		setInstancePoker(ClockPoker.class);
-	}
+    Graphics g = painter.getGraphics();
 
-	@Override
-	public Bounds getOffsetBounds(AttributeSet attrs) {
-		return Bounds.create(0, 0, 20, 30);
-	}
+    // Chip
+    g.setColor(Color.black);
+    g.fillRect(x - 2, y + 5, 24, 20);
 
-	@Override
-	public void paintInstance(InstancePainter painter) {
-		Location loc = painter.getLocation();
-		int x = loc.getX();
-		int y = loc.getY();
+    // Text
+    g.setColor(Color.white);
+    g.setFont(new Font("Courier", Font.BOLD, 8));
+    g.drawString("CLK", x + 3, y + 18);
+    g.drawString("+", x - 1, y + 12);
+    g.drawString("-", x + 17, y + 24);
 
-		Graphics g = painter.getGraphics();
+    // Pins
+    g.setColor(Color.gray);
+    g.fillRect(x - 2, y, 4, 5);
+    g.fillRect(x + 8, y, 4, 5);
+    g.fillRect(x + 18, y, 4, 5);
 
-		// Chip
-		g.setColor(Color.black);
-		g.fillRect(x - 2, y + 5, 24, 20);
+    g.fillRect(x - 2, y + 25, 4, 5);
+    g.fillRect(x + 8, y + 25, 4, 5);
+    g.fillRect(x + 18, y + 25, 4, 5);
 
-		// Text
-		g.setColor(Color.white);
-		g.setFont(new Font("Courier", Font.BOLD, 8));
-		g.drawString("CLK", x + 3, y + 18);
-		g.drawString("+", x - 1, y + 12);
-		g.drawString("-", x + 17, y + 24);
+    painter.drawPorts();
+  }
 
-		// Pins
-		g.setColor(Color.gray);
-		g.fillRect(x - 2, y, 4, 5);
-		g.fillRect(x + 8, y, 4, 5);
-		g.fillRect(x + 18, y, 4, 5);
+  private static class ClockState implements InstanceData, Cloneable {
+    Value sending = ProtoValue.FALSE;
+    int clicks = 0;
 
-		g.fillRect(x - 2, y + 25, 4, 5);
-		g.fillRect(x + 8, y + 25, 4, 5);
-		g.fillRect(x + 18, y + 25, 4, 5);
+    @Override
+    public ClockState clone() {
+      try {
+        return (ClockState) super.clone();
+      } catch (CloneNotSupportedException e) {
+        return null;
+      }
+    }
+  }
 
-		painter.drawPorts();
-	}
+  public static class ClockLogger extends InstanceLogger {
+    @Override
+    public String getLogName(InstanceState state, Object option) {
+      return state.getAttributeValue(StdAttr.LABEL);
+    }
 
-	private static class ClockState implements InstanceData, Cloneable {
-		Value sending = ProtoValue.FALSE;
-		int clicks = 0;
+    @Override
+    public Value getLogValue(InstanceState state, Object option) {
+      ClockState s = getState(state);
+      return s.sending;
+    }
+  }
 
-		@Override
-		public ClockState clone() {
-			try {
-				return (ClockState) super.clone();
-			} catch (CloneNotSupportedException e) {
-				return null;
-			}
-		}
-	}
+  public static class ClockPoker extends InstancePoker {
+    boolean isPressed = true;
 
-	public static class ClockLogger extends InstanceLogger {
-		@Override
-		public String getLogName(InstanceState state, Object option) {
-			return state.getAttributeValue(StdAttr.LABEL);
-		}
+    @Override
+    public void mousePressed(InstanceState state, MouseEvent e) {
+      isPressed = isInside(state, e);
+    }
 
-		@Override
-		public Value getLogValue(InstanceState state, Object option) {
-			ClockState s = getState(state);
-			return s.sending;
-		}
-	}
+    @Override
+    public void mouseReleased(InstanceState state, MouseEvent e) {
+      if (isPressed && isInside(state, e)) {
+        ClockState myState = (ClockState) state.getData();
+        myState.sending = myState.sending.not();
+        myState.clicks++;
+        state.fireInvalidated();
+      }
+      isPressed = false;
+    }
 
-	public static class ClockPoker extends InstancePoker {
-		boolean isPressed = true;
+    private boolean isInside(InstanceState state, MouseEvent e) {
+      Bounds bds = state.getInstance().getBounds();
+      return bds.contains(e.getX(), e.getY());
+    }
+  }
 
-		@Override
-		public void mousePressed(InstanceState state, MouseEvent e) {
-			isPressed = isInside(state, e);
-		}
+  //
+  // methods for instances
+  //
+  @Override
+  protected void configureNewInstance(Instance instance) {
+    instance.addAttributeListener();
+    configureLabel(instance);
+  }
 
-		@Override
-		public void mouseReleased(InstanceState state, MouseEvent e) {
-			if (isPressed && isInside(state, e)) {
-				ClockState myState = (ClockState) state.getData();
-				myState.sending = myState.sending.not();
-				myState.clicks++;
-				state.fireInvalidated();
-			}
-			isPressed = false;
-		}
+  @Override
+  protected void instanceAttributeChanged(Instance instance, Attribute<?> attr) {
+    if (attr == Pin.ATTR_LABEL_LOC) {
+      configureLabel(instance);
+    } else if (attr == StdAttr.FACING) {
+      instance.recomputeBounds();
+      configureLabel(instance);
+    }
+  }
 
-		private boolean isInside(InstanceState state, MouseEvent e) {
-			Bounds bds = state.getInstance().getBounds();
-			return bds.contains(e.getX(), e.getY());
-		}
-	}
+  @Override
+  public void propagate(InstanceState state) {
+    Value val = state.getPort(2);
+    ClockState q = getState(state);
 
-	//
-	// methods for instances
-	//
-	@Override
-	protected void configureNewInstance(Instance instance) {
-		instance.addAttributeListener();
-		configureLabel(instance);
-	}
+    Value valueVcc = state.getPort(0);
+    Value valueGround = state.getPort(5);
 
-	@Override
-	protected void instanceAttributeChanged(Instance instance, Attribute<?> attr) {
-		if (attr == Pin.ATTR_LABEL_LOC) {
-			configureLabel(instance);
-		} else if (attr == StdAttr.FACING) {
-			instance.recomputeBounds();
-			configureLabel(instance);
-		}
-	}
+    boolean isEnergized = ProtoValue.isEnergized(valueVcc, valueGround);
 
-	@Override
-	public void propagate(InstanceState state) {
-		Value val = state.getPort(2);
-		ClockState q = getState(state);
+    // ignore if no change
+    if ( ! val.equals(q.sending) && isEnergized) {
+      state.setPort(1, q.sending, 1);
+      state.setPort(2, q.sending, 1);
+      state.setPort(3, q.sending, 1);
+      state.setPort(4, q.sending, 1);
+    }
+    if ( ! isEnergized) {
+      state.setPort(1, ProtoValue.UNKNOWN, 1);
+      state.setPort(2, ProtoValue.UNKNOWN, 1);
+      state.setPort(3, ProtoValue.UNKNOWN, 1);
+      state.setPort(4, ProtoValue.UNKNOWN, 1);
+    }
+  }
 
-		Value valueVcc = state.getPort(0);
-		Value valueGround = state.getPort(5);
+  //
+  // package methods
+  //
+  public static boolean tick(CircuitState circState, int ticks, Component comp) {
+    AttributeSet attrs = comp.getAttributeSet();
+    int durationHigh = attrs.getValue(Clock.ATTR_HIGH).intValue();
+    int durationLow = attrs.getValue(Clock.ATTR_LOW).intValue();
+    ClockState state = (ClockState) circState.getData(comp);
+    if (state == null) {
+      state = new ClockState();
+      circState.setData(comp, state);
+    }
+    boolean curValue = ticks % (durationHigh + durationLow) < durationLow;
+    if (state.clicks % 2 == 1) {
+      curValue = !curValue;
+    }
 
-		boolean isEnergized = ProtoValue.isEnergized(valueVcc, valueGround);
+    Value desired = (curValue ? ProtoValue.FALSE : ProtoValue.TRUE);
+    if (!state.sending.equals(desired)) {
+      state.sending = desired;
+      Instance.getInstanceFor(comp).fireInvalidated();
+      return true;
+    }
+    return false;
+  }
 
-		// ignore if no change
-		if ( ! val.equals(q.sending) && isEnergized) {
-			state.setPort(1, q.sending, 1);
-			state.setPort(2, q.sending, 1);
-			state.setPort(3, q.sending, 1);
-			state.setPort(4, q.sending, 1);
-		}
-		if ( ! isEnergized) {
-			state.setPort(1, ProtoValue.UNKNOWN, 1);
-			state.setPort(2, ProtoValue.UNKNOWN, 1);
-			state.setPort(3, ProtoValue.UNKNOWN, 1);
-			state.setPort(4, ProtoValue.UNKNOWN, 1);
-		}
-	}
+  //
+  // private methods
+  //
+  private void configureLabel(Instance instance) {
+    Direction facing = instance.getAttributeValue(StdAttr.FACING);
+    Direction labelLoc = instance.getAttributeValue(Pin.ATTR_LABEL_LOC);
+    Probe.configureLabel(instance, labelLoc, facing);
+  }
 
-	//
-	// package methods
-	//
-	public static boolean tick(CircuitState circState, int ticks, Component comp) {
-		AttributeSet attrs = comp.getAttributeSet();
-		int durationHigh = attrs.getValue(Clock.ATTR_HIGH).intValue();
-		int durationLow = attrs.getValue(Clock.ATTR_LOW).intValue();
-		ClockState state = (ClockState) circState.getData(comp);
-		if (state == null) {
-			state = new ClockState();
-			circState.setData(comp, state);
-		}
-		boolean curValue = ticks % (durationHigh + durationLow) < durationLow;
-		if (state.clicks % 2 == 1) {
-			curValue = !curValue;
-		}
-
-		Value desired = (curValue ? ProtoValue.FALSE : ProtoValue.TRUE);
-		if (!state.sending.equals(desired)) {
-			state.sending = desired;
-			Instance.getInstanceFor(comp).fireInvalidated();
-			return true;
-		}
-		return false;
-	}
-
-	//
-	// private methods
-	//
-	private void configureLabel(Instance instance) {
-		Direction facing = instance.getAttributeValue(StdAttr.FACING);
-		Direction labelLoc = instance.getAttributeValue(Pin.ATTR_LABEL_LOC);
-		Probe.configureLabel(instance, labelLoc, facing);
-	}
-
-	private static ClockState getState(InstanceState state) {
-		ClockState ret = (ClockState) state.getData();
-		if (ret == null) {
-			ret = new ClockState();
-			state.setData(ret);
-		}
-		return ret;
-	}
+  private static ClockState getState(InstanceState state) {
+    ClockState ret = (ClockState) state.getData();
+    if (ret == null) {
+      ret = new ClockState();
+      state.setData(ret);
+    }
+    return ret;
+  }
 }
