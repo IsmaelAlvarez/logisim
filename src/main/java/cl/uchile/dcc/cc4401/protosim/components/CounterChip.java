@@ -1,29 +1,14 @@
 package cl.uchile.dcc.cc4401.protosim.components;
 
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Graphics;
-import java.util.ArrayList;
-import java.util.List;
-
-import com.cburch.logisim.data.Attribute;
-import com.cburch.logisim.data.AttributeOption;
-import com.cburch.logisim.data.AttributeSet;
-import com.cburch.logisim.data.Bounds;
-import com.cburch.logisim.data.Direction;
-import com.cburch.logisim.data.Location;
-import com.cburch.logisim.data.Value;
-import com.cburch.logisim.instance.InstanceData;
-import com.cburch.logisim.instance.InstanceFactory;
-import com.cburch.logisim.instance.InstancePainter;
-import com.cburch.logisim.instance.InstanceState;
-import com.cburch.logisim.instance.Port;
-import com.cburch.logisim.instance.StdAttr;
+import cl.uchile.dcc.cc4401.protosim.libraries.ProtoValue;
+import com.cburch.logisim.data.*;
+import com.cburch.logisim.instance.*;
 import com.cburch.logisim.std.memory.Memory;
 import com.cburch.logisim.std.wiring.Pin;
 import com.cburch.logisim.util.Icons;
 
-import cl.uchile.dcc.cc4401.protosim.libraries.ProtoValue;
+import java.awt.*;
+import java.util.List;
 
 /**
  * Implementa un contador sincrono de modulo 10 sin reset, modelo 74190
@@ -44,24 +29,11 @@ public class CounterChip extends AbstractComponent {
     triggerAttribute = StdAttr.TRIGGER;
 
     // Set ports
-    ports = new ArrayList<Port>();
-
-    // Upper ports
-    ports.add(new Port(0, 0, Port.INPUT, Breadboard.PORT_WIDTH)); // vcc
-    ports.add(new Port(10, 0, Port.INPUT, Breadboard.PORT_WIDTH)); // a
-    ports.add(new Port(20, 0, Port.INPUT, Breadboard.PORT_WIDTH)); // b
-    ports.add(new Port(30, 0, Port.INPUT, Breadboard.PORT_WIDTH)); // c
-    ports.add(new Port(40, 0, Port.INPUT, Breadboard.PORT_WIDTH)); // d
-    ports.add(new Port(50, 0, Port.INPUT, Breadboard.PORT_WIDTH)); // not_load
-
-    // Lower ports
-    ports.add(new Port(0, 30, Port.INPUT, Breadboard.PORT_WIDTH)); // clk
-    ports.add(new Port(10, 30, Port.OUTPUT, Breadboard.PORT_WIDTH)); // q_a
-    ports.add(new Port(20, 30, Port.OUTPUT, Breadboard.PORT_WIDTH)); // q_b
-    ports.add(new Port(30, 30, Port.OUTPUT, Breadboard.PORT_WIDTH)); // q_c
-    ports.add(new Port(40, 30, Port.OUTPUT, Breadboard.PORT_WIDTH)); // q_d
-    ports.add(new Port(50, 30, Port.INPUT, Breadboard.PORT_WIDTH)); // gnd
-
+    String[] upperPorts = {Port.INPUT, Port.INPUT, Port.INPUT, Port.INPUT,
+        Port.INPUT, Port.INPUT}; // vcc, a, b, c, d, not_load
+    String[] lowerPorts = {Port.INPUT, Port.OUTPUT, Port.OUTPUT, Port.OUTPUT,
+        Port.OUTPUT, Port.INPUT}; // clk, q_a, q_b, q_c, q_d, gnd
+    ports = addPorts(lowerPorts, upperPorts);
     setPorts(ports);
 
     setAttributes(
@@ -129,7 +101,7 @@ public class CounterChip extends AbstractComponent {
       state.setData(data);
     }
     data.setMod(10);
-    
+
     Object triggerType = state.getAttributeValue(triggerAttribute);
     boolean triggered = data.updateClock(1, state.getPort(6), triggerType);
 
