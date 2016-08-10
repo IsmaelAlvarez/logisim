@@ -1,6 +1,7 @@
 package cl.uchile.dcc.cc4401.protosim;
 
 
+import cl.uchile.dcc.cc4401.protosim.components.AbstractComponent;
 import cl.uchile.dcc.cc4401.protosim.simulators.AnalogSimulator;
 import cl.uchile.dcc.cc4401.protosim.simulators.AnalogTimeSimulator;
 import cl.uchile.dcc.cc4401.protosim.simulators.VoltageSimulator;
@@ -40,20 +41,20 @@ public class AnalogState {
         ArrayList<CompTuple> cons = new ArrayList<>();
 
         for(Component compi : comps){
-            EndData ei = compi.getEnds().get(0);
+            EndData ei = compi.getEnds().get(((AbstractComponent) compi.getFactory()).getVOut());
             Location l1;
-            if(ei.isOutput())
+            //if(ei.isOutput())
                 l1 = ei.getLocation();
-            else
-                l1 = compi.getEnds().get(1).getLocation();
+            /*else
+                l1 = compi.getEnds().get(((AbstractComponent) compi.getFactory()).getVIn()).getLocation();*/
             for(Component compj : comps){
                 if(compi==compj) continue;
-                EndData ej = compj.getEnds().get(0);
+                EndData ej = compj.getEnds().get(((AbstractComponent) compj.getFactory()).getVIn());
                 Location l2;
-                if(ei.isInput())
+                //if(ei.isInput())
                     l2 = ej.getLocation();
-                else
-                    l2 = compj.getEnds().get(1).getLocation();
+                /*else
+                    l2 = compj.getEnds().get(((AbstractComponent) compi.getFactory()).getVOut()).getLocation();*/
                 if(isWiredConnected(wires,l1,l2)){
                     cons.add(new CompTuple(compi,compj));
                 }
@@ -70,10 +71,10 @@ public class AnalogState {
         /*
         double res = AllComponents.getMyInstance().calculateEqResistance(AllComponents.getMyInstance().getVoltageGenerator(), AllComponents.getMyInstance().getVoltageGenerator());
         System.out.println(res);
-        */
+        
         ReductorResistor reductor = new ReductorResistor(AllComponents.getMyInstance().getGraph());
         double resEq = reductor.reduce();
-        System.out.println(resEq);
+        System.out.println(resEq);*/
     }
 
     private boolean isWiredConnected(Set<Wire> wires, Location loc1, Location loc2) {

@@ -104,8 +104,8 @@ public class VoltageGenerator extends AbstractComponent {
 
     @Override
     public void propagate(InstanceState state) {
-        state.setPort(0,ProtoValue.TRUE,Breadboard.DELAY);
-        state.setPort(1,ProtoValue.FALSE,Breadboard.DELAY);
+        state.setPort(1,ProtoValue.TRUE,Breadboard.DELAY);
+        // state.setPort(0,ProtoValue.FALSE,Breadboard.DELAY);
     }
     
 }

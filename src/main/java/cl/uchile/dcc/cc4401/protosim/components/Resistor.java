@@ -148,7 +148,7 @@ public class Resistor extends AbstractComponent {
 
     private Value getOutputVoltage(InstanceState state) {
         Value in = getInputVoltage(state);
-        Value out = Value.createKnown(BitWidth.create(Breadboard.PORT_WIDTH), -1);
+        Value out = Value.createKnown(BitWidth.create(Breadboard.PORT_WIDTH), 1);
         if (!state.getInstance().getHealthState())
             return ProtoValue.NOT_CONNECTED;
 
