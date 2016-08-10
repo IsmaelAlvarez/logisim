@@ -30,7 +30,7 @@ public class SimulateTool extends Tool {
 
     @Override
     public void mousePressed(Canvas canvas, Graphics g, MouseEvent e) {
-        
+
     }
 
     @Override
@@ -50,9 +50,7 @@ public class SimulateTool extends Tool {
             toolIcon.paintIcon(c.getDestination(), g, x + 2, y + 2);
         } else {
             g.setColor(java.awt.Color.black);
-            /*
-             * The code below It's only executed if the icon is not available.
-             */
+           
 
         }
     }
