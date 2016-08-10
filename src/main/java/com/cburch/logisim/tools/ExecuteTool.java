@@ -5,6 +5,7 @@ import com.cburch.logisim.util.Icons;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseEvent;
 
 public class ExecuteTool extends Tool {
 
@@ -27,6 +28,21 @@ public class ExecuteTool extends Tool {
     @Override
     public String getDescription() {
         return "Execute Circuit";
+    }
+
+    @Override
+    public void mousePressed(com.cburch.logisim.gui.main.Canvas canvas, Graphics g, MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseDragged(com.cburch.logisim.gui.main.Canvas canvas, Graphics g, MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseReleased(com.cburch.logisim.gui.main.Canvas canvas, Graphics g, MouseEvent e) {
+
     }
 
     @Override
