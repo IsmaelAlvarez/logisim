@@ -47,7 +47,8 @@ public class JFontChooserBeanInfo extends SimpleBeanInfo {
      * @return the bean descriptor
      */
     //Java5 @Override
-    public BeanDescriptor getBeanDescriptor() {
+    @Override
+	public BeanDescriptor getBeanDescriptor() {
         return descriptor;
     }
 
@@ -58,7 +59,8 @@ public class JFontChooserBeanInfo extends SimpleBeanInfo {
      * @return the image
      */
     //Java5 @Override
-    public Image getIcon(int iconKind) {
+    @Override
+	public Image getIcon(int iconKind) {
         switch (iconKind) {
             case ICON_COLOR_16x16:
                 return iconColor16;

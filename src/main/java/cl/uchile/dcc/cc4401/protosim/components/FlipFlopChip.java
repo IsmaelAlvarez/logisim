@@ -50,6 +50,7 @@ FlipFlopChip extends AbstractComponent {
 		setPorts(ports);
 	}
 
+	@Override
 	public String getDisplayName() {
 		return "Flip-Flop Chip";
 	}

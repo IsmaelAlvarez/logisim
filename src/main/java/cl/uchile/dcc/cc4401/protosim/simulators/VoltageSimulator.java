@@ -3,8 +3,6 @@ package cl.uchile.dcc.cc4401.protosim.simulators;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import com.cburch.logisim.data.Resistance;
-import com.cburch.logisim.data.ResistanceMultiplier;
 import com.cburch.logisim.data.Voltage;
 import com.cburch.logisim.std.io.Io;
 

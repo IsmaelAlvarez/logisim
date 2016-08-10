@@ -82,7 +82,7 @@ class LocaleSelector extends JList<LocaleOption>
 
     @Override
     public void valueChanged(ListSelectionEvent e) {
-        LocaleOption opt = (LocaleOption) getSelectedValue();
+        LocaleOption opt = getSelectedValue();
         if (opt != null) {
             SwingUtilities.invokeLater(opt);
         }

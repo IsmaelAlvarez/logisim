@@ -22,7 +22,6 @@ import cl.uchile.dcc.cc4401.protosim.components.Resistor;
 import cl.uchile.dcc.cc4401.protosim.components.Switch;
 import cl.uchile.dcc.cc4401.protosim.components.Timer555Chip;
 import cl.uchile.dcc.cc4401.protosim.components.VoltageGenerator;
-import cl.uchile.dcc.cc4401.protosim.components.Zoom;
 import cl.uchile.dcc.cc4401.protosim.components.ZoomIn;
 import cl.uchile.dcc.cc4401.protosim.components.ZoomOut;
 //clase impactada

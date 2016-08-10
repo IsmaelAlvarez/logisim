@@ -83,7 +83,8 @@ class FontChooserDialog extends javax.swing.JDialog {
     private class FontChooserDialogAdapter extends WindowAdapter {
 
         // @Override
-        public void windowClosing(WindowEvent event) {
+        @Override
+		public void windowClosing(WindowEvent event) {
             dispose();
         }
 
@@ -91,7 +92,8 @@ class FontChooserDialog extends javax.swing.JDialog {
 
     private class OKActionListener implements ActionListener {
 
-        public void actionPerformed(ActionEvent e) {
+        @Override
+		public void actionPerformed(ActionEvent e) {
             dispose();
         }
 
@@ -99,7 +101,8 @@ class FontChooserDialog extends javax.swing.JDialog {
 
     private class CancelActionListener implements ActionListener {
 
-        public void actionPerformed(ActionEvent e) {
+        @Override
+		public void actionPerformed(ActionEvent e) {
             dispose();
         }
 

@@ -12,7 +12,6 @@ import java.util.*;
 import java.util.List;
 
 import javax.swing.*;
-import javax.swing.Action;
 import javax.swing.event.*;
 
 import com.cburch.logisim.circuit.*;

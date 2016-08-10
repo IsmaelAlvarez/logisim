@@ -28,6 +28,7 @@ public class ComponentStatus implements AttributeOptionInterface {
 		return status;
 	}
 
+	@Override
 	public boolean equals(Object obj) {
 		
 		if (!(obj instanceof ComponentStatus)) {

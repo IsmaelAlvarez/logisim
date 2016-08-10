@@ -84,7 +84,8 @@ public class DefaultFontSelectionModel implements FontSelectionModel {
      *
      * @return the selected <code>Font</code>
      */
-    public Font getSelectedFont() {
+    @Override
+	public Font getSelectedFont() {
         return selectedFont;
     }
 
@@ -99,7 +100,8 @@ public class DefaultFontSelectionModel implements FontSelectionModel {
      *
      * @param font the new <code>Font</code>
      */
-    public void setSelectedFont(Font font) {
+    @Override
+	public void setSelectedFont(Font font) {
         if (font != null && !selectedFont.equals(font)) {
             selectedFont = font;
             fireStateChanged();
@@ -116,7 +118,8 @@ public class DefaultFontSelectionModel implements FontSelectionModel {
      *         default locale, or a suitable alternative name if no name exists
      *         for this locale
      */
-    public List getAvailableFontNames() {
+    @Override
+	public List getAvailableFontNames() {
         return availableFontNames;
     }
 
@@ -125,7 +128,8 @@ public class DefaultFontSelectionModel implements FontSelectionModel {
      *
      * @param l the <code>ChangeListener</code> to be added
      */
-    public void addChangeListener(ChangeListener l) {
+    @Override
+	public void addChangeListener(ChangeListener l) {
         listenerList.add(ChangeListener.class, l);
     }
 
@@ -133,7 +137,8 @@ public class DefaultFontSelectionModel implements FontSelectionModel {
      * Removes a <code>ChangeListener</code> from the model.
      * @param l the <code>ChangeListener</code> to be removed
      */
-    public void removeChangeListener(ChangeListener l) {
+    @Override
+	public void removeChangeListener(ChangeListener l) {
         listenerList.remove(ChangeListener.class, l);
     }
 
@@ -146,7 +151,7 @@ public class DefaultFontSelectionModel implements FontSelectionModel {
      *         array if no listeners have been added
      */
     public ChangeListener[] getChangeListeners() {
-        return (ChangeListener[]) listenerList.getListeners(
+        return listenerList.getListeners(
                 ChangeListener.class);
     }
 

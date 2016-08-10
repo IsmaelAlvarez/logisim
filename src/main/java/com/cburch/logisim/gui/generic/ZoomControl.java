@@ -12,13 +12,10 @@ import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.awt.event.MouseWheelEvent;
-import java.awt.event.MouseWheelListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 import javax.swing.AbstractSpinnerModel;
-import javax.swing.Action;
 import javax.swing.ActionMap;
 import javax.swing.InputMap;
 import javax.swing.JComponent;
@@ -171,7 +168,7 @@ public class ZoomControl extends JPanel {
         spinner.setModel(spinnerModel);
         
         //Zooming with CTRL+/-
-        InputMap im = this.getInputMap(ZoomControl.WHEN_IN_FOCUSED_WINDOW);
+        InputMap im = this.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
         ActionMap am = this.getActionMap();
         int mask = getToolkit().getMenuShortcutKeyMask();
         im.put(KeyStroke.getKeyStroke(KeyEvent.VK_EQUALS, mask), "CTRL+");

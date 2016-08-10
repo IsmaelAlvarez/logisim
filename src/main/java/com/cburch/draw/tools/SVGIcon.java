@@ -66,7 +66,7 @@ public class SVGIcon implements Icon {
     private void paintSvgIcon(Graphics2D g, int x, int y, double scaleX, double scaleY) {
             AffineTransform transform = new AffineTransform(scaleX, 0.0, 0.0, scaleY, x, y);
             svgIcon.setTransform(transform);
-            Graphics2D g2d = (Graphics2D) g;
+            Graphics2D g2d = g;
             g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
             svgIcon.paint(g);
         }	

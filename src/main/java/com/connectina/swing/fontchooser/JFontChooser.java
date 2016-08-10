@@ -316,7 +316,8 @@ public class JFontChooser extends JPanel {
 
     private class FamilyListSelectionListener implements ListSelectionListener {
 
-        public void valueChanged(ListSelectionEvent e) {
+        @Override
+		public void valueChanged(ListSelectionEvent e) {
             if (!e.getValueIsAdjusting()) {
                 Font sel = new Font(familyList.getSelectedValue().toString(),
                 		styleList.getSelectedIndex(),
@@ -329,7 +330,8 @@ public class JFontChooser extends JPanel {
 
     private class StyleListSelectionListener implements ListSelectionListener {
 
-        public void valueChanged(ListSelectionEvent e) {
+        @Override
+		public void valueChanged(ListSelectionEvent e) {
             if (!e.getValueIsAdjusting()) {
                 selectionModel.setSelectedFont(selectionModel.getSelectedFont().deriveFont(styleList.getSelectedIndex()));
 
@@ -340,11 +342,12 @@ public class JFontChooser extends JPanel {
 
     private class SizeListSelectionListener implements ListSelectionListener {
 
-        public void valueChanged(ListSelectionEvent e) {
+        @Override
+		public void valueChanged(ListSelectionEvent e) {
             if (!e.getValueIsAdjusting()) {
                 int index = ((DefaultListModel) sizeList.getModel()).indexOf(sizeList.getSelectedValue());
                 if (index > -1) {
-                    sizeSpinner.setValue((Integer) sizeList.getSelectedValue());
+                    sizeSpinner.setValue(sizeList.getSelectedValue());
                 }
                 float newSize = Float.parseFloat(sizeSpinner.getValue().toString());
                 Font newFont = selectionModel.getSelectedFont().deriveFont(newSize);
@@ -357,7 +360,8 @@ public class JFontChooser extends JPanel {
 
     private class SizeSpinnerListener implements ChangeListener {
 
-        public void stateChanged(ChangeEvent e) {
+        @Override
+		public void stateChanged(ChangeEvent e) {
             Integer value = (Integer) sizeSpinner.getValue();
             int index = ((DefaultListModel) sizeList.getModel()).indexOf(value);
             if (index > -1) {
@@ -378,7 +382,8 @@ public class JFontChooser extends JPanel {
             chooser = c;
         }
 
-        public void actionPerformed(ActionEvent e) {
+        @Override
+		public void actionPerformed(ActionEvent e) {
             font = chooser.getSelectedFont();
         }
 

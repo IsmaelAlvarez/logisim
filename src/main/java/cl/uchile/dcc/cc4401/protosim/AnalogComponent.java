@@ -56,7 +56,7 @@ public class AnalogComponent {
         System.out.println(input);
         if (attrs.containsAttribute(Io.ATTR_COMPONENT_STATUS)) {
     		if (attrs.containsAttribute(Io.ATTR_MAXIMUM_VOLTAGE)) {
-    			Double max = (Double) attrs.getValue(Io.ATTR_MAXIMUM_VOLTAGE);
+    			Double max = attrs.getValue(Io.ATTR_MAXIMUM_VOLTAGE);
     			if (input > max) {
                     attrs.setReadOnly(Io.ATTR_COMPONENT_STATUS,false);
                     if (mode == Mode.execute)

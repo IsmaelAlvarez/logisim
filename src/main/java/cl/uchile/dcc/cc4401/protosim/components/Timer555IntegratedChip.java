@@ -1,6 +1,5 @@
 package cl.uchile.dcc.cc4401.protosim.components;
 
-import com.cburch.logisim.instance.InstanceFactory;
 import com.cburch.logisim.instance.InstancePainter;
 import com.cburch.logisim.instance.InstanceState;
 
