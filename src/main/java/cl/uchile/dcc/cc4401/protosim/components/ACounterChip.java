@@ -1,29 +1,16 @@
 package cl.uchile.dcc.cc4401.protosim.components;
 
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Graphics;
-import java.util.ArrayList;
-import java.util.List;
-
-import com.cburch.logisim.data.Attribute;
-import com.cburch.logisim.data.AttributeOption;
-import com.cburch.logisim.data.AttributeSet;
-import com.cburch.logisim.data.Bounds;
-import com.cburch.logisim.data.Direction;
-import com.cburch.logisim.data.Location;
-import com.cburch.logisim.data.Value;
-import com.cburch.logisim.instance.InstanceData;
-import com.cburch.logisim.instance.InstanceFactory;
-import com.cburch.logisim.instance.InstancePainter;
-import com.cburch.logisim.instance.InstanceState;
-import com.cburch.logisim.instance.Port;
-import com.cburch.logisim.instance.StdAttr;
+import cl.uchile.dcc.cc4401.protosim.libraries.ProtoValue;
+import com.cburch.logisim.data.*;
+import com.cburch.logisim.instance.*;
+import com.cburch.logisim.std.io.Io;
 import com.cburch.logisim.std.memory.Memory;
 import com.cburch.logisim.std.wiring.Pin;
 import com.cburch.logisim.util.Icons;
 
-import cl.uchile.dcc.cc4401.protosim.libraries.ProtoValue;
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Implementa un contador sincrono de modulo 10 sin reset, modelo 74190
@@ -64,10 +51,11 @@ public class ACounterChip extends AbstractComponent {
     setPorts(ports);
 
     setAttributes(
-        new Attribute[] { StdAttr.FACING, StdAttr.LABEL, Pin.ATTR_LABEL_LOC,
-            StdAttr.LABEL_FONT },
-        new Object[] { Direction.EAST, "", Direction.WEST,
-            StdAttr.DEFAULT_LABEL_FONT });
+        new Attribute[] { Io.ATTR_COMPONENT_ID, StdAttr.FACING, StdAttr.LABEL, Pin.ATTR_LABEL_LOC,
+            StdAttr.LABEL_FONT, Io.ATTR_MAXIMUM_VOLTAGE, Io.ATTR_COMPONENT_STATUS, Io.ATTR_RESISTANCE},
+        new Object[] { null, Direction.EAST, "", Direction.WEST,
+            StdAttr.DEFAULT_LABEL_FONT, 10.0, ComponentStatus.GOOD, Resistance.R10});
+    setVInOut(0,9); //Cambiar esto
   }
 
   /**
