@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class AbstractComponent extends InstanceFactory {
-
+ //Hola
   private int VOut = 1;
   private int VIn = 0;
 

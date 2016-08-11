@@ -43,7 +43,7 @@ public class AnalogState {
         for(Component compi : comps){
             EndData ei = compi.getEnds().get(((AbstractComponent) compi.getFactory()).getVOut());
             Location l1;
-            //if(ei.isOutput())
+            //if(ei.isOutput()) GRAFO
                 l1 = ei.getLocation();
             /*else
                 l1 = compi.getEnds().get(((AbstractComponent) compi.getFactory()).getVIn()).getLocation();*/
