@@ -43,7 +43,7 @@ public class ACounterChip extends AbstractComponent {
             StdAttr.LABEL_FONT, Io.ATTR_MAXIMUM_VOLTAGE, Io.ATTR_COMPONENT_STATUS, Io.ATTR_RESISTANCE},
         new Object[] { null, Direction.EAST, "", Direction.WEST,
             StdAttr.DEFAULT_LABEL_FONT, 10.0, ComponentStatus.GOOD, Resistance.R10});
-    setVInOut(0,9);
+    setVInOut(0,9); //Cambiar esto
   }
 
   @Override
