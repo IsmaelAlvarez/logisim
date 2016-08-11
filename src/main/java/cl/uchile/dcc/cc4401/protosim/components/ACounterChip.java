@@ -1,5 +1,6 @@
 package cl.uchile.dcc.cc4401.protosim.components;
 
+import cl.uchile.dcc.cc4401.protosim.AllComponents;
 import cl.uchile.dcc.cc4401.protosim.libraries.ProtoValue;
 import com.cburch.logisim.data.*;
 import com.cburch.logisim.instance.*;
@@ -104,6 +105,31 @@ public class ACounterChip extends AbstractComponent {
     g.fillRect(x + 28, y + 25, 4, 5);
     g.fillRect(x + 38, y + 25, 4, 5);
     painter.drawPorts();
+
+    if(painter.getInstance().getAttributeSet().getValue(Io.ATTR_COMPONENT_STATUS).equals(ComponentStatus.BURNT))
+      paintShortCircuit(painter);
+
+  }
+
+  @Override
+  protected void configureNewInstance(Instance instance) {
+    instance.addAttributeListener();
+    InstanceComponent component = instance.getInstanceComponent();
+    Integer cid = component.getAttributeSet().getValue(Io.ATTR_COMPONENT_ID);
+    if(cid==null){
+      cid = AllComponents.getMyInstance().getNextID();
+      component.getAttributeSet().setValue(Io.ATTR_COMPONENT_ID,cid);
+      component.getAttributeSet().setReadOnly(Io.ATTR_COMPONENT_ID,true);
+      component.getAttributeSet().setReadOnly(Io.ATTR_COMPONENT_STATUS,true);
+      System.out.println("New resistor added with ID "+cid);
+    }
+
+    //instance.setPorts(new Port[]{ports.get(0), ports.get(9)});
+
+    /*if (instance.getAttributeSet().getValue(Io.ATTR_DIRECTION_LEFT_RIGHT).equals(Direction.WEST)) {
+     instance.setPorts(new Port[]{ports.get(0), ports.get(9)});
+    }
+    */
   }
 
   @Override
