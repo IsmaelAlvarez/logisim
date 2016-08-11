@@ -17,6 +17,7 @@ import com.cburch.logisim.data.AttributeOption;
 import com.cburch.logisim.data.AttributeSet;
 import com.cburch.logisim.data.Bounds;
 import com.cburch.logisim.data.Capacitance;
+import com.cburch.logisim.data.ComponentStatus;
 import com.cburch.logisim.data.Direction;
 import com.cburch.logisim.data.Location;
 import com.cburch.logisim.data.Resistance;
@@ -73,15 +74,20 @@ public class Timer555Chip extends AbstractComponent {
                 Io.ATTR_COMPONENT_ID,
                 StdAttr.LABEL,
                 Io.ATTR_CAPACITANCE,
-                Io.ATTR_RESISTANCE
+                Io.ATTR_RESISTANCE,
+                Io.ATTR_COMPONENT_STATUS,
+                Io.ATTR_MAXIMUM_VOLTAGE
         },
         new Object[] {
                 null,
                 "",
                 Capacitance.C10,
-                Resistance.R10
+                Resistance.R10,
+                ComponentStatus.GOOD,
+                3.0
         }
 		);
+		setVInOut(0,4);
 
 		setFacingAttribute(StdAttr.FACING);
 		setInstanceLogger(ClockLogger.class);
@@ -125,7 +131,9 @@ public class Timer555Chip extends AbstractComponent {
 		g.fillRect(x + 8, y + 25, 4, 5);
 		g.fillRect(x + 18, y + 25, 4, 5);
 		g.fillRect(x + 28, y + 25, 4, 5);
-
+		
+		if(painter.getInstance().getAttributeSet().getValue(Io.ATTR_COMPONENT_STATUS).equals(ComponentStatus.BURNT))
+            paintShortCircuit(painter);
 		painter.drawPorts();
 		
 	}
@@ -240,6 +248,8 @@ public class Timer555Chip extends AbstractComponent {
 
 	@Override
 	public void propagate(InstanceState state) {
+		ComponentStatus componentStatus = (ComponentStatus)
+				state.getInstance().getInstanceComponent().getAttributeSet().getValue(Io.ATTR_COMPONENT_STATUS);
 		Value valueVcc = state.getPort(0);
 		Value val = state.getPort(6);
 		ClockState q = getState(state);
@@ -248,7 +258,12 @@ public class Timer555Chip extends AbstractComponent {
 		
 		boolean isEnergized = (valueVcc == ProtoValue.FALSE && valueGround == ProtoValue.TRUE);
 		boolean isTriggered = (valueTrigger == ProtoValue.FALSE);
-				
+			
+		if (componentStatus == ComponentStatus.BURNT){
+			state.setPort(6, ProtoValue.FALSE, 1);
+			return;
+		}
+		
 		if (shouldEnd){
 			shouldEnd = !isTriggered;
 			if (shouldEnd){
